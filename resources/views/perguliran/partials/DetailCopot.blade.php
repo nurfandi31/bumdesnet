@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('Layout.base')
 
 @section('content')
     <!-- Form -->

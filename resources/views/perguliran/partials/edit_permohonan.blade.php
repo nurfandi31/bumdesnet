@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('Layout.base')
 @php
     $status = $settings->swit_tombol ?? null;
 @endphp

@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('Layout.base')
 @section('content')
     <!-- Form -->
     <form action="/installations/{{ $installation->id }}" method="post" id="Form_status_I">
