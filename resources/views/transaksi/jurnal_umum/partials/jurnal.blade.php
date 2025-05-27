@@ -17,17 +17,17 @@
 @endphp
 
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="table table-striped midle">
-    <thead class="bg-dark text-white">
+    <thead class="bg-secondary">
         <tr>
-            <td height="40" align="center" width="40">No</td>
-            <td align="center" width="100">Tanggal</td>
-            <td align="center" width="100">Kode Akun.</td>
-            <td align="center">Keterangan</td>
-            <td align="center" width="70">ID Trx.</td>
-            <td align="center" width="140">Debit</td>
-            <td align="center" width="140">Kredit</td>
-            <td align="center" width="150">Saldo</td>
-            <td align="center" width="170">Aksi</td>
+            <th height="40" class="text-center"style="color: #fff;" width="40">No</th>
+            <th class="text-center" width="100"style="color: #fff;">Tanggal</th>
+            <th class="text-center" width="100"style="color: #fff;">Kode Akun</th>
+            <th class="text-center"style="color: #fff;">Keterangan</th>
+            <th class="text-center" width="70"style="color: #fff;">ID Trx</th>
+            <th class="text-center" width="140"style="color: #fff;">Debit</th>
+            <th class="text-center" width="140"style="color: #fff;">Kredit</th>
+            <th class="text-center" width="150"style="color: #fff;">Saldo</th>
+            <th class="text-center" width="170"style="color: #fff;">Aksi</th>
         </tr>
     </thead>
 
@@ -125,40 +125,41 @@
                 <td align="right">{{ number_format($total_saldo, 2) }}</td>
                 <td align="center">
                     <div class="dropdown dropleft">
-                        <button class="btn btn-info btn-sm dropdown-toggle" type="button" id="{{ $trx->id }}"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-info"></i>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="{{ $trx->id }}">
-                            <a class="dropdown-item" target="_blank"
-                                href="/transactions/dokumen/kuitansi/{{ $trx->id }}">
-                                Kuitansi
-                            </a>
-                            <a class="dropdown-item" target="_blank"
-                                href="/transactions/dokumen/kuitansi_thermal/{{ $trx->id }}">
-                                Kuitansi Thermal
-                            </a>
-
-                            <a class="dropdown-item btn-link" target="_blank"
-                                data-action="/transactions/dokumen/{{ $files }}/{{ $trx->id }}"
-                                href="#">
-                                @if ($files == 'bkm')
-                                    Bukti Kas Masuk
-                                @elseif ($files == 'bkk')
-                                    Bukti Kas Keluar
-                                @else
-                                    Bukti Memorial
-                                @endif
-                            </a>
-
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item btn-reversal" data-id="{{ $trx->id }}" href="#">
-                                Reversal
-                            </a>
-                            <a class="dropdown-item text-danger btn-delete" data-id="{{ $trx->id }}"
-                                href="#">
-                                Hapus Transaksi
-                            </a>
+                        <div class="btn-group mb-1">
+                            <div class="dropdown">
+                                <button class="btn btn-info dropdown-toggle me-1" type="button"
+                                    id="{{ $trx->id }}" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <i class="bi bi-eye-fill"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="{{ $trx->id }}">
+                                    <a class="dropdown-item" target="_blank"
+                                        href="/transactions/dokumen/kuitansi/{{ $trx->id }}">
+                                        Kuitansi
+                                    </a>
+                                    <a class="dropdown-item" target="_blank"
+                                        href="/transactions/dokumen/kuitansi_thermal/{{ $trx->id }}">
+                                        Kuitansi Thermal
+                                    </a>
+                                    <a class="dropdown-item btn-link" target="_blank"
+                                        href="/transactions/dokumen/{{ $files }}/{{ $trx->id }}">
+                                        @if ($files == 'bkm')
+                                            Bukti Kas Masuk
+                                        @elseif ($files == 'bkk')
+                                            Bukti Kas Keluar
+                                        @else
+                                            Bukti Memorial
+                                        @endif
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item btn-reversal" href="#" data-id="{{ $trx->id }}">
+                                        Reversal
+                                    </a>
+                                </div>
+                                <button class="btn btn-danger btn-sm btn-delete" data-id="{{ $trx->id }}">
+                                    <i class="bi bi-x-circle"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </td>

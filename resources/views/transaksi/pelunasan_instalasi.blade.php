@@ -68,7 +68,6 @@
                                 </div>
                             </div>
                             <div class="row">
-
                                 <div class="col-md-6">
                                     <div class="position-relative mb-3">
                                         <label for="tagihan">Tagihan</label>
@@ -126,7 +125,7 @@
                                         <div class="fw-semibold"><b>Tanggal Order</b></div>
                                     </div>
                                     <div>&nbsp;</div>
-                                    <div class="text-muted small">
+                                    <div class="text-muted small">&nbsp;&nbsp;&nbsp;&nbsp;
                                         <span id="order"></span>
                                     </div>
                                 </div>
@@ -141,7 +140,7 @@
                                         <div class="fw-semibold"><b>No. Induk</b></div>
                                     </div>
                                     <div>&nbsp;</div>
-                                    <div class="text-muted small">
+                                    <div class="text-muted small">&nbsp;&nbsp;&nbsp;&nbsp;
                                         <span id="kode_instalasi"></span>
                                     </div>
                                 </div>
@@ -156,7 +155,7 @@
                                         <div class="fw-semibold"><b>Alamat</b></div>
                                     </div>
                                     <div>&nbsp;</div>
-                                    <div class="text-muted small">
+                                    <div class="text-muted small">&nbsp;&nbsp;&nbsp;&nbsp;
                                         <span id="alamat">
                                         </span>
                                     </div>
@@ -173,7 +172,7 @@
                                         <div class="fw-semibold"><b>Package</b></div>
                                     </div>
                                     <div>&nbsp;</div>
-                                    <div class="text-muted small">
+                                    <div class="text-muted small">&nbsp;&nbsp;&nbsp;&nbsp;
                                         <span id="package">
                                         </span>
                                     </div>

@@ -209,7 +209,7 @@
                                 </div>
                                 <div class="col-12 d-flex justify-content-end">
                                     <button class="btn btn-warning" type="button" id="BtndetailTransaksi">
-                                        <span class="text" style="float: center;">Detail Transaksi</span>
+                                        <span class="text-white" style="float: center;">Detail Transaksi</span>
                                     </button>
                                 </div>
                             </div>
@@ -231,10 +231,16 @@
                     <h5 class="modal-title" id="detailTransaksiLabel">Detail Transaksi</h5>
                 </div>
                 <div class="modal-body" style="overflow-y: auto;">
-                    <div id="LayoutdetailTransaksi"></div>
+                    <div class="section">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="LayoutdetailTransaksi"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-info btn-sm">
+                    <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-info text-white ">
                         Cetak Bukti Transaksi
                     </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -254,13 +260,19 @@
                     </h1>
                 </div>
                 <div class="modal-body">
-                    <div id="LayoutCetakBuktiTransaksi"></div>
+                    <div class="section">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="LayoutCetakBuktiTransaksi"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="BtnCetak" class="btn btn-sm btn-info">
+                    <button type="button" id="BtnCetak" class="btn btn-info text-white">
                         Print
                     </button>
-                    <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-danger btn-sm">Tutup</button>
+                    <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-danger">Tutup</button>
                 </div>
             </div>
         </div>

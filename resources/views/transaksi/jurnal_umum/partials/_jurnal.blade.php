@@ -20,23 +20,24 @@
     @csrf
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" class="table table-striped midle">
-        <thead class="bg-dark text-white">
+        <thead style="background-color: #6c757d;">
             <tr>
-                <td align="center" width="40">
-                    <div class="form-check text-center ps-0 mb-0">
+                <th width="80" style="color: #fff; text-align: center;">
+                    <div class="form-check" style="display: inline-block; margin-bottom: 0;">
                         <input class="form-check-input" type="checkbox" value="true" id="checked" name="checked">
                     </div>
-                </td>
-                <td height="40" align="center" width="40">No</td>
-                <td align="center" width="100">Tanggal</td>
-                <td align="center" width="100">Kode Akun</td>
-                <td align="center">Keterangan</td>
-                <td align="center" width="70">ID Trx.</td>
-                <td align="center" width="140">Debit</td>
-                <td align="center" width="140">Kredit</td>
-                <td align="center" width="150">Saldo</td>
+                </th>
+                <th width="5">No</th>
+                <th height="40" width="100" style="color: #fff; text-align: center;">Tanggal</th>
+                <th width="100" style="color: #fff; text-align: center;">Kode Akun</th>
+                <th style="color: #fff; text-align: center;">Keterangan</th>
+                <th width="70" style="color: #fff; text-align: center;">ID Trx.</th>
+                <th width="140" style="color: #fff; text-align: center;">Debit</th>
+                <th width="140" style="color: #fff; text-align: center;">Kredit</th>
+                <th width="150" style="color: #fff; text-align: center;">Saldo</th>
             </tr>
         </thead>
+
 
         <tbody>
             <tr>
@@ -156,10 +157,9 @@
                     }
                 @endphp
 
-
                 <tr>
                     <td align="center">
-                        <div class="form-check text-center ps-0 mb-0">
+                        <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="{{ $trx->id }}"
                                 id="{{ $trx->id }}" name="cetak[]" data-input="checked">
                         </div>

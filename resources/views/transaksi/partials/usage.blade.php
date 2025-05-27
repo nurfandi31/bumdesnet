@@ -2,21 +2,28 @@
     use App\Utils\Tanggal;
 @endphp
 @if ($usages->isEmpty())
-    <div class="card-body">
-        <div class="alert alert-info" role="alert">
-            <h4 class="alert-heading"><b>Pemberitahuan !</b></h4>
-            <div class="alert alert-info d-flex justify-content-center align-items-center text-center" role="alert">
-                <div>
-                    <h4 class="alert-heading">
-                        Customer an. <b>{{ $installations->customer->nama }}</b> - kode instalasi
-                        <b>{{ $installations->kode_instalasi }}</b> <br> Tidak ada data <b>tagihan</b> untuk
-                        ditampilkan.
-                    </h4>
+    <div class="w-100">
+        <div class="card rounded-3 shadow-sm w-100" style="height: auto;">
+            <div class="card-body p-3 d-flex flex-column flex-md-row align-items-start">
+                <div class="mb-3 mb-md-0 me-md-3" style="flex-shrink: 0;">
+                    <img src="../assets/static/images/logo/usagenotifikasi.png"
+                        style="width: 250px; height: 250px; cursor: zoom-in;" alt="Notifikasi">
                 </div>
-            </div>
-            <hr>
-            <div class="col-12 d-flex justify-content-end">
-                <a href="/usages" class="btn btn-danger">Cek Pemakaian</a>
+                <div class="flex-grow-1 d-flex flex-column justify-content-between" style="min-height: 250px;">
+                    <div class="mb-2 text-md-end text-center">
+                        <h4 class="alert-heading"><b>Pemberitahuan!</b></h4>
+                    </div>
+                    <div class="flex-grow-1 d-flex align-items-center justify-content-center text-center px-2">
+                        <p class="mb-1 fs-4">
+                            Customer an. <b class="mb-1 fs-4">{{ $installations->customer->nama }}</b> - kode instalasi
+                            <b class="mb-1 fs-4">{{ $installations->kode_instalasi }}</b><br>
+                            Tidak ada data <b class="mb-1 fs-4 text-warning">tagihan</b> untuk ditampilkan.
+                        </p>
+                    </div>
+                    <div class="text-md-end text-center mt-3">
+                        <a href="/usages" class="btn btn-danger btn-sm">Cek Pemakaian</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -26,7 +33,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body pb-0 pt-2 ps-2 pe-2">
-                        <div class="border p-3 rounded mb-3">
+                        <div class="border p-2 rounded mb-2">
                             <div class="row align-items-start">
                                 <div class="col-12 col-md-12 order-md-1 order-last">
                                     <h4>Pelanggan. {{ $installations->customer->nama ?? '-' }}</h4>
@@ -147,7 +154,6 @@
                                                                 value="{{ number_format($denda, 2) }}">
                                                         </div>
                                                     </div>
-
                                                     <div class="row">
                                                         <div class="col-md-12 mb-2">
                                                             <label for="pembayaran">Pembayaran</label>
@@ -159,23 +165,16 @@
                                                                 {!! $trx_settings->swit_tombol_trx == '1' ? 'readonly' : '' !!}>
                                                         </div>
                                                     </div>
-
                                                     <div class="d-flex justify-content-end mt-3">
                                                         <button class="btn btn-warning btn-icon-split me-2"
                                                             type="button"
                                                             data-bs-target="#DetailTRX-{{ $usage->id }}"
                                                             data-bs-toggle="modal">
-                                                            <span class="icon text-white-50">
-                                                                <i class="bi bi-sign-intersection-fill"></i>
-                                                            </span>
-                                                            <span class="text">Detail Pelanggan</span>
+                                                            <span class="text-white">Detail Pelanggan</span>
                                                         </button>
                                                         <button class="btn btn-secondary btn-icon-split SimpanTagihan"
                                                             type="submit"
                                                             data-form="#FormTagihan-{{ $usage->id }}">
-                                                            <span class="icon text-white-50">
-                                                                <i class="bi bi-sign-intersection-fill"></i>
-                                                            </span>
                                                             <span class="text">Simpan Pembayaran</span>
                                                         </button>
                                                     </div>

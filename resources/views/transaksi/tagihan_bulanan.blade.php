@@ -30,7 +30,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-3 order-md-1 order-last">
-                                    <div class="form-group mb-0">
+                                    <div class="form-group mb-0 pt-2 pt-md-0">
                                         <a href="#"
                                             class="btn btn-warning w-100 d-flex justify-content-center align-items-center"
                                             style="height: 34px;" type="button" id="BtndetailTransaksi">
@@ -38,6 +38,7 @@
                                         </a>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -174,8 +175,8 @@
             e.preventDefault();
             $('small').html('');
 
-            var target = $(this).attr('data-form'); // narget button
-            var form = $(target); // narget form = id
+            var target = $(this).attr('data-form');
+            var form = $(target);
             var actionUrl = form.attr('action');
 
             $.ajax({
@@ -183,35 +184,39 @@
                 url: actionUrl,
                 data: form.serialize(),
                 success: function(result) {
+                    Swal.close();
                     if (result.success) {
                         Swal.fire({
                             title: result.msg,
                             icon: "success",
                             draggable: true
+                        }).then(() => {
+                            // Panggil fungsi loading yang ada di loading.js
+                            formTagihanBulanan(result.installation);
+                            window.open('/transactions/dokumen/struk_tagihan/' + result
+                                .transaksi);
                         });
-
-                        formTagihanBulanan(result.installation)
-                        window.open('/transactions/dokumen/struk_tagihan/' + result.transaksi)
+                    } else {
+                        Swal.fire('Gagal', result.msg || 'Gagal menyimpan data', 'error');
                     }
                 },
 
                 error: function(result) {
+                    Swal.close();
                     const response = result.responseJSON;
-
                     Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error');
-
                     if (response && typeof response === 'object') {
                         $.each(response, function(key, message) {
                             $('#' + key)
                                 .closest('.input-group.input-group-static')
                                 .addClass('is-invalid');
-
                             $('#msg_' + key).html(message);
                         });
                     }
                 }
             });
         });
+
 
         //simpan pembayaran installations
         $(document).on('click', '#simpanpembayaran', function(e) {

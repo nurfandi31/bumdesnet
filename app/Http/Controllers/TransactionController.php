@@ -395,7 +395,6 @@ class TransactionController extends Controller
         ]);
     }
 
-
     public function jurnalTutupBuku()
     {
         $business = Business::where('id', Session::get('business_id'))->first();
@@ -407,7 +406,6 @@ class TransactionController extends Controller
     {
 
         $keuangan = new Keuangan;
-
         $tahun = $request->tahun;
         $bulan = date('m');
         if ($tahun < date('Y')) {
@@ -1301,13 +1299,13 @@ class TransactionController extends Controller
             // SPS
         }
 
-        Transaction::insert($insert);
+        // Transaction::insert($insert);
 
-        if ($biaya_instalasi  >= $biaya_tagihan) {
-            Usage::where('business_id', Session::get('business_id'))->where('id', $request->id_usage)->update([
-                'status' => 'PAID',
-            ]);
-        }
+        // if ($biaya_instalasi  >= $biaya_tagihan) {
+        //     Usage::where('business_id', Session::get('business_id'))->where('id', $request->id_usage)->update([
+        //         'status' => 'PAID',
+        //     ]);
+        // }
 
         return response()->json([
             'success' => true,

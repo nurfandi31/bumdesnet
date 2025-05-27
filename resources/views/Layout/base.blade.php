@@ -197,7 +197,7 @@
             icon: 'success',
             title: 'Login Berhasil',
             text: '{{ Session::get('
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                success ') }}.',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        success ') }}.',
         }).then((result) => {
             window.open('/dataset/{{ time() }}')
         })
@@ -373,11 +373,10 @@
 
         function formTagihanBulanan(installation) {
             let timerInterval;
-
             Swal.fire({
                 title: 'Menyiapkan data...',
                 html: 'Harap tunggu <b></b> ms.',
-                timer: 30000, // maksimal 30 detik (bisa disesuaikan)
+                timer: 30000,
                 timerProgressBar: true,
                 allowOutsideClick: false,
                 allowEscapeKey: false,
@@ -395,14 +394,13 @@
 
             $.get('/installations/usage/' + installation.kode_instalasi, (result) => {
                 Swal.close();
-
                 if (result.success) {
                     $('#accordion').html(result.view);
                 } else {
                     $('#accordion').html(result.view);
                 }
 
-                dataCustomer = {
+                window.dataCustomer = {
                     item: installation,
                     rek_debit: result.rek_debit,
                     rek_kredit: result.rek_kredit,

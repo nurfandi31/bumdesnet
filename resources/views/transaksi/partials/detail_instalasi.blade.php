@@ -53,24 +53,29 @@
                             <td align="right">{{ number_format($debit, 2) }}</td>
                             <td align="center">
                                 <div class="dropdown dropleft">
-                                    <button class="btn btn-info btn-sm dropdown-toggle" type="button"
-                                        id="{{ $trx->id }}" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                        <i class="bi bi-eye-fill"></i>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="{{ $trx->id }}">
-                                        <a class="dropdown-item" target="_blank"
-                                            href="/transactions/dokumen/struk_instalasi/{{ $trx->id }}">
-                                            Struk Pasang Baru
-                                        </a>
-                                        <a class="dropdown-item" target="_blank"
-                                            href="/transactions/dokumen/struk_tagihan/{{ $trx->id }}">
-                                            Struk Tagihan
-                                        </a>
+                                    <div class="btn-group mb-1">
+                                        <div class="dropdown">
+                                            <button class="btn btn-info dropdown-toggle me-1" type="button"
+                                                id="{{ $trx->id }}" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="{{ $trx->id }}">
+                                                <a class="dropdown-item" target="_blank"
+                                                    href="/transactions/dokumen/struk_instalasi/{{ $trx->id }}">
+                                                    Struk Pasang Baru
+                                                </a>
+                                                <a class="dropdown-item" target="_blank"
+                                                    href="/transactions/dokumen/struk_tagihan/{{ $trx->id }}">
+                                                    Struk Tagihan
+                                                </a>
+                                            </div>
+                                            <button class="btn btn-danger btn-sm btn-delete"
+                                                data-id="{{ $trx->id }}">
+                                                <i class="bi bi-x-circle"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <button class="btn btn-danger btn-sm btn-delete" data-id="{{ $trx->id }}">
-                                        <i class="bi bi-x-circle"></i>
-                                    </button>
                                 </div>
                             </td>
                         </tr>
