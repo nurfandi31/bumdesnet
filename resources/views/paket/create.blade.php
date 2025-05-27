@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('Layout.base')
 @php
     $blok = json_decode($tampil_settings->block, true);
     $jumlah_blok = count($blok);

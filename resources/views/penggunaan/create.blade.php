@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('Layout.base')
 @php
     $label_search = 'Nama/Kode Installasi';
 @endphp

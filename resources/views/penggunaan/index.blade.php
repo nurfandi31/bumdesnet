@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('Layout.base')
 @php
     use App\Utils\Tanggal;
 @endphp

@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('Layout.base')
 
 @section('content')
     <!-- Datatables -->
