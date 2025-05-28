@@ -45,7 +45,7 @@
                                     <!-- Teks di samping ikon -->
                                     <div>
                                         <h6 class="text-muted font-semibold mb-1">Pemakaian</h6>
-                                        <h6 class="font-extrabold mb-0">112.000</h6>
+                                        <h6 class="font-extrabold mb-0 text-info">112.000</h6>
                                     </div>
                                 </div>
                                 <!-- Garis pemisah -->
@@ -72,7 +72,7 @@
                                     <!-- Teks di samping ikon -->
                                     <div>
                                         <h6 class="text-muted font-semibold mb-1">Tunggakan</h6>
-                                        <h6 class="font-extrabold mb-0">112.000</h6>
+                                        <h6 class="font-extrabold mb-0 text-warning">112.000</h6>
                                     </div>
                                 </div>
                                 <!-- Garis pemisah -->
@@ -99,7 +99,7 @@
                                     <!-- Teks di samping ikon -->
                                     <div>
                                         <h6 class="text-muted font-semibold mb-1">Tagihan</h6>
-                                        <h6 class="font-extrabold mb-0">112.000</h6>
+                                        <h6 class="font-extrabold mb-0 text-danger">112.000</h6>
                                     </div>
                                 </div>
                                 <!-- Garis pemisah -->

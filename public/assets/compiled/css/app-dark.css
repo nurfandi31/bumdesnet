@@ -63,7 +63,7 @@ html[data-bs-theme=dark] .swal2-popup.swal2-toast {
     grid-template-columns: min-content auto min-content;
     padding: 1em;
     overflow-y: hidden;
-    background: #19191a;
+    .stats-icon background: #19191a;
     box-shadow: 0 0 1px rgba(0, 0, 0, .075), 0 1px 2px rgba(0, 0, 0, .075), 1px 2px 4px rgba(0, 0, 0, .075), 1px 3px 8px rgba(0, 0, 0, .075), 2px 4px 16px rgba(0, 0, 0, .075);
     pointer-events: all
 }
@@ -10761,8 +10761,8 @@ html[data-bs-theme=dark] .bi.bi-sub:before {
 }
 
 html[data-bs-theme=dark] .stats-icon {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     border-radius: 5px;
     background-color: #000;
     float: left;
