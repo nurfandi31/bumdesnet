@@ -171,7 +171,8 @@
         const currentMonth = new Date().getMonth() + 1;
         const formattedMonth = currentMonth.toString().padStart(2, '0');
         document.getElementById('bulan').value = formattedMonth;
-
+    </script>
+    <script>
         $(document).on('change', '#tahun, #bulan', function(e) {
             e.preventDefault()
 
@@ -199,6 +200,7 @@
 
             $.get('/pelaporan/sub_laporan/' + file + '?tahun=' + tahun + '&bulan=' + bulan, function(result) {
                 $('#subLaporan').html(result)
+                setSelect('.subLaporan')
             })
         }
 
@@ -208,7 +210,7 @@
             $(this).parent('form').find('#type').val('pdf')
             var file = $('select#laporan').val()
             if (file == 'calk') {
-                await $('textarea#sub_laporan1').val(quill.container.firstChild.innerHTML)
+                await $('textarea#sub_laporan').val(quill.container.firstChild.innerHTML)
             }
 
             var form = $('#FormPelaporan')
@@ -223,7 +225,7 @@
             $(this).parent('form').find('#type').val('excel')
             var file = $('select#laporan').val()
             if (file == 'calk') {
-                await $('textarea#sub_laporan1').val(quill.container.firstChild.innerHTML)
+                await $('textarea#sub_laporan').val(quill.container.firstChild.innerHTML)
             }
 
             var form = $('#FormPelaporan')

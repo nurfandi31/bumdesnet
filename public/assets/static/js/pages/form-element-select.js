@@ -1,7 +1,7 @@
 var choiceData = []
 
-function setSelect() {
-    document.querySelectorAll(".choices").forEach(function (current_node, index) {
+function setSelect(params = '.choices') {
+    document.querySelectorAll(params).forEach(function (current_node, index) {
         var id = current_node.getAttribute('id');
 
         if (id) {

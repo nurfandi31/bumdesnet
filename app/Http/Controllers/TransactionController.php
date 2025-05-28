@@ -49,7 +49,7 @@ class TransactionController extends Controller
     {
         $transactions = Transaction::all();
         $jenis_transaksi = JenisTransactions::all();
-        $rekening = Account::where('business_id', Session::get('business_id'));
+        $rekening = Account::where('business_id', Session::get('business_id'))->get();
         $business = Business::where('id', Session::get('business_id'))->first();
 
         $title = ' Transaksi';
@@ -1299,13 +1299,13 @@ class TransactionController extends Controller
             // SPS
         }
 
-        // Transaction::insert($insert);
+        Transaction::insert($insert);
 
-        // if ($biaya_instalasi  >= $biaya_tagihan) {
-        //     Usage::where('business_id', Session::get('business_id'))->where('id', $request->id_usage)->update([
-        //         'status' => 'PAID',
-        //     ]);
-        // }
+        if ($biaya_instalasi  >= $biaya_tagihan) {
+            Usage::where('business_id', Session::get('business_id'))->where('id', $request->id_usage)->update([
+                'status' => 'PAID',
+            ]);
+        }
 
         return response()->json([
             'success' => true,

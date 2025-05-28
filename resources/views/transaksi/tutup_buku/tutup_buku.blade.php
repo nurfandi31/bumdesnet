@@ -12,26 +12,42 @@
 @extends('layout.base')
 
 @section('content')
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>{{ $title ?? 'x' }}</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">DataTable</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    @if ($success)
+        <div class="alert alert-success alert-dismissible text-white fade show" role="alert">
+            <span class="alert-icon align-middle">
+                <span class="material-icons text-md">
+                    thumb_up_off_alt
+                </span>
+            </span>
+            <span class="alert-text">
+                <strong>Tutup Buku Tahun {{ $tahun }}</strong> berhasil.
+                Anda dapat melanjutkan proses pembagian laba di lain hari,
+                klik <a href="/transactions/tutup_buku" class="fw-bold text-white">Disini</a>
+                untuk kembali.
+            </span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <div class="card">
-        <div class="card-body">
-            @if ($success)
-                <div class="alert alert-success alert-dismissible text-white fade show" role="alert">
-                    <span class="alert-icon align-middle">
-                        <span class="material-icons text-md">
-                            thumb_up_off_alt
-                        </span>
-                    </span>
-                    <span class="alert-text">
-                        <strong>Tutup Buku Tahun {{ $tahun }}</strong> berhasil.
-                        Anda dapat melanjutkan proses pembagian laba di lain hari,
-                        klik <a href="/transactions/tutup_buku" class="fw-bold text-white">Disini</a>
-                        untuk kembali.
-                    </span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
+        <div class="card-body p-2 pe-2 pb-2 ps-2 pt-1">
             <h4 class="font-weight-normal mt-3">
                 <div class="row">
                     <span class="col-sm-6"> &nbsp; Laba Tahun {{ Tanggal::tahun($tgl_kondisi) }}</span>
@@ -39,115 +55,112 @@
                 </div>
             </h4>
 
-            <form action="/transactions/simpan_laba" method="post" id="SimpanAlokasiLaba">
-                @csrf
-                <input type="hidden" name="tgl_kondisi" id="tgl_kondisi" value="{{ $tgl_kondisi }}">
+        </div>
+    </div>
+    <form action="/transactions/simpan_laba" method="post" id="SimpanAlokasiLaba">
+        @csrf
+        <input type="hidden" name="tgl_kondisi" id="tgl_kondisi" value="{{ $tgl_kondisi }}">
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="position-relative mb-3">
-                            <input type="hidden" name="surplus" id="surplus" value="{{ $surplus }}">
-                            <div class="card">
-                                <div class="card-body p-3">
-                                    <h4 class="font-weight-normal">
-                                        Alokasi Laba
-                                    </h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="position-relative mb-3">
+                    <input type="hidden" name="surplus" id="surplus" value="{{ $surplus }}">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <h5 class="font-weight-normal">
+                                Alokasi Laba
+                            </h5>
 
-                                    <div class="table-responsive mb-3">
-                                        <table class="table table-striped midle">
-                                            <thead class="bg-dark text-white">
-                                                <tr>
-                                                    <th width="50%">
-                                                        <span class="text-sm">
-                                                            Laba Dibagikan
-                                                        </span>
-                                                    </th>
-                                                    <th width="50%">
-                                                        <div class="d-flex justify-content-between">
-                                                            <span class="text-sm">Jumlah</span>
-                                                            <span class="text-sm">
-                                                                Rp. <span data-id="total_surplus_bersih">0,00</span>
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($pembagian_surplus as $rek)
-                                                    <tr>
-                                                        <td>{{ $rek->nama_akun }}</td>
-                                                        <td>
-                                                            <div class="input-group input-group-outline my-0">
-                                                                <input type="text"
-                                                                    name="surplus_bersih[{{ $rek->id }}]"
-                                                                    id="surplus_bersih_{{ $rek->id }}"
-                                                                    class="form-control nominal surplus_bersih form-control-sm text-end"
-                                                                    value="0.00">
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                            <div class="table-responsive mb-3">
+                                <table class="table table-striped  ">
+                                    <thead class="bg-secondary">
+                                        <tr>
+                                            <th class="text-white" width="50%">
+                                                <span class="text-sm">
+                                                    Laba Dibagikan
+                                                </span>
+                                            </th>
+                                            <th class="text-white" width="50%">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-sm">Jumlah</span>
+                                                    <span class="text-sm">
+                                                        Rp. <span data-id="total_surplus_bersih">0,00</span>
+                                                    </span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($pembagian_surplus as $rek)
+                                            <tr>
+                                                <td>{{ $rek->nama_akun }}</td>
+                                                <td>
+                                                    <div class="input-group input-group-outline my-0">
+                                                        <input type="text" name="surplus_bersih[{{ $rek->id }}]"
+                                                            id="surplus_bersih_{{ $rek->id }}"
+                                                            class="form-control nominal surplus_bersih form-control-sm text-end"
+                                                            value="0.00">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
 
-                                                <input type="hidden" class="total" name="total_surplus_bersih"
-                                                    id="total_surplus_bersih">
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <div class="table-responsive mb-3">
-                                        <table class="table table-striped midle">
-                                            <thead class="bg-dark text-white">
-                                                <tr>
-                                                    <th width="50%">
-                                                        <span class="text-sm">Laba Ditahan</span>
-                                                    </th>
-                                                    <th width="50%">
-                                                        <div class="d-flex justify-content-between">
-                                                            <span class="text-sm">Jumlah</span>
-                                                            <span class="text-sm">
-                                                                Rp. <span data-id="total_laba_ditahan">
-                                                                    {{ number_format($surplus, 2) }}
-                                                                </span>
-                                                            </span>
-                                                        </div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <input type="hidden" name="total_laba_ditahan" id="total_laba_ditahan"
-                                                    class="form-control form-control-sm text-end"
-                                                    value="{{ $surplus }}">
-                                                <tr>
-                                                    <td>Pemupukan modal</td>
-                                                    <td>
-                                                        <div class="input-group input-group-outline my-0">
-                                                            <input type="text" name="laba_ditahan[3.2.01.01]"
-                                                                id="laba_ditahan"
-                                                                class="form-control laba_ditahan form-control-sm text-end"
-                                                                value="{{ number_format($surplus, 2) }}" readonly>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <div class="d-flex justify-content-end">
-                                        <button type="button" id="kembali" class="btn btn-white btn-sm">
-                                            Kembali
-                                        </button>
-                                        <button type="button" id="btnSimpanLaba" class="btn btn-dark btn-sm ml-3">
-                                            Simpan Alokasi Laba
-                                        </button>
-                                    </div>
-                                </div>
+                                        <input type="hidden" class="total" name="total_surplus_bersih"
+                                            id="total_surplus_bersih">
+                                    </tbody>
+                                </table>
                             </div>
+
+                            <div class="table-responsive mb-3">
+                                <table class="table table-striped">
+                                    <thead class="bg-secondary">
+                                        <tr>
+                                            <th class="text-white" width="50%">
+                                                <span class="text-sm">Laba Ditahan</span>
+                                            </th>
+                                            <th class="text-white" width="50%">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-sm">Jumlah</span>
+                                                    <span class="text-sm">
+                                                        Rp. <span data-id="total_laba_ditahan">
+                                                            {{ number_format($surplus, 2) }}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <input type="hidden" name="total_laba_ditahan" id="total_laba_ditahan"
+                                            class="form-control form-control-sm text-end" value="{{ $surplus }}">
+                                        <tr>
+                                            <td>Pemupukan modal</td>
+                                            <td>
+                                                <div class="input-group input-group-outline my-0">
+                                                    <input type="text" name="laba_ditahan[3.2.01.01]" id="laba_ditahan"
+                                                        class="form-control laba_ditahan form-control-sm text-end"
+                                                        value="{{ number_format($surplus, 2) }}" readonly>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" id="kembali" class="btn btn-warning text-white">
+                                    Kembali
+                                </button>
+                                <button type="button" id="btnSimpanLaba" class="btn btn-dark ms-2">
+                                    Simpan Alokasi Laba
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 @endsection
 
 @section('script')

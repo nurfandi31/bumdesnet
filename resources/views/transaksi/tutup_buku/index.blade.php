@@ -1,10 +1,25 @@
 @extends('layout.base')
 @section('content')
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>{{ $title ?? 'x' }}</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">DataTable</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div>&nbsp;</div>
     <div class="container-fluid" id="container-wrapper">
         <form action="/" method="post" id="FormTahunTutupBuku">
             @csrf
             <input type="hidden" name="tgl_pakai" id="tgl_pakai" value="{{ $business->tgl_pakai }}">
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card mb-4">
@@ -14,7 +29,6 @@
                                     <div class="position-relative mb-3">
                                         <label for="tahun">Tahun</label>
                                         <select class="form-control choices" name="tahun" id="tahun">
-                                            <option value=""> Pilih Tahun</option>
                                             @php
                                                 $tgl_pakai = $business->tgl_pakai;
                                                 $th_pakai = explode('-', $tgl_pakai)[0];
@@ -29,14 +43,11 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-12 d-flex justify-content-end">
                                 <button class="btn btn-secondary" type="button" id="TutupBuku">
                                     <span class="text">1. Tutup Buku</span>
                                 </button>
-
-                                <button class="btn btn-primary" type="button" id="PembagianLaba"
-                                    style="float: right; margin-left: 10px;">
+                                <button class="btn btn-primary ms-2" type="button" id="PembagianLaba">
                                     <span class="text">2. Simpan Alokasi Laba</span>
                                 </button>
                             </div>
@@ -48,7 +59,6 @@
     </div>
 
     <div class="container-fluid" id="LayoutPreview">
-
     </div>
 @endsection
 @section('modal')

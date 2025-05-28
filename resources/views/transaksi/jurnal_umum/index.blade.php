@@ -22,8 +22,8 @@
             <input type="hidden" name="clay" id="clay" value="JurnalUmum">
 
             <div class="row">
-                <div class="col-9">
-                    <div class="card mb-4">
+                <div class="col-12 col-md-9">
+                    <div class="card mb-2">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
@@ -340,6 +340,7 @@
                 $.get('/transactions/ambil_rekening/' + $(this).val() + '?tahun=' + tahun + '&bulan=' + bulan,
                     function(result) {
                         $('#kd_rekening').html(result)
+                        setSelect('.rekening')
                     })
             }
         });

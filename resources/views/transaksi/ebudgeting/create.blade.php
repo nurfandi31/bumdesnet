@@ -3,11 +3,11 @@
 
     <input type="hidden" name="bulan" id="bulan" value="{{ $bulan }}">
     <input type="hidden" name="tahun" id="tahun" value="{{ $tahun }}">
-    <table class="table table-striped">
-        <thead class="bg-dark text-white">
+    <table class="table table-striped  rounded overflow-hidden">
+        <thead class="bg-dark">
             <tr>
-                <th>Kode Akun</th>
-                <th>Rencana</th>
+                <th class="text-white">Kode Akun</th>
+                <th class="text-white">Rencana</th>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +26,7 @@
                             @php
                                 $nominal = 0;
                                 if ($accounts->eb) {
-                                    $nominal = $amount->eb->jumlah;
+                                    $nominal = $accounts->eb->jumlah;
                                 }
 
                                 $group = 'pendapatan';
@@ -50,11 +50,11 @@
                         @endforeach
                     @endforeach
                 @endforeach
-                <tr class="bg-dark text-white">
-                    <td>
+                <tr class="bg-warning">
+                    <td class="text-white">
                         <b>Total Rencana {{ $lev1->nama_akun }}</b>
                     </td>
-                    <td>
+                    <td class="text-white">
                         <div id="{{ strtolower($lev1->nama_akun) }}">{{ number_format($total, 2) }}</div>
                     </td>
                 </tr>
