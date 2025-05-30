@@ -3,7 +3,7 @@
     if ($logo == 'no_image.png') {
         $logo = '/assets/img/' . $logo;
     } else {
-        $logo = '/storage/profil/' . $logo;
+        $logo = '/storage/logo/' . $logo;
     }
 @endphp
 
