@@ -19,9 +19,7 @@
         </div>
     </div>
     <div>&nbsp;</div>
-    <form action="/installations" method="post" id="FormRegisterPermohonan">
-        @csrf
-        <input type="hidden" name="customer_id" id="customer_id">
+    <form action="/pelaporan/preview" class="needs-validation" novalidate method="GET" id="FormPelaporan" target="_blank">
 
         <div class="tab-content">
             <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
@@ -209,6 +207,7 @@
 
             $(this).parent('form').find('#type').val('pdf')
             var file = $('select#laporan').val()
+
             if (file == 'calk') {
                 await $('textarea#sub_laporan').val(quill.container.firstChild.innerHTML)
             }

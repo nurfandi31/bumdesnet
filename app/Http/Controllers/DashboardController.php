@@ -69,7 +69,7 @@ class DashboardController extends Controller
         $title = 'Dashboard';
         $api = env('APP_API', 'http://localhost:8080');
         $business = Business::where('id', Session::get('business_id'))->first();
-        return view('Dashboard.dashboard')->with(compact('title'));
+        return view('Dashboard.dashboard')->with(compact('Installation', 'Tunggakan', 'UsageCount', 'Tagihan', 'title', 'charts', 'pendapatan', 'beban', 'surplus', 'pros_pendapatan', 'pros_beban', 'pros_surplus', 'business', 'api'));
     }
 
     public function installations()
@@ -111,21 +111,32 @@ class DashboardController extends Controller
 
     public function tunggakan()
     {
-        $tunggakan = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')
+        $tunggakan = Installations::where('business_id', Session::get('business_id'))
+            ->where('status', 'A')
+            ->whereHas('usage', function (Builder $query) {
+                $query->where('status', 'UNPAID')
+                    ->whereDate('tgl_akhir', '<=', date('Y-m-d'));
+            })
             ->with([
                 'customer',
                 'package',
-            ])->whereHas('usage', function (Builder  $query) {
-                $query->where([
-                    ['status', 'UNPAID'],
-                    ['tgl_akhir', '<=', date('Y-m-d')]
-                ]);
-            }, '>=', '3')->get();
+                'usage' => function ($query) {
+                    $query->where('status', 'UNPAID')
+                        ->whereDate('tgl_akhir', '<=', date('Y-m-d'));
+                }
+            ])
+            ->get();
+
+        $tunggakan->each(function ($item) {
+            $item->jumlah_tunggakan = $item->usage->count();
+        });
 
         return response()->json([
             'tunggakan' => $tunggakan
         ]);
     }
+
+
 
     public function tagihan()
     {
@@ -160,7 +171,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function Cetaktunggakan($id)
+    public function sps($id)
     {
         $keuangan = new Keuangan;
 
@@ -200,6 +211,74 @@ class DashboardController extends Controller
         $data['tunggakan'] = Installations::where('business_id', Session::get('business_id'))
             ->where('status', 'A')
             ->where('id', $id)
+            ->whereHas('usage', function ($query) {
+                $query->where('status', 'UNPAID')
+                    ->whereDate('tgl_akhir', '<=', date('Y-m-d'));
+            }, '>=', 2)
+            ->with([
+                'customer',
+                'settings',
+                'package',
+                'usage' => function ($query) {
+                    $query->where('status', 'UNPAID')
+                        ->whereDate('tgl_akhir', '<=', date('Y-m-d'));
+                }
+            ])
+            ->first();
+
+
+        $data['keuangan'] = $keuangan;
+        $data['title'] = 'Cetak Tunggakan (SPS)';
+
+        return view('Dashboard.partials.sps', $data);
+    }
+
+    public function Cetaktunggakan1($id)
+    {
+        $keuangan = new Keuangan;
+
+        $thn = request()->input('tahun');
+        $bln = request()->input('bulan');
+        $hari = request()->input('hari');
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+
+        $data = [
+            'tahun' => $thn,
+            'bulan' => $bln,
+            'hari' => $hari,
+            'judul' => 'Laporan Keuangan',
+            'tgl' => Tanggal::tahun($tgl),
+            'sub_judul' => 'Tahun ' . Tanggal::tahun($tgl),
+            'cater' => request()->input('cater', null),
+        ];
+
+        if (request()->input('bulanan')) {
+            $data['bulanan'] = true;
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        }
+
+        $data['dir'] = User::where([
+            ['business_id', Session::get('business_id')],
+            ['jabatan', '1']
+        ])->first();
+
+        $data['ket'] = User::where([
+            ['business_id', Session::get('business_id')],
+            ['jabatan', '8']
+        ])->first();
+
+        $data['bisnis'] = Business::where('id', Session::get('business_id'))->first();
+        $data['tunggakan'] = Installations::where('business_id', Session::get('business_id'))
+            ->where('status', 'A')
+            ->where('id', $id)
+            ->whereHas('usage', function ($query) {
+                $query->where([
+                    ['status', 'UNPAID'],
+                    ['tgl_akhir', '<=', date('Y-m-d')],
+                ]);
+            })
             ->with([
                 'customer',
                 'settings',
@@ -207,18 +286,88 @@ class DashboardController extends Controller
                 'usage' => function ($query) {
                     $query->where([
                         ['status', 'UNPAID'],
-                        ['tgl_akhir', '<=', date('Y-m-d')]
-                    ]);
+                        ['tgl_akhir', '<=', date('Y-m-d')],
+                    ])
+                        ->orderBy('tgl_akhir', 'asc')
+                        ->limit(1);
                 }
-            ])->first();
+            ])
+            ->first();
+
 
         $data['keuangan'] = $keuangan;
-        $data['title'] = 'Cetak Tunggakan';
+        $data['title'] = 'Cetak Tunggakan (ST)';
 
-        return view('partialsDashboard.tunggakan', $data);
+        return view('Dashboard.partials.tunggakan1', $data);
     }
 
+    public function Cetaktunggakan2($id)
+    {
+        $keuangan = new Keuangan;
 
+        $thn = request()->input('tahun');
+        $bln = request()->input('bulan');
+        $hari = request()->input('hari');
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+
+        $data = [
+            'tahun' => $thn,
+            'bulan' => $bln,
+            'hari' => $hari,
+            'judul' => 'Laporan Keuangan',
+            'tgl' => Tanggal::tahun($tgl),
+            'sub_judul' => 'Tahun ' . Tanggal::tahun($tgl),
+            'cater' => request()->input('cater', null),
+        ];
+
+        if (request()->input('bulanan')) {
+            $data['bulanan'] = true;
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        }
+
+        $data['dir'] = User::where([
+            ['business_id', Session::get('business_id')],
+            ['jabatan', '1']
+        ])->first();
+
+        $data['ket'] = User::where([
+            ['business_id', Session::get('business_id')],
+            ['jabatan', '8']
+        ])->first();
+
+        $data['bisnis'] = Business::where('id', Session::get('business_id'))->first();
+        $data['tunggakan'] = Installations::where('business_id', Session::get('business_id'))
+            ->where('status', 'A')
+            ->where('id', $id)
+            ->whereHas('usage', function ($query) {
+                $query->where([
+                    ['status', 'UNPAID'],
+                    ['tgl_akhir', '<=', date('Y-m-d')],
+                ]);
+            })
+            ->with([
+                'customer',
+                'settings',
+                'package',
+                'usage' => function ($query) {
+                    $query->where([
+                        ['status', 'UNPAID'],
+                        ['tgl_akhir', '<=', date('Y-m-d')],
+                    ])
+                        ->orderBy('tgl_akhir', 'asc') // ambil tgl_akhir paling awal
+                        ->limit(2); // hanya 1 data
+                }
+            ])
+            ->first();
+
+
+        $data['keuangan'] = $keuangan;
+        $data['title'] = 'Cetak Tunggakan (SP)';
+
+        return view('Dashboard.partials.tunggakan2', $data);
+    }
     private function chart()
     {
         $accounts = Account::where('business_id', Session::get('business_id'))->where(function ($query) {

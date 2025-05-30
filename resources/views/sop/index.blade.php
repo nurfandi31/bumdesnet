@@ -52,6 +52,12 @@
                                             <span class="fa-fw select-all fas"></span>&nbsp; Sistem Tagihan
                                         </dt>
                                     </a>
+                                    <a class="nav-link w-100 text-left" id="logo-tab" data-bs-toggle="pill" href="#logo"
+                                        role="tab" aria-controls="logo" aria-selected="false">
+                                        <dt class="the-icon">
+                                            <span class="fa-fw select-all fas"></span>&nbsp;Logo
+                                        </dt>
+                                    </a>
                                     <a class="nav-link w-100 text-left" id="whasapp-tab" data-bs-toggle="pill"
                                         href="#whasapp" role="tab" aria-controls="whasapp" aria-selected="false">
                                         <dt class="the-icon">
@@ -76,7 +82,14 @@
                                     <div class="tab-pane fade" id="tagihan" role="tabpanel" aria-labelledby="tagihan-tab">
                                         @include('sop.partials.sistem_instal')
                                     </div>
-                                    <div class="tab-pane fade" id="whasapp" role="tabpanel" aria-labelledby="whasapp-tab">
+                                    <div class="tab-pane fade" id="logo" role="tabpanel" aria-labelledby="logo-tab">
+                                        <h5 class="card-title font-weight-bold">
+                                            Upload Logo
+                                        </h5>
+                                        @include('sop.partials.logo')
+                                    </div>
+                                    <div class="tab-pane fade" id="whasapp" role="tabpanel"
+                                        aria-labelledby="whasapp-tab">
                                         <h5 class="card-title font-weight-bold">
                                             Pengaturan Pesan Whatsapp
                                         </h5>
@@ -150,6 +163,47 @@
 @endsection
 
 @section('script')
+    <script>
+        $(document).on('click', '#EditLogo', function(e) {
+            e.preventDefault()
+
+            $('#logo_busines').trigger('click')
+        })
+        $(document).on('change', '#logo_busines', function(e) {
+            e.preventDefault()
+
+            var logo = $(this).get(0).files[0]
+            if (logo) {
+                var form = $('#FormLogo')
+                var formData = new FormData(document.querySelector('#FormLogo'));
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: formData,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(result) {
+                        if (result.success) {
+                            var reader = new FileReader();
+
+                            reader.onload = function() {
+                                $("#previewLogo").attr("src", reader.result);
+                                $(".colored-shadow").css('background-image',
+                                    "url(" + reader.result + ")")
+                            }
+
+                            reader.readAsDataURL(logo);
+                            Toastr('success', result.msg)
+                        } else {
+                            Toastr('error', result.msg)
+                        }
+                    }
+                })
+            }
+        })
+    </script>
+
     <script>
         var toastMixin = Swal.mixin({
             toast: true,

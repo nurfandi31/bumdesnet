@@ -8,6 +8,7 @@
         "php": "^8.1",
         "awobaz/compoships": "^2.4",
         "barryvdh/laravel-dompdf": "^3.1",
+        "barryvdh/laravel-snappy": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",

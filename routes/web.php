@@ -70,7 +70,9 @@ Route::middleware(['auth', 'auth.token'])->group(function () {
     Route::get('/dashboard/usages', [DashboardController::class, 'usages']);
     Route::get('/dashboard/tagihan', [DashboardController::class, 'tagihan']);
     Route::get('/dashboard/tunggakan', [DashboardController::class, 'tunggakan']);
-    Route::get('/dashboard/Cetaktunggakan/{id}', [DashboardController::class, 'Cetaktunggakan']);
+    Route::get('/dashboard/sps/{id}', [DashboardController::class, 'sps']);
+    Route::get('/dashboard/Cetaktunggakan2/{id}', [DashboardController::class, 'Cetaktunggakan2']);
+    Route::get('/dashboard/Cetaktunggakan1/{id}', [DashboardController::class, 'Cetaktunggakan1']);
 
     Route::get('/dataset/{time}', [SystemController::class, 'dataset']);
 
@@ -167,6 +169,7 @@ Route::middleware(['auth', 'auth.token'])->group(function () {
     Route::get('/pengaturan/sop/lembaga', [SopController::class, 'lembaga']);
     Route::get('/pengaturan/sop/sistem_instal', [SopController::class, 'sistem_instal']);
     Route::get('/pengaturan/sop/block_paket', [SopController::class, 'block_paket']);
+    Route::get('/pengaturan/sop/logo/{business}', [SopController::class, 'logo']);
     Route::post('/pengaturan/pesan_whatsapp', [SopController::class, 'pesan']);
     Route::resource('/pengaturan', SopController::class);
 
