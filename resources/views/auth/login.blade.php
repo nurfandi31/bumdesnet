@@ -50,11 +50,11 @@
                                         @csrf
                                         <div class="input-group input-group-outline mb-3">
                                             <label class="form-label">Name</label>
-                                            <input id="username" name="username" class="form-control">
+                                            <input type="text" id="username" name="username" class="form-control">
                                         </div>
                                         <div class="input-group input-group-outline mb-3">
                                             <label class="form-label">Password</label>
-                                            <input name="password" id="password" class="form-control">
+                                            <input type="password" name="password" id="password" class="form-control">
                                         </div>
                                         <div class="text-center">
                                             <button type="submit"
