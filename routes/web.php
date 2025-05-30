@@ -58,8 +58,8 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::get('/link', function () {
-    $target = '/home/akubumdes/public_html/pamsides/storage/app/public';
-    $shortcut = '/home/akubumdes/public_html/pamsides/public/storage';
+    $target = '/home/akubumdes/public_html/bumdesnet/storage/app/public';
+    $shortcut = '/home/akubumdes/public_html/bumdesnet/public/storage';
     symlink($target, $shortcut);
 });
 
