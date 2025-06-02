@@ -20,6 +20,7 @@
     </div>
     <div>&nbsp;</div>
     <form action="/pelaporan/preview" class="needs-validation" novalidate method="GET" id="FormPelaporan" target="_blank">
+        @csrf
 
         <div class="tab-content">
             <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
@@ -111,7 +112,7 @@
                                     &nbsp;
                                 </div>
                             </div>
-                            <div class="col-md-2 mb-0 p-0 pe-3 ps-3 pb-2">
+                            <div class="col-md-2 mb-0 p-0 pe-3 ps-0 pb-2">
                                 <div class="d-grid">
                                     <button id="SimpanSaldo" class="btn btn-danger">
                                         Simpan Saldo

@@ -1,5 +1,5 @@
 @php
-    $logo = Session::get('userlogo');
+    $logo = Session::get('logo');
     if ($logo == 'no_image.png') {
         $logo = '/assets/img/' . $logo;
     } else {

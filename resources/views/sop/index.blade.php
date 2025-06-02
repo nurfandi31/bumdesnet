@@ -165,17 +165,18 @@
 @section('script')
     <script>
         $(document).on('click', '#EditLogo', function(e) {
-            e.preventDefault()
+            e.preventDefault();
+            $('#logo_busines').trigger('click');
+        });
 
-            $('#logo_busines').trigger('click')
-        })
         $(document).on('change', '#logo_busines', function(e) {
-            e.preventDefault()
+            e.preventDefault();
 
-            var logo = $(this).get(0).files[0]
+            var logo = $(this).get(0).files[0];
             if (logo) {
-                var form = $('#FormLogo')
+                var form = $('#FormLogo');
                 var formData = new FormData(document.querySelector('#FormLogo'));
+
                 $.ajax({
                     type: form.attr('method'),
                     url: form.attr('action'),
@@ -189,29 +190,31 @@
 
                             reader.onload = function() {
                                 $("#previewLogo").attr("src", reader.result);
-                                $(".colored-shadow").css('background-image',
-                                    "url(" + reader.result + ")")
+                                $(".colored-shadow").css('background-image', "url(" + reader
+                                    .result + ")");
                             }
 
                             reader.readAsDataURL(logo);
-                            Toastr('success', result.msg)
-                        } else {
-                            Toastr('error', result.msg)
-                        }
-                    }
-                })
-            }
-        })
-    </script>
 
-    <script>
-        var toastMixin = Swal.mixin({
-            toast: true,
-            icon: 'success',
-            position: 'top-right',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
+                            toastMixin.fire({
+                                icon: 'success',
+                                title: result.msg
+                            });
+                        } else {
+                            toastMixin.fire({
+                                icon: 'error',
+                                title: result.msg
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        toastMixin.fire({
+                            icon: 'error',
+                            title: 'Terjadi kesalahan saat mengunggah logo.'
+                        });
+                    }
+                });
+            }
         });
     </script>
     <script>

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Session\Session;
 
 
 class ProfilController extends Controller
@@ -69,18 +70,46 @@ class ProfilController extends Controller
             ]);
         }
 
-        $file = $request->file('profil-image');
-        $nama_file = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('profil', $nama_file);
-
-        $upload = User::where('id', auth()->user()->id)
-            ->update([
-                'foto' => $nama_file,
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User tidak ditemukan atau belum login'
             ]);
+        }
+
+        if ($request->file('profil-image') && $request->file('profil-image')->isValid()) {
+            // Hapus foto lama jika ada dan bukan default
+            if ($user->foto && $user->foto != 'default.png') {
+                Storage::delete('profil/' . $user->foto);
+            }
+
+            $file = $request->file('profil-image');
+            $nama_file = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('profil', $nama_file);
+
+            // Update database menggunakan query builder seperti kamu mau
+            $upload = User::where('id', $user->id)
+                ->update([
+                    'foto' => $nama_file,
+                ]);
+
+            if ($upload) {
+                return response()->json([
+                    'success' => true,
+                    'msg' => 'Gambar berhasil diupload'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'Gagal update data user'
+                ]);
+            }
+        }
 
         return response()->json([
-            'success' => true,
-            'msg' => 'Gambar berhasil diupload'
+            'success' => false,
+            'msg' => 'Upload gambar gagal'
         ]);
     }
 

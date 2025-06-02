@@ -19,7 +19,8 @@
             </div>
         </div>
     </div>
-    <form action="/pengaturan/logo/{{ $business->id }}" method="post" enctype="multipart/form-data" id="FormLogo">
+
+    <form action="/pengaturan/sop/logo/{{ $business->id }}" method="post" enctype="multipart/form-data" id="FormLogo">
         @csrf
         @method('PUT')
         <input type="file" name="logo_busines" id="logo_busines" class="d-none">
