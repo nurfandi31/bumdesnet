@@ -136,8 +136,6 @@ class DashboardController extends Controller
         ]);
     }
 
-
-
     public function tagihan()
     {
         $tgl_akhir = request()->get('tgl_akhir') ?: date('Y-m-d');
@@ -225,8 +223,6 @@ class DashboardController extends Controller
                 }
             ])
             ->first();
-
-
         $data['keuangan'] = $keuangan;
         $data['title'] = 'Cetak Tunggakan (SPS)';
 
@@ -293,8 +289,6 @@ class DashboardController extends Controller
                 }
             ])
             ->first();
-
-
         $data['keuangan'] = $keuangan;
         $data['title'] = 'Cetak Tunggakan (ST)';
 
@@ -361,8 +355,6 @@ class DashboardController extends Controller
                 }
             ])
             ->first();
-
-
         $data['keuangan'] = $keuangan;
         $data['title'] = 'Cetak Tunggakan (SP)';
 

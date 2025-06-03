@@ -217,6 +217,18 @@
             }
         });
     </script>
+
+{{-- 
+    <script>
+        var toastMixin = Swal.mixin({
+            toast: true,
+            icon: 'success',
+            position: 'top-right',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    </script> --}}
     <script>
         //pasang baru
         $("#pasang_baru").maskMoney({

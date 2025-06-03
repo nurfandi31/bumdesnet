@@ -79,9 +79,9 @@
                         <div class="card-body pb-0 pt-2 pe-2 ps-2">
                             <div class="card mb-2">
                                 <div class="card-header py-2 px-2" id="Judul-{{ $usage->id }}">
-                                    <h5 class="mb-0 pb-0 pe-0 pt-0 ps-0 alert alert-light bg-white"
-                                        data-bs-toggle="collapse" data-bs-target="#Body-{{ $usage->id }}"
-                                        aria-expanded="true" aria-controls="Body-{{ $usage->id }}">
+                                    <h5 class="mb-0 pb-0 pe-0 pt-0 ps-0" data-bs-toggle="collapse"
+                                        data-bs-target="#Body-{{ $usage->id }}" aria-expanded="true"
+                                        aria-controls="Body-{{ $usage->id }}">
                                         Tagihan Bulan {{ Tanggal::namaBulan($usage->tgl_akhir) }}
                                         {{ Tanggal::tahun($usage->tgl_akhir) }}
                                     </h5>

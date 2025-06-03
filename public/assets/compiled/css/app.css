@@ -9192,7 +9192,7 @@ fieldset:disabled .btn {
 }
 
 .gap-3 {
-    gap: 1rem !important
+    gap: 5px !important
 }
 
 .gap-4 {
@@ -23078,8 +23078,14 @@ body .bi:before,
 .sidebar-wrapper .sidebar-toggler.x {
     position: absolute;
     right: 1.75rem;
-    top: .25rem;
-    display: none
+    top: 80px;
+    display: none;
+
+}
+
+.sidebar-wrapper .sidebar-toggler.x:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    /* Efek hover */
 }
 
 .sidebar-wrapper .menu {
@@ -24051,10 +24057,11 @@ html[data-bs-theme=dark] .comment-time {
     min-height: 100vh
 }
 
-@media screen and (max-width: 1199px) {
-    #main {
-        margin-left: 0
-    }
+
+
+#main {
+    margin-left: 0
+}
 }
 
 #main.layout-navbar {

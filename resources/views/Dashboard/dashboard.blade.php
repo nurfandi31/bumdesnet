@@ -204,38 +204,37 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalInstalasiLabel">Daftar Instalasi</h5>
+                    <button type="button" class="close btn-modal-close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <ul id="tabs" class="nav nav-pills justify-content-center">
-                                    <li class="nav-item">
-                                        <a href="" data-target="#Permohonan" data-toggle="tab"
-                                            class="nav-link small text-uppercase active">
-                                            Permohonan
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="" data-target="#Pasang" data-toggle="tab"
-                                            class="nav-link small text-uppercase">
-                                            Pasang
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="" data-target="#Aktif" data-toggle="tab"
-                                            class="nav-link small text-uppercase">
-                                            Aktif
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                <div class="modal-body pe-4">
+                    <div class="card">
+                        <div class="card-body p-2">
+                            <ul id="tabs" class="nav nav-pills row mb-3">
+                                <li class="nav-item col-4 text-center">
+                                    <a href="#" data-target="#Permohonan" data-toggle="tab"
+                                        class="nav-link small text-uppercase active w-100">
+                                        Permohonan
+                                    </a>
+                                </li>
+                                <li class="nav-item col-4 text-center">
+                                    <a href="#" data-target="#Pasang" data-toggle="tab"
+                                        class="nav-link small text-uppercase w-100">
+                                        Pasang
+                                    </a>
+                                </li>
+                                <li class="nav-item col-4 text-center">
+                                    <a href="#" data-target="#Aktif" data-toggle="tab"
+                                        class="nav-link small text-uppercase w-100">
+                                        Aktif
+                                    </a>
+                                </li>
+                            </ul>
 
-                        <div id="tabsContent" class="tab-content mt-3">
-                            <div id="Permohonan" class="tab-pane active show fade">
-                                <div class="card">
-                                    <div class="card-body">
+                            <div id="tabsContent" class="tab-content">
+                                <div id="Permohonan" class="tab-pane active show fade">
+                                    <div class="table-responsive">
                                         <table class="table table-flush">
                                             <thead class="thead-light">
                                                 <tr>
@@ -250,10 +249,8 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>
-                            <div id="Pasang" class="tab-pane fade">
-                                <div class="card">
-                                    <div class="card-body">
+                                <div id="Pasang" class="tab-pane fade">
+                                    <div class="table-responsive">
                                         <table class="table table-flush">
                                             <thead class="thead-light">
                                                 <tr>
@@ -268,10 +265,8 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>
-                            <div id="Aktif" class="tab-pane fade">
-                                <div class="card">
-                                    <div class="card-body">
+                                <div id="Aktif" class="tab-pane fade">
+                                    <div class="table-responsive">
                                         <table class="table table-flush">
                                             <thead class="thead-light">
                                                 <tr>
@@ -296,6 +291,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="modal fade" id="ModalPemakaian" tabindex="-1" role="dialog" aria-labelledby="ModalPemakaianLabel"
         aria-modal="false">
@@ -390,8 +386,6 @@
                                         <th>Tagihan</th>
                                     </tr>
                                 </thead>
-
-
                             </table>
                         </div>
                     </div>
