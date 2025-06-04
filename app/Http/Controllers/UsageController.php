@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Yajra\DataTables\DataTables;
 
 class UsageController extends Controller
 {
@@ -64,6 +65,7 @@ class UsageController extends Controller
             ['business_id', Session::get('business_id')],
             ['jabatan', '5']
         ])->get();
+
         $title = 'Data Pemakaian';
         return view('penggunaan.index')->with(compact('title', 'caters'));
     }

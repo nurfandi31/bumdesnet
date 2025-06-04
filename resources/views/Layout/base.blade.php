@@ -134,12 +134,14 @@
             @csrf
         </form>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script script src="/assets/static/js/components/dark.js"></script>
     <script src="/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="/assets/compiled/js/app.js"></script>
-    <script src="/assets/extensions/apexcharts/apexcharts.min.js"></script>
+    {{-- <script src="/assets/extensions/apexcharts/apexcharts.min.js"></script> --}}
     <script src="/assets/static/js/pages/dashboard.js"></script>
     <script src="/assets/extensions/dayjs/dayjs.min.js"></script>
     <script src="/assets/static/js/pages/ui-apexchart.js"></script>
@@ -158,38 +160,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.js"
         integrity="sha512-+UiyfI4KyV1uypmEqz9cOIJNwye+u+S58/hSwKEAeUMViTTqM9/L4lqu8UxJzhmzGpms8PzFJDzEqXL9niHyjA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebarToggle = document.querySelector('.sidebar-toggle');
-            if (sidebarToggle) {
-                sidebarToggle.addEventListener('click', () => {
-                    document.querySelector('.email-app-sidebar')?.classList.toggle('show');
-                });
-            }
-
-            const sidebarClose = document.querySelector('.sidebar-close-icon');
-            if (sidebarClose) {
-                sidebarClose.addEventListener('click', () => {
-                    document.querySelector('.email-app-sidebar')?.classList.remove('show');
-                });
-            }
-
-            const composeBtn = document.querySelector('.compose-btn');
-            if (composeBtn) {
-                composeBtn.addEventListener('click', () => {
-                    document.querySelector('.compose-new-mail-sidebar')?.classList.add('show');
-                });
-            }
-
-            const composeCloseBtn = document.querySelector('.email-compose-new-close-btn');
-            if (composeCloseBtn) {
-                composeCloseBtn.addEventListener('click', () => {
-                    document.querySelector('.compose-new-mail-sidebar')?.classList.remove('show');
-                });
-            }
-        });
-
-    </script>
 
 @if (Session::get('success'))
 <script>

@@ -1,6 +1,31 @@
 @extends('Layout.base')
-
 @section('content')
+    <style>
+        @media (max-width: 576px) {
+
+            /* Untuk layar kecil seperti HP */
+            #bar {
+                height: 300px !important;
+            }
+
+            .card-body {
+                max-height: none !important;
+            }
+        }
+
+        @media (min-width: 577px) {
+
+            /* Untuk layar sedang dan besar (laptop/desktop) */
+            #bar {
+                height: 300px !important;
+            }
+
+            .card-body {
+                max-height: 265px !important;
+            }
+        }
+    </style>
+
     <br>
     <div class="row">
         <div class="col-12 col-lg-12">
@@ -122,77 +147,32 @@
             </div>
             <div class="row">
                 <div class="col-12 col-xl-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Profile Visit</h4>
+                    <div class="card h-70 d-flex flex-column">
+                        <div class="card-header p-3 pb-2 ps-3 pe-2 pt-3">
+                            <h4>Saldo Bulan Ini</h4>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-7">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="bi text-primary" width="32" height="32" fill="blue"
-                                            style="width:10px">
-                                            <use xlink:href="/assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                        </svg>
-                                        <h5 class="mb-0 ms-3">Pendapatan</h5>
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <h5 class="mb-0 text-end">862</h5>
-                                </div>
+                        <div class="card-body flex-grow-1">
+                            <div class="row h-70 align-items-center">
                                 <div class="col-12">
-                                    <div id="chart-europe"></div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-7">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="bi text-success" width="32" height="32" fill="blue"
-                                            style="width:10px">
-                                            <use xlink:href="/assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                        </svg>
-                                        <h5 class="mb-0 ms-3">Beban</h5>
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <h5 class="mb-0 text-end">375</h5>
-                                </div>
-                                <div class="col-12">
-                                    <div id="chart-america"></div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-7">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="bi text-success" width="32" height="32" fill="blue"
-                                            style="width:10px">
-                                            <use xlink:href="/assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                        </svg>
-                                        <h5 class="mb-0 ms-3">Surplus</h5>
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <h5 class="mb-0 text-end">625</h5>
-                                </div>
-                                <div class="col-12">
-                                    <div id="chart-india"></div>
+                                    <canvas id="myChart"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-xl-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Profile Visit</h4>
+                    <div class="card h-70 d-flex flex-column">
+                        <div class="card-header p-3 pb-2 ps-3 pe-2 pt-3">
+                            <h4>Realisasi Pendapatan dan Beban</h4>
                         </div>
-                        <div class="card-body">
-                            <div id="bar"></div>
+                        <div class="card-body flex-grow-1" style="position: relative;">
+                            <div id="bar" style="width: 100%;"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <br>
 @endsection
@@ -208,33 +188,40 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body pe-4">
-                    <div class="card">
-                        <div class="card-body p-2">
-                            <ul id="tabs" class="nav nav-pills row mb-3">
-                                <li class="nav-item col-4 text-center">
-                                    <a href="#" data-target="#Permohonan" data-toggle="tab"
-                                        class="nav-link small text-uppercase active w-100">
-                                        Permohonan
-                                    </a>
-                                </li>
-                                <li class="nav-item col-4 text-center">
-                                    <a href="#" data-target="#Pasang" data-toggle="tab"
-                                        class="nav-link small text-uppercase w-100">
-                                        Pasang
-                                    </a>
-                                </li>
-                                <li class="nav-item col-4 text-center">
-                                    <a href="#" data-target="#Aktif" data-toggle="tab"
-                                        class="nav-link small text-uppercase w-100">
-                                        Aktif
-                                    </a>
-                                </li>
-                            </ul>
-
-                            <div id="tabsContent" class="tab-content">
-                                <div id="Permohonan" class="tab-pane active show fade">
-                                    <div class="table-responsive">
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="card pe-3">
+                            <div class="card-body p-2 pb-3 pt-2 ">
+                                <ul class="nav nav-tabs row pe-2 ps-2" id="myTab" role="tablist">
+                                    <div class="col-12 col-md-4 p-0">
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link active text-center" id="Permohonan-tab"
+                                                data-bs-toggle="tab" href="#Permohonan" role="tab"
+                                                aria-controls="Permohonan" aria-selected="true"><b>Permohonan</b></a>
+                                        </li>
+                                    </div>
+                                    <div class="col-12 col-md-4 p-0">
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link text-center" id="Pasang-tab" data-bs-toggle="tab"
+                                                href="#Pasang" role="tab" aria-controls="Pasang"
+                                                aria-selected="false"><b>Pasang</b></a>
+                                        </li>
+                                    </div>
+                                    <div class="col-12 col-md-4 p-0">
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link text-center" id="Aktif-tab" data-bs-toggle="tab"
+                                                href="#Aktif" role="tab" aria-controls="Aktif"
+                                                aria-selected="false"><b>Aktif</b></a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="Permohonan" role="tabpanel"
+                                aria-labelledby="Permohonan-tab">
+                                <div class="card pe-3">
+                                    <div class="table-responsive pe-3 mb-3 p-3">
                                         <table class="table table-flush">
                                             <thead class="thead-light">
                                                 <tr>
@@ -249,8 +236,10 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div id="Pasang" class="tab-pane fade">
-                                    <div class="table-responsive">
+                            </div>
+                            <div class="tab-pane fade" id="Pasang" role="tabpanel" aria-labelledby="Pasang-tab">
+                                <div class="card pe-3">
+                                    <div class="table-responsive pe-3 mb-3 p-3">
                                         <table class="table table-flush">
                                             <thead class="thead-light">
                                                 <tr>
@@ -265,8 +254,10 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div id="Aktif" class="tab-pane fade">
-                                    <div class="table-responsive">
+                            </div>
+                            <div class="tab-pane fade" id="Aktif" role="tabpanel" aria-labelledby="Aktif-tab">
+                                <div class="card pe-3">
+                                    <div class="table-responsive pe-3 mb-3 p-3">
                                         <table class="table table-flush">
                                             <thead class="thead-light">
                                                 <tr>
@@ -274,7 +265,7 @@
                                                     <th>Customer</th>
                                                     <th>Alamat</th>
                                                     <th>Paket</th>
-                                                    <th>Tanggal Aktif</th>
+                                                    <th>Tanggal Order</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="TableAktif"></tbody>
@@ -286,12 +277,13 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary btn-modal-close">Close</button>
+                    <button type="button" class="btn btn-outline-primary btn-modal-close">
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="ModalPemakaian" tabindex="-1" role="dialog" aria-labelledby="ModalPemakaianLabel"
         aria-modal="false">
@@ -386,6 +378,8 @@
                                         <th>Tagihan</th>
                                     </tr>
                                 </thead>
+
+
                             </table>
                         </div>
                     </div>
@@ -401,60 +395,105 @@
 
 @section('script')
     <script>
-        // var dataChart = JSON.parse(@json($charts));
-        // var myChart = echarts.init(document.getElementById('main'));
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
 
-        option = {
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    label: {
-                        backgroundColor: '#6a7985'
+        const chart = document.getElementById('myChart');
+        new Chart(chart, {
+            type: 'pie',
+            data: {
+                labels: ['Pendapatan', 'Beban', 'Surplus'],
+                datasets: [{
+                    label: 'Saldo Bulan Ini',
+                    data: [
+                        {{ $SaldoPendapatanBulanini }},
+                        {{ $SaldoBebanBulanini }},
+                        {{ $SaldoSurplusBulanini }}
+                    ],
+                    backgroundColor: [
+                        'green',
+                        'red',
+                        'orange'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
                     }
                 }
-            },
-            legend: {
-                data: ['Pendapatan', 'Beban', 'Surplus']
-            },
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            grid: {
-                right: '4%',
-                bottom: '12%',
-                containLabel: false
-            },
-            xAxis: {
-                data: dataChart.nama_bulan
-            },
-            yAxis: [{
-                type: 'value'
-            }],
-            series: [{
-                    name: 'Pendapatan',
-                    data: dataChart.pendapatan,
-                    type: 'line',
-                    areaStyle: {}
-                },
-                {
-                    name: 'Beban',
-                    data: dataChart.beban,
-                    type: 'line',
-                    areaStyle: {}
-                },
-                {
-                    name: 'Surplus',
-                    data: dataChart.surplus,
-                    type: 'line',
-                    areaStyle: {}
-                }
-            ]
-        };
+            }
+        });
+    </script>
+    <script>
+        $(document).on("DOMContentLoaded", function() {
+            var dataChart = JSON.parse(@json($charts));
+            var barChart = echarts.init(document.getElementById('bar'));
 
-        myChart.setOption(option);
+            var option = {
+                redrawOnWindowResize: true,
+                redrawOnParentResize: true,
+                width: '90%',
+                height: '150px',
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['Pendapatan', 'Beban', 'Surplus'],
+                },
+                xAxis: {
+                    type: 'category',
+                    data: dataChart.nama_bulan
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '$ (saldo)',
+                    nameLocation: 'middle',
+                    nameGap: 60
+                },
+                series: [{
+                        name: 'Pendapatan',
+                        type: 'bar',
+                        data: dataChart.pendapatan,
+                        itemStyle: {
+                            color: '#4CAF50'
+                        }
+                    },
+                    {
+                        name: 'Beban',
+                        type: 'bar',
+                        data: dataChart.beban,
+                        itemStyle: {
+                            color: '#E53935'
+                        }
+                    },
+                    {
+                        name: 'Surplus',
+                        type: 'bar',
+                        data: dataChart.surplus,
+                        itemStyle: {
+                            color: '#f5a623'
+                        }
+                    }
+                ]
+            };
+
+            barChart.setOption(option);
+
+            window.addEventListener('resize', function() {
+                barChart.resize();
+            });
+        });
     </script>
 
     <script>
