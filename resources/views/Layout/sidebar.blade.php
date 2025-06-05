@@ -8,9 +8,9 @@
 
     $userlogo = Session::get('userlogo');
     if ($userlogo == 'no_image.png') {
-        $userlogo = '/storage/logo/' . $userlogo;
+        $userlogo = '/assets/img/' . $userlogo;
     } else {
-        $userlogo = '/storage/profil/' . $userlogo;
+        $userlogo = '/storage/app/public/profil' . $userlogo;
     }
 @endphp
 
