@@ -10,7 +10,7 @@
     if ($userlogo == 'no_image.png') {
         $userlogo = '/assets/img/' . $userlogo;
     } else {
-        $userlogo = '/storage/app/public/profil/' . $userlogo;
+        $userlogo = '/storage/profil/' . $userlogo;
     }
 @endphp
 
