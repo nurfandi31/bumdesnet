@@ -173,8 +173,6 @@
             </div>
         </div>
     </div>
-    </div>
-    <br>
 @endsection
 
 @section('modal')

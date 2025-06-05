@@ -9956,7 +9956,7 @@ html[data-bs-theme=dark] .sidebar-wrapper .sidebar-header img {
 html[data-bs-theme=dark] .sidebar-wrapper .sidebar-toggler.x {
     position: absolute;
     right: 1.75rem;
-    top: 80px;
+    top: 10px;
     display: none
 }
 

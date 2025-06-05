@@ -110,6 +110,10 @@
             box-sizing: border-box;
             z-index: 3;
         }
+        #table1 tbody tr:hover {
+        background-color: #cce5ff;
+        transition: background-color 0.2s ease-in-out;
+    }
     </style>
 </head>
 
