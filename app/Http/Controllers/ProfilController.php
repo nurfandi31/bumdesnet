@@ -81,12 +81,12 @@ class ProfilController extends Controller
         if ($request->file('profil-image') && $request->file('profil-image')->isValid()) {
             // Hapus foto lama jika ada dan bukan default
             if ($user->foto && $user->foto != 'default.png') {
-                Storage::delete('profil/' . $user->foto);
+                Storage::delete('public/profil/' . $user->foto);
             }
 
             $file = $request->file('profil-image');
             $nama_file = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('profil', $nama_file);
+            $file->storeAs('public/profil', $nama_file);
 
             // Update database menggunakan query builder seperti kamu mau
             $upload = User::where('id', $user->id)
