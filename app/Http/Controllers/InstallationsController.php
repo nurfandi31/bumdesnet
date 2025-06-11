@@ -852,6 +852,7 @@ class InstallationsController extends Controller
             "aktif",
             "total"
         ]);
+        dd($data);
 
         $rules = [
             'aktif' => 'required',

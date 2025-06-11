@@ -1,10 +1,4 @@
 @extends('Layout.base')
-
-@php
-    $blok = json_decode($tampil_settings->block, true);
-    $jumlah_blok = count($blok);
-@endphp
-
 @section('content')
     <div class="page-title">
         <div class="row">
@@ -26,12 +20,11 @@
     <div class="page-heading">
         <section class="section">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header p-2 pe-3 pb-2 ps-2 pt-3">
                     <div class="col-12 d-flex justify-content-end">
-                        <a href="/packages/create" class="btn btn-primary btn-icon-split" id="SimpanPaket"
-                            style="float: right; margin-left: 10px;">
-                            <span class="text" style="float: right;"><b>Tambah Paket Baru</b></span>
-                        </a>
+                        <button type="button" class="btn btn-primary block btn-create">
+                            Tambah Paket Baru
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -40,29 +33,27 @@
                             <div>&nbsp;</div>
                             <tr>
                                 <th>KELAS</th>
-                                @for ($i = 0; $i < $jumlah_blok; $i++)
-                                    <th>{{ $blok[$i]['nama'] }} .[ {{ $blok[$i]['jarak'] }} ]</th>
-                                @endfor
+                                <th>HARGA</th>
+                                <th>ABODEMEN</th>
+                                <th>DENDA</th>
                                 <th style="text-align: center;">AKSI</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($packages as $paket)
-                                @php
-                                    $harga = json_decode($paket->harga, true);
-                                @endphp
                                 <tr>
                                     <td>{{ $paket->kelas }}</td>
-                                    @for ($i = 0; $i < $jumlah_blok; $i++)
-                                        <td>{{ number_format(isset($harga[$i]) ? $harga[$i] : '0', 2) }}
-                                        </td>
-                                    @endfor
+                                    <td>{{ number_format($paket->harga, 2) }}</td>
+                                    <td>{{ number_format($paket->abodemen, 2) }}</td>
+                                    <td>{{ number_format($paket->denda, 2) }}</td>
                                     <td style="text-align: center; display: flex; gap: 5px; justify-content: center;">
-                                        <a href="/packages/{{ $paket->id }}/edit" class="btn btn-warning btn-sm">
+                                        <a href="#" data-id="{{ $paket->id }}"
+                                            class="btn btn-warning btn-sm btn-edit">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
-                                        <a href="#"
-                                            data-id="{{ $paket->id }}"class="btn-sm btn btn-danger mx-1 Hapus_paket">
+
+                                        <a href="#" data-id="{{ $paket->id }}"
+                                            class="btn-sm btn btn-danger mx-1 Hapus_paket">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </td>
@@ -79,15 +70,96 @@
         @method('DELETE')
         @csrf
     </form>
+
+    @include('paket.modal')
 @endsection
 
 @section('script')
     <script>
+        $("#harga").maskMoney({
+            allowNegative: true
+        });
+        $("#abodemen").maskMoney({
+            allowNegative: true
+        });
+        $("#denda").maskMoney({
+            allowNegative: true
+        });
+
+        $(document).on('click', '#SimpanPaket', function(e) {
+            e.preventDefault();
+            $('small').html('');
+            var form = $('#modalPaket');
+            var actionUrl = form.attr('action');
+            $.ajax({
+                type: 'POST',
+                url: actionUrl,
+                data: form.serialize(),
+                success: function(result) {
+                    if (result.success) {
+                        toastMixin.fire({
+                            title: 'Pembaruhan Kelas & Biaya Berhasil'
+                        });
+
+                        setTimeout(() => {
+                            window.location.href = '/packages/';
+                        }, 1500);
+                    }
+                },
+                error: function(result) {
+                    const response = result.responseJSON;
+                    Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error');
+                    if (response && typeof response === 'object') {
+                        $.each(response, function(key, message) {
+                            $('#' + key)
+                                .closest('.input-group.input-group-static')
+                                .addClass('is-invalid');
+
+                            $('#msg_' + key).html(message);
+                        });
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-create', (e) => {
+            e.preventDefault()
+
+            var form = $('#modalPaket')
+            form[0].reset();
+
+            form.attr('action', '/packages')
+            form.find('input[name="_method"]').val('POST')
+            $('#border-less').modal('toggle')
+        })
+
+        $(document).on('click', '.btn-edit', function(e) {
+            e.preventDefault();
+
+            var id = $(this).data('id');
+            $.get('/packages/' + id + '/edit', function(result) {
+                if (result.success) {
+                    var data = result.data;
+                    var form = $('#modalPaket');
+                    form.attr('action', '/packages/' + id);
+                    form.find('input[name="_method"]').val('PUT');
+
+                    $('#kelas').val(data.kelas);
+                    $('#harga').val(data.harga);
+                    $('#abodemen').val(data.abodemen);
+                    $('#denda').val(data.denda);
+
+                    $('#border-less').modal('show');
+                }
+            });
+        });
+    </script>
+    <script>
         $(document).on('click', '.Hapus_paket', function(e) {
             e.preventDefault();
 
-            var hapus_paket = $(this).attr('data-id'); // Ambil ID yang terkait dengan tombol hapus
-            var actionUrl = '/packages/' + hapus_paket; // URL endpoint untuk proses hapus
+            var hapus_paket = $(this).attr('data-id');
+            var actionUrl = '/packages/' + hapus_paket;
 
             Swal.fire({
                 title: "Apakah Anda yakin?",
@@ -101,7 +173,7 @@
                 if (result.isConfirmed) {
                     var form = $('#FormHapus')
                     $.ajax({
-                        type: form.attr('method'), // Gunakan metode HTTP DELETE
+                        type: form.attr('method'),
                         url: actionUrl,
                         data: form.serialize(),
                         success: function(response) {

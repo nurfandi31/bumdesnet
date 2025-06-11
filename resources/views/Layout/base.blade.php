@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'x' }}</title>
     <link rel="stylesheet" crossorigin href="/assets/compiled/css/app.css">
@@ -19,6 +20,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
         integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+<meta name="csrf-token" content="{{ csrf_token() }}">
         
     <style>
         .tt-menu {
@@ -165,16 +167,24 @@
         integrity="sha512-+UiyfI4KyV1uypmEqz9cOIJNwye+u+S58/hSwKEAeUMViTTqM9/L4lqu8UxJzhmzGpms8PzFJDzEqXL9niHyjA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-@if (Session::get('success'))
-<script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Login Berhasil',
-        text: '{{ Session::get('success') }}',
-    }).then((result) => {
-        window.open('/dataset/{{ time() }}')
-    })
-</script> @endif
+        @if (Session::get('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Berhasil',
+                text: @json(Session::get('success')),
+            }).then((result) => {
+                window.open('/generatepemakaian', '_blank', 'width=500,height=500,top=100,left=100');
+                window.open('/dataset/{{ time() }}', '_blank', 'width=500,height=500,top=100,left=100');
+            });
+        </script> @endif
+         <script>
+             // Tunggu sebentar jika perlu (opsional)
+             setTimeout(function() {
+                 window.close();
+             }, 2000); // Tutup setelah 2 detik
+         </script>
+    
 
     {{-- Logout --}}
     <script>

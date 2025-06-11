@@ -23,6 +23,15 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="/login/assets/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
 
+    <style>
+        @media (max-width: 768px) {
+            .mobile-bg {
+                background-image: url('{{ asset('/login/assets/img/bg-hp.png') }}');
+                background-size: cover;
+                background-position: center;
+            }
+        }
+    </style>
 
 </head>
 
@@ -38,34 +47,40 @@
                                 style="background-image: url('/login/assets/img/illustration.png'); background-size: cover;">
                             </div>
                         </div>
-                        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
-                            <div class="card card-plain">
-                                <div class="card-header">
-                                    <h3 class="font-weight-bolder" align="center">Log in {{ $business->nama }}</h3>
-                                    <p class="mb-0">Enter your email and password to register</p>
-                                </div>
-                                <div class="card-body">
-                                    <form class="login100-form validate-form user" action="{{ route('auth') }}"
-                                        method="POST">
-                                        @csrf
-                                        <div class="input-group input-group-outline mb-3">
-                                            <label class="form-label">Name</label>
-                                            <input type="text" id="username" name="username" class="form-control">
+                        <div class="min-vh-100 d-flex align-items-center justify-content-center mobile-bg">
+                            <div
+                                class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+                                <div class="card card-plain">
+                                    <div class="card-header rounded-top rounded-bottom">
+                                        <h3 class="font-weight-bolder text-center">Log in {{ $business->nama }}</h3>
+                                        <p class="mb-0">Enter your email and password to register</p>
+                                        <div class="card-body">
+                                            <form class="login100-form validate-form user" action="{{ route('auth') }}"
+                                                method="POST">
+                                                @csrf
+                                                <div class="input-group input-group-outline mb-3">
+                                                    <label class="form-label">Name</label>
+                                                    <input type="text" id="username" name="username"
+                                                        class="form-control">
+                                                </div>
+                                                <div class="input-group input-group-outline mb-3">
+                                                    <label class="form-label">Password</label>
+                                                    <input type="password" name="password" id="password"
+                                                        class="form-control">
+                                                </div>
+                                                <div class="text-center">
+                                                    <button type="submit"
+                                                        class="btn btn-lg bg-gradient-dark btn-lg w-100 mt-4 mb-0">Sign
+                                                        Up</button>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="input-group input-group-outline mb-3">
-                                            <label class="form-label">Password</label>
-                                            <input type="password" name="password" id="password" class="form-control">
+                                        <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                                            <p class="mb-2 text-sm mx-auto">
+                                                © 2025 PT. Asta Brata Teknologi — 0001
+                                            </p>
                                         </div>
-                                        <div class="text-center">
-                                            <button type="submit"
-                                                class="btn btn-lg bg-gradient-dark btn-lg w-100 mt-4 mb-0">Sign
-                                                Up</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                                    <p class="mb-2 text-sm mx-auto">
-                                        © 2025 PT. Asta Brata Teknologi — 0001</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

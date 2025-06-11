@@ -27,12 +27,10 @@ class PackageController extends Controller
     public function index()
     {
         $business_id = Session::get('business_id');
-        $pengaturan = Settings::where('business_id', $business_id);
         $packages = Package::where('business_id', Session::get('business_id'))->get();
 
-        $tampil_settings = $pengaturan->first();
         $title = 'Data Paket';
-        return view('paket.index')->with(compact('title', 'packages', 'tampil_settings'));
+        return view('paket.index')->with(compact('title', 'packages'));
     }
 
     /**
@@ -41,12 +39,10 @@ class PackageController extends Controller
     public function create()
     {
         $business_id = Session::get('business_id');
-        $pengaturan = Settings::where('business_id', $business_id);
         $package = Package::where('business_id', Session::get('business_id'))->get();
 
-        $tampil_settings = $pengaturan->first();
         $title = 'Register Paket';
-        return view('paket.create')->with(compact('package', 'title', 'tampil_settings'));
+        return view('paket.modal')->with(compact('package', 'title'));
     }
 
     /**
@@ -56,36 +52,39 @@ class PackageController extends Controller
     {
         $data = $request->only([
             "kelas",
-            "blok",
+            "harga",
             "abodemen",
             "denda"
         ]);
         $rules = [
             'kelas' => 'required'
         ];
-        $validate = Validator::make($data, $rules);
 
+        $data['harga'] = str_replace(',', '', $data['harga']);
+        $data['harga'] = str_replace('.00', '', $data['harga']);
+        $data['harga'] = floatval($data['harga']);
+        $data['abodemen'] = str_replace(',', '', $data['abodemen']);
+        $data['abodemen'] = str_replace('.00', '', $data['abodemen']);
+        $data['abodemen'] = floatval($data['abodemen']);
+        $data['denda'] = str_replace(',', '', $data['denda']);
+        $data['denda'] = str_replace('.00', '', $data['denda']);
+        $data['denda'] = floatval($data['denda']);
+
+        $harga      = $data['harga'];
+        $abodemen   =  $data['abodemen'];
+        $denda      = $data['denda'];
+
+        $validate = Validator::make($data, $rules);
         if ($validate->fails()) {
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
-        $no = 0;
-        $blok = [];
-        foreach ($data['blok'] as $b) {
-            $data['_blok'] = str_replace(',', '', $b);
-            $data['_blok'] = str_replace('.00', '', $data['_blok']);
-            $data['_blok'] = floatval($data['_blok']);
-
-            $blok[$no] = $data['_blok'];
-            $no++;
-        }
-        //catatan : data yang kesimpen di tb paket coloum abodemen hanya berfungsi untuk menampilkan default saat register instalasi
         $Package = Package::create([
             'business_id'   => Session::get('business_id'),
             'kelas'         => $request->kelas,
-            'denda'         => $request->denda,
-            'abodemen'      => $request->abodemen,
-            'harga'         => json_encode($blok)
+            'denda'         => $denda,
+            'abodemen'      => $abodemen,
+            'harga'         => $harga
         ]);
 
         return response()->json([
@@ -93,50 +92,6 @@ class PackageController extends Controller
             'msg' => 'Paket berhasil disimpan',
             'simpanpackage' => $Package
         ]);
-    }
-
-    public function block_paket()
-    {
-        $business_id = Session::get('business_id');
-        $pengaturan = Settings::where('business_id', $business_id);
-
-        if (request()->ajax()) {
-
-            $nama = request()->get('nama');
-            $jarak = request()->get('jarak');
-
-            $blok = [];
-            for ($i = 0; $i < count($nama); $i++) {
-                if ($nama[$i] == '' or $jarak[$i] == '') {
-                    continue;
-                }
-
-                $blok[] = [
-                    "nama" => $nama[$i],
-                    "jarak" => $jarak[$i]
-                ];
-            }
-
-            if ($pengaturan->count() > 0) {
-                $Settings = $pengaturan->update([
-                    'block' => json_encode($blok),
-                ]);
-            } else {
-                $Settings = Settings::create([
-                    'business_id' => $business_id,
-                    'block' => json_encode($blok),
-                ]);
-            }
-
-            return response()->json([
-                'success' => true,
-                'simpanpblock' => $Settings
-            ]);
-        }
-
-        $tampil_settings = $pengaturan->first();
-        $title = 'Sop';
-        return view('paket.block_paket')->with(compact('title', 'tampil_settings'));
     }
 
     /**
@@ -150,16 +105,17 @@ class PackageController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Package $package)
+    public function edit($id)
     {
-        $business_id = Session::get('business_id');
-        $pengaturan = Settings::where('business_id', $business_id);
-        $paket = Package::where('business_id', Session::get('business_id'))->get();
+        $paket = Package::find($id);
 
-        $tampil_settings = $pengaturan->first();
-        $title = 'Edit Paket';
-        return view('paket.edit')->with(compact('title', 'package', 'tampil_settings'));
+        if (!$paket) {
+            return response()->json(['success' => false, 'message' => 'Paket tidak ditemukan']);
+        }
+
+        return response()->json(['success' => true, 'data' => $paket]);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -168,7 +124,7 @@ class PackageController extends Controller
     {
         $data = $request->only([
             "kelas",
-            "blok",
+            "harga",
             "abodemen",
             "denda"
         ]);
@@ -180,24 +136,26 @@ class PackageController extends Controller
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
-        $no = 0;
-        $blok = [];
-        foreach ($data['blok'] as $b) {
-            $data['_blok'] = str_replace(',', '', $b);
-            $data['_blok'] = str_replace('.00', '', $data['_blok']);
-            $data['_blok'] = floatval($data['_blok']);
+        $data['harga'] = str_replace(',', '', $data['harga']);
+        $data['harga'] = str_replace('.00', '', $data['harga']);
+        $data['harga'] = floatval($data['harga']);
+        $data['abodemen'] = str_replace(',', '', $data['abodemen']);
+        $data['abodemen'] = str_replace('.00', '', $data['abodemen']);
+        $data['abodemen'] = floatval($data['abodemen']);
+        $data['denda'] = str_replace(',', '', $data['denda']);
+        $data['denda'] = str_replace('.00', '', $data['denda']);
+        $data['denda'] = floatval($data['denda']);
 
-            $blok[$no] = $data['_blok'];
-            $no++;
-        }
-
+        $harga      = $data['harga'];
+        $abodemen   =  $data['abodemen'];
+        $denda      = $data['denda'];
         // Update data 
         $update = Package::where('id', $package->id)->update([
             'business_id'   => Session::get('business_id'),
             'kelas'         => $request->kelas,
-            'abodemen'      => $request->abodemen,
-            'denda'         => $request->denda,
-            'harga'         => $blok
+            'abodemen'      => $abodemen,
+            'denda'         => $denda,
+            'harga'         => $harga
         ]);
         return response()->json([
             'success' => true,

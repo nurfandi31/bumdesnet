@@ -91,6 +91,7 @@ class AuthController extends Controller
                 'nama' => $user->nama,
                 'jabatan' => $user->jabatan,
                 'userlogo' => $user->foto,
+                'userID' => $user->id,
                 'logo' => $business->logo,
                 'business_id' => $business->id,
                 'is_auth' => true,

@@ -338,52 +338,26 @@ class SopController extends Controller
 
         if (request()->ajax()) {
             $data['batas_tagihan'] = request()->get('batas_tagihan');
-            $data['abodemen'] = request()->get('abodemen');
-            $data['denda']  = request()->get('denda');
-            $data['biaya_aktivasi'] = request()->get('biaya_aktivasi');
-
+            $data['tanggal_toleransi'] = request()->get('tanggal_toleransi');
             $validate = Validator::make($data, [
-                'batas_tagihan' => 'required',
-                'abodemen'      => 'required',
-                'denda'         => 'required',
-                'biaya_aktivasi' => 'required',
+                'batas_tagihan'          => 'required',
+                'tanggal_toleransi'      => 'required',
             ]);
 
             if ($validate->fails()) {
                 return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
             }
 
-            $data['abodemen'] = str_replace(',', '', $data['abodemen']);
-            $data['abodemen'] = str_replace('.00', '', $data['abodemen']);
-            $data['abodemen'] = floatval($data['abodemen']);
-
-            $data['denda'] = str_replace(',', '', $data['denda']);
-            $data['denda'] = str_replace('.00', '', $data['denda']);
-            $data['denda'] = floatval($data['denda']);
-
-            $data['biaya_aktivasi'] = str_replace(',', '', $data['biaya_aktivasi']);
-            $data['biaya_aktivasi'] = str_replace('.00', '', $data['biaya_aktivasi']);
-            $data['biaya_aktivasi'] = floatval($data['biaya_aktivasi']);
-
-            $abodemen = $data['abodemen'];
-            $denda = $data['denda'];
-            $biaya_aktivasi = $data['biaya_aktivasi'];
-
-
             if ($pengaturan->count() > 0) {
                 $Settings = $pengaturan->update([
-                    'batas_tagihan' => $data['batas_tagihan'],
-                    'abodemen'      => $abodemen,
-                    'denda'         => $denda,
-                    'biaya_aktivasi' => $biaya_aktivasi,
+                    'batas_tagihan'             => $data['batas_tagihan'],
+                    'tanggal_toleransi'         => $data['tanggal_toleransi'],
                 ]);
             } else {
                 $Settings = Settings::create([
-                    'business_id'   => $business_id,
-                    'batas_tagihan' => $data['batas_tagihan'],
-                    'abodemen'      => $abodemen,
-                    'denda'         => $denda,
-                    'biaya_aktivasi' => $biaya_aktivasi,
+                    'business_id'           => $business_id,
+                    'batas_tagihan'         => $data['batas_tagihan'],
+                    'tanggal_toleransi'     => $data['tanggal_toleransi'],
                 ]);
             }
 

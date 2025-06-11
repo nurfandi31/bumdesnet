@@ -116,6 +116,7 @@ Route::middleware(['auth', 'auth.token'])->group(function () {
     Route::resource('/packages', PackageController::class);
 
     // Usages || Penggunaan
+    Route::get('/generatepemakaian', [UsageController::class, 'generatePemakaian']);
     Route::get('/usages/cari_anggota', [UsageController::class, 'carianggota']);
     Route::get('/usages/detail_tagihan/', [UsageController::class, 'detailTagihan']);
     Route::get('/usages/barcode/', [UsageController::class, 'barcode']);

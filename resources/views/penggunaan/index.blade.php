@@ -58,6 +58,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-0 p-0 pe-3 ps-3 pb-2">
+                                    &nbsp;
+                                </div>
+                                <div class="col-md-3 mb-0 p-0 pe-3 ps-3 pb-2">
                                     <div class="d-grid">
                                         <label for="">&nbsp;</label>
                                         @if (auth()->user()->jabatan == 1)
@@ -65,15 +68,6 @@
                                                 Cetak Tagihan
                                             </button>
                                         @endif
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-0 p-0 pe-3 ps-3 pb-2">
-                                    <div class="d-grid">
-                                        <label for="">&nbsp;</label>
-                                        <button class="btn btn-warning text-white" id="Registerpemakaian"
-                                            @if (Session::get('jabatan') == 6) disabled @endif>
-                                            Input Data Pemakaian
-                                        </button>
                                     </div>
                                 </div>
                             </div>

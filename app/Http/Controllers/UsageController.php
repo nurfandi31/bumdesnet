@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Business;
 use App\Models\Customer;
 use App\Models\Installations;
+use App\Models\Package;
 use App\Models\Settings;
 use App\Models\Usage;
 use App\Models\User;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class UsageController extends Controller
 {
@@ -73,6 +75,11 @@ class UsageController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function barcode(Usage $usage)
+    {
+        $title = '';
+        return view('penggunaan.barcode')->with(compact('title'));
+    }
     public function create()
     {
         $settings = Settings::where('business_id', Session::get('business_id'))->first();
@@ -88,87 +95,67 @@ class UsageController extends Controller
         $title = 'Register Pemakaian';
         return view('penggunaan.create')->with(compact('customer', 'settings', 'pilih_customer', 'caters', 'title', 'usages'));
     }
-    public function barcode(Usage $usage)
+
+    public function generatePemakaian()
     {
-        $title = '';
-        return view('penggunaan.barcode')->with(compact('title'));
+        $instalasi = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')->with([
+            'oneUsage',
+            'package',
+            'settings'
+        ])->get();
+
+        $harga = 0;
+        $usages = [];
+        foreach ($instalasi as $instal) {
+            $usage_berjalan = $instal->oneUsage;
+
+            $tanggal_awal = date('Y-m-d');
+            if ($usage_berjalan) {
+                $tanggal_awal = date('Y-m') . '-01';
+
+                $bulan_pemakaian = date('Y-m', strtotime($usage_berjalan->tgl_pemakaian));
+                if ($bulan_pemakaian == date('Y-m')) {
+                    $usage[] = $usage_berjalan;
+                    continue;
+                }
+            }
+
+            $tanggal_akhir = date('Y-m-t');
+            $jumlah_hari_pemakaian = date_diff(date_create($tanggal_akhir), date_create($tanggal_awal))->days;
+            $jumlah_hari_bulan_ini = date('t');
+            $jumlah_rasio = round($jumlah_hari_pemakaian / $jumlah_hari_bulan_ini, 2);
+
+            $harga = $instal->package->harga;
+
+            $new_usage = Usage::create([
+                'business_id'    => Session::get('business_id'),
+                'id_instalasi'   => $instal->id,
+                'kode_instalasi' => $instal->kode_instalasi,
+                'tgl_pemakaian'  => $tanggal_awal,
+                'tgl_akhir'      => $tanggal_akhir,
+                'awal'           => date('d', strtotime($tanggal_awal)),
+                'akhir'          => date('d', strtotime($tanggal_akhir)),
+                'jumlah'         => $jumlah_rasio,
+                'cater'          => Session::get('userID'),
+                'nominal'        => $jumlah_rasio * $harga,
+                'customer'       => $instal->customer_id,
+                'created_at'     => now(),
+            ]);
+
+            $usages[] = $new_usage;
+        }
+        echo '<script>window.close()</script>';
+        exit;
     }
+
     public function store(Request $request)
     {
-        $data = $request->only('data')['data'];
-        $installation = Installations::where([
-            ['business_id', Session::get('business_id')],
-            ['id', $data['id']]
-        ])->with('package', 'customer')->first();
-        $setting = Settings::where('business_id', Session::get('business_id'))->first();
-
-        $harga = json_decode($installation->package->harga, true);
-
-        $result = [];
-        $block = json_decode($setting->block, true);
-        foreach ($block as $index => $item) {
-            preg_match_all('/\d+/', $item['jarak'], $matches);
-            $start = (int)$matches[0][0];
-            $end = (isset($matches[0][1])) ? $matches[0][1] : 200;
-
-            for ($i = $start; $i <= $end; $i++) {
-                $result[$i] = $index;
-            }
-        }
-
-        $tglPakai = Tanggal::tglNasional($data['tgl_pemakaian']);
-        $tglAkhir = date('Y-m', strtotime('+1 month', strtotime($tglPakai))) . '-' . str_pad($data['toleransi'], 2, '0', STR_PAD_LEFT);
-        $index_harga = (isset($result[$data['jumlah']])) ? $result[$data['jumlah']] : end($result);
-
-        $insert = [
-            'business_id' => Session::get('business_id'),
-            'tgl_pemakaian' => Tanggal::tglNasional($data['tgl_pemakaian']),
-            'customer' => $data['customer'],
-            'awal' => $data['awal'],
-            'akhir' => $data['akhir'],
-            'jumlah' => $data['jumlah'],
-            'id_instalasi' => $data['id'],
-            'tgl_akhir' => $tglAkhir,
-            'nominal' => $harga[$index_harga] * $data['jumlah'],
-            'cater' =>  $data['id_cater'],
-            'user_id' => auth()->user()->id,
-        ];
-
-        // Simpan data
-        $usage = Usage::create($insert);
-
-        return response()->json([
-            'success' => true,
-            'msg' => 'Input Pemakain Berhasil ',
-            'pemakaian' => $usage
-        ]);
+        //simpan data
     }
 
     /**
      * Display the specified resource.
      */
-    public function carianggota(Request $request)
-    {
-        $query = $request->input('query');
-
-        $customer = Customer::where('business_id', Session::get('business_id'))->join('installations', 'customers.id', 'installations.customer_id')
-            ->where('customers.nama', 'LIKE', '%' . $query . '%')
-            ->orwhere('installations.kode_instalasi', 'LIKE', '%' . $query . '%')->get();
-
-        $data_customer = [];
-        foreach ($customer as $cus) {
-            $usage = Usage::where('business_id', Session::get('business_id'))->where('id_instalasi', $cus->id)->orderBy('created_at', 'DESC')->first();
-
-            $data_customer[] = [
-                'customer' => $cus,
-                'usage' => $usage
-            ];
-        }
-
-
-        return response()->json($data_customer);
-    }
-
 
     public function detailTagihan()
     {
