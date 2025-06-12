@@ -1,6 +1,6 @@
 <div class="modal fade text-left modal-borderless" id="border-less" tabindex="-1" role="dialog"
     aria-labelledby="myModalLabel1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-dialog " role="document">
         <form action="/packages" method="post" id="modalPaket">
             @csrf
 
@@ -55,7 +55,7 @@
                 <div class="modal-footer  p-2 pe-2 pb-2 pt-2 ps-2">
                     <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
+                        <span class="d-none d-sm-block">Kembali</span>
                     </button>
                     <button class="btn btn-secondary btn-icon-split" type="submit" id="SimpanPaket"
                         class="btn btn-dark" style="float: right; margin-left: 10px;">

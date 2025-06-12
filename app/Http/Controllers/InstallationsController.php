@@ -848,56 +848,40 @@ class InstallationsController extends Controller
     private function updateA($request, $installation)
     {
         $data = $request->only([
+            "id",
             "pasang_baru",
-            "aktif",
-            "total"
+            "tgl_akhir",
         ]);
-        dd($data);
 
         $rules = [
-            'aktif' => 'required',
+            'tgl_akhir' => 'required',
         ];
         $validate = Validator::make($data, $rules);
         if ($validate->fails()) {
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
-        $data['pasang_baru'] = str_replace(',', '', $data['pasang_baru']);
-        $data['pasang_baru'] = str_replace('.00', '', $data['pasang_baru']);
-        $data['pasang_baru'] = floatval($data['pasang_baru']);
+        $lastUsage = usage::where('id_instalasi', $installation->id)->first();
+        $package   = Package::where('id', $installation->package_id)->first();
+        $jumlah_hari_bulan_ini = date('t');
+        $tgl_akhir = date('m', strtotime($request->tgl_akhir));
+        $harga = $package->harga;
 
-        $data['total'] = str_replace(',', '', $data['total']);
-        $data['total'] = str_replace('.00', '', $data['total']);
-        $data['total'] = floatval($data['total']);
+        $jumlah_rasio = $tgl_akhir / $jumlah_hari_bulan_ini;
+        $nominal = $harga * $jumlah_rasio;
 
-        $pasang_baru        = $data['pasang_baru'];
-        $biaya_instalasi = $data['total'];
-
-        $biaya_instal = $pasang_baru - $biaya_instalasi;
-
-        $status = '0';
-        $jumlah = $biaya_instal;
-        if ($jumlah <= 0) {
-            $status = 'A';
-        }
-        // INSTALLATION
-        $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $installation->id)->update([
-            'business_id' => Session::get('business_id'),
-            'aktif' => Tanggal::tglNasional($request->aktif),
-            'status' => 'A',
+        $Usages = usage::where('business_id', Session::get('business_id'))->where('id', $lastUsage->id)->update([
+            'business_id'    => Session::get('business_id'),
+            'akhir'          => date('m', strtotime($request->tgl_akhir)),
+            'jumlah'         => $jumlah_rasio,
+            'nominal'        => $nominal,
+            'tgl_akhir'      => Tanggal::tglNasional($request->tgl_akhir),
         ]);
 
-        // TRANSACTION TIDAK BOLEH NYICIL
-        $jumlah_instal = ($biaya_instal >= 0) ? $biaya_instalasi : $pasang_baru;
-        $persen = 100 - ($jumlah / $pasang_baru * 100);
-        $transaksi = Transaction::create([
+        $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $installation->id)->update([
             'business_id' => Session::get('business_id'),
-            'rekening_debit' => '1',
-            'rekening_kredit' => '59',
-            'tgl_transaksi' => Tanggal::tglNasional($request->aktif),
-            'total' => $jumlah_instal,
-            'installation_id' => $installation->id,
-            'keterangan' => 'Biaya Pemakaian 1 bulan kedepan ' . $persen . '%',
+            'cabut' => Tanggal::tglNasional($request->tgl_akhir),
+            'status' => 'C',
         ]);
 
         return response()->json([

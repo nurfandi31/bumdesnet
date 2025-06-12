@@ -178,12 +178,11 @@
                 window.open('/dataset/{{ time() }}', '_blank', 'width=500,height=500,top=100,left=100');
             });
         </script> @endif
-         <script>
-             // Tunggu sebentar jika perlu (opsional)
-             setTimeout(function() {
-                 window.close();
-             }, 2000); // Tutup setelah 2 detik
-         </script>
+        <script>
+            setTimeout(function() {
+                window.close();
+            }, 2000);
+        </script>
     
 
     {{-- Logout --}}

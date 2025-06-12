@@ -7,6 +7,7 @@
         @method('PUT')
         <input type="text" name="status" id="status" value="{{ $installation->status }}" hidden>
         <input type="text" value="{{ number_format($tampil_settings->pasang_baru, 2) }}" name="pasang_baru" hidden>
+        <input type="hidden" name="id" value="{{ $installation->id }}" id="id">
         <div class="page-heading">
             <br>
             <section class="section">
@@ -119,18 +120,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card ">
-                            <div class="card-content ">
+                        <div class="card">
+                            <div class="card-content">
                                 <div class="card-body pb-2 pt-2 pe-2 ps-2">
-                                    <div class="col-12 d-flex justify-content-end align-items-center gap-2">
-                                        <a href="/installations/aktif" class="btn btn-light btn-icon-split"
-                                            style="float: right; margin-left: 10px;">
+                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <button type="button" id="btnCabut" class="btn btn-warning text-white">Cabut
+                                            Pemakaian</button>
+                                        <a href="/installations/aktif" class="btn btn-light btn-icon-split">
                                             <span class="text">Kembali</span>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </section>
@@ -138,6 +141,49 @@
     </form>
 @endsection
 @section('script')
+    <script>
+        $(document).on('click', '#btnCabut', function(e) {
+            e.preventDefault();
+
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('de-DE').replace(/\./g, '/');
+
+            Swal.fire({
+                title: 'Hentikan layanan ini?',
+                html: `
+                <p style="text-align: justify;">Setelah proses Cabut dilakukan,
+                data akan dipindahkan ke status <b>Cabut</b> dan seluruh aktivitas pemakaian dihentikan pada tanggal yang ditentukan.</p>
+                <label>Tentukan Tanggal Akhir Pemakaian:</label>
+                <input type="text" id="tgl_akhir" class="form-control date" required value="${formattedDate}">
+                <hr class="mb-0">
+            `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, cabut!',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                didOpen: () => {
+                    $('#tgl_akhir').datetimepicker({
+                        locale: 'de',
+                        timepicker: false,
+                        format: 'd/m/Y',
+                        defaultDate: today
+                    });
+                },
+                preConfirm: () => $('#tgl_akhir').val()
+            }).then(result => {
+                if (result.isConfirmed) {
+                    $('<input>', {
+                        type: 'hidden',
+                        name: 'tgl_akhir',
+                        value: result.value
+                    }).appendTo('#Form_status_A');
+                    $('#Form_status_A').submit();
+                }
+            });
+        });
+    </script>
     <script>
         $(document).on('click', '#cetakBrcode', function(e) {
             e.preventDefault();
