@@ -142,49 +142,6 @@
 @endsection
 @section('script')
     <script>
-        $(document).on('click', '#btnCabut', function(e) {
-            e.preventDefault();
-
-            const today = new Date();
-            const formattedDate = today.toLocaleDateString('de-DE').replace(/\./g, '/');
-
-            Swal.fire({
-                title: 'Hentikan layanan ini?',
-                html: `
-                <p style="text-align: justify;">Setelah proses Cabut dilakukan,
-                data akan dipindahkan ke status <b>Cabut</b> dan seluruh aktivitas pemakaian dihentikan pada tanggal yang ditentukan.</p>
-                <label>Tentukan Tanggal Akhir Pemakaian:</label>
-                <input type="text" id="tgl_akhir" class="form-control date" required value="${formattedDate}">
-                <hr class="mb-0">
-            `,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, cabut!',
-                cancelButtonText: 'Batal',
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                didOpen: () => {
-                    $('#tgl_akhir').datetimepicker({
-                        locale: 'de',
-                        timepicker: false,
-                        format: 'd/m/Y',
-                        defaultDate: today
-                    });
-                },
-                preConfirm: () => $('#tgl_akhir').val()
-            }).then(result => {
-                if (result.isConfirmed) {
-                    $('<input>', {
-                        type: 'hidden',
-                        name: 'tgl_akhir',
-                        value: result.value
-                    }).appendTo('#Form_status_A');
-                    $('#Form_status_A').submit();
-                }
-            });
-        });
-    </script>
-    <script>
         $(document).on('click', '#cetakBrcode', function(e) {
             e.preventDefault();
             window.open('/installations/cetak/{{ $installation->id }}', '_blank');
@@ -212,46 +169,64 @@
             timepicker: false,
             format: 'd/m/Y'
         });
+    </script>
+    <script>
+        const toast = Swal.mixin({
+            toast: true,
+            icon: 'success',
+            position: 'top-right',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
 
-        $(document).on('click', '#Simpan_status_A', function(e) {
+        $(document).on('click', '#btnCabut', function(e) {
             e.preventDefault();
-            $('small').html('');
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('de-DE').replace(/\./g, '/');
 
-            var form = $('#Form_status_A');
-            var actionUrl = form.attr('action');
-
-            $.ajax({
-                type: 'POST',
-                url: actionUrl,
-                data: form.serialize(),
-                success: function(result) {
-                    if (result.success) {
-                        Swal.fire({
-                            title: result.msg,
-                            icon: "success",
-                            draggable: true
-                        }).then((res) => {
-                            if (res.isConfirmed) {
-                                window.location.href = '/installations/' + result.Pasang.id;
-                            }
-                        });
-                    }
+            Swal.fire({
+                title: 'Hentikan layanan ini?',
+                html: `
+                    <p style="text-align: justify;">
+                        Setelah proses Cabut dilakukan, data akan dipindahkan ke status <b>Cabut</b> dan seluruh aktivitas pemakaian dihentikan.
+                    </p>
+                    <label>Tentukan Tanggal Akhir Pemakaian:</label>
+                    <input type="text" id="tgl_akhir" class="form-control date" value="${formattedDate}">
+                    <hr class="mb-0">`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, cabut!',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                didOpen: () => {
+                    $('#tgl_akhir').datetimepicker({
+                        locale: 'de',
+                        timepicker: false,
+                        format: 'd/m/Y',
+                        defaultDate: today
+                    });
                 },
-                error: function(result) {
-                    const response = result.responseJSON;
-
-                    Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error');
-
-                    if (response && typeof response === 'object') {
-                        $.each(response, function(key, message) {
-                            $('#' + key)
-                                .closest('.input-group.input-group-static')
-                                .addClass('is-invalid');
-
-                            $('#msg_' + key).html(message);
+                preConfirm: () => $('#tgl_akhir').val()
+            }).then(res => {
+                if (!res.isConfirmed) return;
+                const formData = $('#Form_status_A').serialize() + '&tgl_akhir=' + encodeURIComponent(res
+                    .value);
+                $.post($('#Form_status_A').attr('action'), formData, function(result) {
+                    if (result.success) {
+                        toast.fire({
+                            title: result.msg
                         });
+                        setTimeout(() => {
+                            window.location.href = '/installations/' + result.aktif.id;
+                        }, 1500);
+                    } else {
+                        Swal.fire('Gagal!', 'Terjadi kesalahan saat menyimpan data.', 'error');
                     }
-                }
+                }).fail(() => {
+                    Swal.fire('Gagal!', 'Terjadi kesalahan saat menghubungi server.', 'error');
+                });
             });
         });
     </script>

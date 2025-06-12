@@ -886,7 +886,7 @@ class InstallationsController extends Controller
 
         return response()->json([
             'success' => true,
-            'msg' => 'Daftar & Pemakaian awal berhasil disimpan',
+            'msg' => 'Pencabutan Custommer Berhasil',
             'aktif' => $installation
         ]);
     }

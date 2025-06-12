@@ -136,47 +136,5 @@
             timepicker: false,
             format: 'd/m/Y'
         });
-
-        $(document).on('click', '#Simpan_status_C', function(e) {
-            e.preventDefault();
-            $('small').html('');
-
-            var form = $('#Form_status_C');
-            var actionUrl = form.attr('action');
-
-            $.ajax({
-                type: 'POST',
-                url: actionUrl,
-                data: form.serialize(),
-                success: function(result) {
-                    if (result.success) {
-                        Swal.fire({
-                            title: result.msg,
-                            icon: "success",
-                            draggable: true
-                        }).then((res) => {
-                            if (res.isConfirmed) {
-                                window.location.href = '/installations/' + result.Pasang.id;
-                            }
-                        });
-                    }
-                },
-                error: function(result) {
-                    const response = result.responseJSON;
-
-                    Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error');
-
-                    if (response && typeof response === 'object') {
-                        $.each(response, function(key, message) {
-                            $('#' + key)
-                                .closest('.input-group.input-group-static')
-                                .addClass('is-invalid');
-
-                            $('#msg_' + key).html(message);
-                        });
-                    }
-                }
-            });
-        });
     </script>
 @endsection
