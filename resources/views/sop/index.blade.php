@@ -218,7 +218,7 @@
         });
     </script>
 
-{{-- 
+    {{-- 
     <script>
         var toastMixin = Swal.mixin({
             toast: true,

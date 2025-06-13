@@ -182,6 +182,12 @@
             e.preventDefault();
             $('small').html('');
 
+            var btn = $(this);
+            var originalText = btn.html();
+            btn.html(
+                '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...'
+            );
+            btn.prop('disabled', true);
             var form = $('#Form_status_B');
             var actionUrl = form.attr('action');
 
@@ -223,8 +229,13 @@
         $(document).on('click', '#Kembali_Status_A', function(e) {
             e.preventDefault();
 
+            var btn = $(this);
+            var originalText = btn.html();
+            btn.html(
+                '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...'
+            );
+            btn.prop('disabled', true);
             var cek_id = $(this).attr('data-id');
-
             var actionUrl = '/installations/KembaliStatus_A/' + cek_id;
 
             Swal.fire({

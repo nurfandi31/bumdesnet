@@ -123,147 +123,141 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <div class="position-relative mb-3">
-                                            <label for="order">Tanggal Order</label>
-                                            <input type="text" class="form-control date" name="order" id="order"
-                                                aria-describedby="order" placeholder="order" value="{{ date('d/m/Y') }}">
-                                            <small class="text-danger" id="msg_order"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="position-relative mb-3">
-                                            <label for="desa">Nama/Desa & Dusun</label>
-                                            <select class="choices form-control" name="desa" id="desa">
-                                                <option value="">Pilih Nama/Desa & Dusun</option>
-                                                @foreach ($desa as $ds)
-                                                    @if (!$hanyaDusun || $ds->kategori == 1)
-                                                        <option {{ $pilih_desa == $ds->kode ? 'selected' : '' }}
-                                                            value="{{ $ds->id }}">
-                                                            {{ $ds->kode }} -
-                                                            [{{ $hanyaDusun ? $ds->dusun : $ds->nama }}]
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                            <small class="text-danger" id="msg_desa"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="position-relative mb-3">
-                                            <label for="cater">Nama Cater</label>
-                                            <select class="choices form-control" name="cater" id="cater">
-                                                <option value="">Pilih Cater</option>
-                                                @foreach ($caters as $ct)
-                                                    <option value="{{ $ct->id }}">
-                                                        {{ $ct->nama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <small class="text-danger" id="msg_cater"></small>
-                                        </div>
-                                    </div>
+                            <div class="col-md-2">
+                                <div class="position-relative mb-3">
+                                    <label for="order">Tanggal Order</label>
+                                    <input type="text" class="form-control date" name="order" id="order"
+                                        aria-describedby="order" placeholder="order" value="{{ date('d/m/Y') }}">
+                                    <small class="text-danger" id="msg_order"></small>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="position-relative mb-3">
-                                            <label for="jalan">Jalan</label>
-                                            <input type="text" class="form-control" id="jalan" name="jalan"
-                                                aria-describedby="jalan" placeholder="Jalan">
-                                            <small class="text-danger" id="msg_jalan"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="position-relative mb-3">
-                                            <label for="rw">RW</label>
-                                            <input type="number" class="form-control" id="rw" name="rw"
-                                                aria-describedby="rw" placeholder="Rw">
-                                            <small class="text-danger" id="msg_rw"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="position-relative mb-3">
-                                            <label for="rt">RT</label>
-                                            <input type="number" class="form-control" id="rt" name="rt"
-                                                aria-describedby="rt" placeholder="Rt">
-                                            <small class="text-danger" id="msg_rt"></small>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="position-relative mb-3">
+                                    <label for="desa">Nama/Desa & Dusun</label>
+                                    <select class="choices form-control" name="desa" id="desa">
+                                        <option value="">Pilih Nama/Desa & Dusun</option>
+                                        @foreach ($desa as $ds)
+                                            @if (!$hanyaDusun || $ds->kategori == 1)
+                                                <option {{ $pilih_desa == $ds->kode ? 'selected' : '' }}
+                                                    value="{{ $ds->id }}">
+                                                    {{ $ds->kode }} -
+                                                    [{{ $hanyaDusun ? $ds->dusun : $ds->nama }}]
+                                                </option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    <small class="text-danger" id="msg_desa"></small>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <label for="koordinate">Koordinate</label>
-                                        <div class="input-group mb-3">
-                                            <input type="text" class="form-control"
-                                                placeholder="Masukkan Link Koordinate" aria-describedby="koordinate"
-                                                name="koordinate" id="koordinate">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="basic-addon2">
-                                                    <a href="https://maps.google.com/" target="_blank"
-                                                        style="color: rgb(0, 0, 0); text-decoration: none;">Google Maps</a>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="position-relative mb-3">
-                                            <label for="jenis_paket">Paket/Kelas</label>
-                                            <select class="choices form-control package" name="package_id"
-                                                id="jenis_paket">
-                                                <option value="">Pilih Paket/Kelas</option>
-                                                @foreach ($paket as $p)
-                                                    <option value="{{ $p->id }}">
-                                                        {{ $p->kelas }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <small class="text-danger" id="msg"></small>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative mb-3">
+                                    <label for="cater">Nama Cater</label>
+                                    <select class="choices form-control" name="cater" id="cater">
+                                        <option value="">Pilih Cater</option>
+                                        @foreach ($caters as $ct)
+                                            <option value="{{ $ct->id }}">
+                                                {{ $ct->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-danger" id="msg_cater"></small>
                                 </div>
-                                <div class="row" id="formjenis_paket">
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="kode_instalasi">Kode instalasi</label>
-                                        <div class="input-group mb-3">
-                                            <input type="text" class="form-control" aria-describedby="Kode_instalasi"
-                                                name="kode_instalasi" id="kode_instalasi"
-                                                placeholder="Kode instalasi akan terpenuhi jika desa dipilih" readonly>
-                                        </div>
-                                    </div>
-                                    @if ($status === 1)
-                                        <div class="col-md-6">
-                                            <div class="position-relative mb-3">
-                                                <label for="total">Nominal</label>
-                                                <input type="text" class="form-control total" aria-describedby="total"
-                                                    name="total" id="total"
-                                                    value="{{ number_format($settings->pasang_baru, 2) }}" readonly>
-                                                <small class="text-danger" id="msg_package_id"></small>
-                                            </div>
-                                        </div>
-                                    @elseif ($status === 2)
-                                        <div class="col-md-6">
-                                            <div class="position-relative mb-3">
-                                                <label for="total">Nominal</label>
-                                                <input type="text" class="form-control total total1"
-                                                    aria-describedby="total" name="total" id="total">
-                                                <small class="text-danger" id="msg_package_id"></small>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <hr>
-                                <p class="mb-0">
-                                    Catatan : ( Jika Ada data atau inputan yang kosong bisa di isi ( 0 ) atau ( - ) )
-                                </p>
-                                <button type="submit" id="SimpanPermohonan" class="btn btn-dark"
-                                    style="float: right;">Daftar & Simpan</button>
-                                <br>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="position-relative mb-3">
+                                    <label for="jalan">Jalan</label>
+                                    <input type="text" class="form-control" id="jalan" name="jalan"
+                                        aria-describedby="jalan" placeholder="Jalan">
+                                    <small class="text-danger" id="msg_jalan"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="position-relative mb-3">
+                                    <label for="rw">RW</label>
+                                    <input type="number" class="form-control" id="rw" name="rw"
+                                        aria-describedby="rw" placeholder="Rw">
+                                    <small class="text-danger" id="msg_rw"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="position-relative mb-3">
+                                    <label for="rt">RT</label>
+                                    <input type="number" class="form-control" id="rt" name="rt"
+                                        aria-describedby="rt" placeholder="Rt">
+                                    <small class="text-danger" id="msg_rt"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="koordinate">Koordinate</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Masukkan Link Koordinate"
+                                        aria-describedby="koordinate" name="koordinate" id="koordinate">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2">
+                                            <a href="https://maps.google.com/" target="_blank"
+                                                style="color: rgb(0, 0, 0); text-decoration: none;">Google Maps</a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-relative mb-3">
+                                    <label for="jenis_paket">Paket/Kelas</label>
+                                    <select class="choices form-control package" name="package_id" id="jenis_paket">
+                                        <option value="">Pilih Paket/Kelas</option>
+                                        @foreach ($paket as $p)
+                                            <option value="{{ $p->id }}">
+                                                {{ $p->kelas }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-danger" id="msg"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="formjenis_paket">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="kode_instalasi">Kode instalasi</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" aria-describedby="Kode_instalasi"
+                                        name="kode_instalasi" id="kode_instalasi"
+                                        placeholder="Kode instalasi akan terpenuhi jika desa dipilih" readonly>
+                                </div>
+                            </div>
+                            @if ($status === 1)
+                                <div class="col-md-6">
+                                    <div class="position-relative mb-3">
+                                        <label for="total">Nominal</label>
+                                        <input type="text" class="form-control total" aria-describedby="total"
+                                            name="total" id="total"
+                                            value="{{ number_format($settings->pasang_baru, 2) }}" readonly>
+                                        <small class="text-danger" id="msg_package_id"></small>
+                                    </div>
+                                </div>
+                            @elseif ($status === 2)
+                                <div class="col-md-6">
+                                    <div class="position-relative mb-3">
+                                        <label for="total">Nominal</label>
+                                        <input type="text" class="form-control total total1" aria-describedby="total"
+                                            name="total" id="total">
+                                        <small class="text-danger" id="msg_package_id"></small>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <hr>
+                        <p class="mb-0">
+                            Catatan : ( Jika Ada data atau inputan yang kosong bisa di isi ( 0 ) atau ( - ) )
+                        </p>
+                        <button type="submit" id="SimpanPermohonan" class="btn btn-dark" style="float: right;">Daftar &
+                            Simpan</button>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -345,19 +339,31 @@
             $('#formjenis_paket').html(view)
         })
 
-        //simpan
         $(document).on('click', '#SimpanPermohonan', function(e) {
             e.preventDefault();
             $('small').html('');
 
             var form = $('#FormRegisterPermohonan');
             var actionUrl = form.attr('action');
+            var btn = $(this);
+
+            // Nonaktifkan tombol & tampilkan loading Swal
+            btn.prop('disabled', true);
+            Swal.fire({
+                title: 'Memproses...',
+                text: 'Mohon tunggu sebentar',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
             $.ajax({
                 type: 'POST',
                 url: actionUrl,
                 data: form.serialize(),
                 success: function(result) {
+                    Swal.close(); // Tutup loading Swal
                     if (result.success) {
                         Swal.fire({
                             title: result.msg,
@@ -370,13 +376,16 @@
                             if (res.isConfirmed) {
                                 window.location.reload()
                             } else {
-                                window.location.href = '/installations/' +
-                                    result.installation.id;
+                                window.location.href = '/installations/' + result.installation
+                                    .id;
                             }
                         });
                     }
                 },
                 error: function(result) {
+                    Swal.close(); // Tutup loading Swal
+                    btn.prop('disabled', false); // Aktifkan kembali tombol
+
                     const response = result.responseJSON;
                     Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error');
                     if (response && typeof response === 'object') {

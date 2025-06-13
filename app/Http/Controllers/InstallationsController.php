@@ -924,6 +924,39 @@ class InstallationsController extends Controller
         ]);
     }
 
+    private function updateC($request, $installation)
+    {
+        $data = $request->only(['id']);
+        $validator = Validator::make($data, [
+            'id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $installationId = $installation->id;
+            Transaction::where('installation_id', $installationId)->delete();
+            Usage::where('id_instalasi', $installationId)->delete();
+            Installations::where('business_id', session('business_id'))
+                ->where('id', $installationId)
+                ->delete();
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Instalasi dan seluruh data terkait berhasil dihapus permanen.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Gagal menghapus data: ' . $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
     /**
      * Update Detail Status B kembali menjaddi Aktif.
      */

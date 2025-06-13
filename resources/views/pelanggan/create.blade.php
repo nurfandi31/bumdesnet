@@ -152,7 +152,12 @@
         $(document).on('click', '#SimpanPenduduk', function(e) {
             e.preventDefault();
             $('small').html('');
-
+            var btn = $(this);
+            var originalText = btn.html();
+            btn.html(
+                '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...'
+            );
+            btn.prop('disabled', true);
             var form = $('#FormCustommer');
             var actionUrl = form.attr('action');
 

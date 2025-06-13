@@ -1,7 +1,6 @@
 @extends('Layout.base')
 
 @section('content')
-    <!-- Form -->
     <form action="/installations/{{ $installation->id }}" method="post" id="Form_status_A">
         @csrf
         @method('PUT')
@@ -189,7 +188,7 @@
                 title: 'Hentikan layanan ini?',
                 html: `
                     <p style="text-align: justify;">
-                        Setelah proses Cabut dilakukan, data akan dipindahkan ke status <b>Cabut</b> dan seluruh aktivitas pemakaian dihentikan.
+                        Setelah proses Cabut dilakukan, data <b style="color: orange;">{{ $installation->customer->nama }}</b> akan dipindahkan ke status <b class="text-danger">Cabut</b> dan seluruh aktivitas pemakaian dihentikan.
                     </p>
                     <label>Tentukan Tanggal Akhir Pemakaian:</label>
                     <input type="text" id="tgl_akhir" class="form-control date" value="${formattedDate}">

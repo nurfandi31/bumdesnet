@@ -32,7 +32,7 @@
                     <div class="card-content">
                         <div class="card-body pb-0 pt-2 ps-2 pe-2">
                             <div class="row">
-                                <div class="col-md-3 mb-0 p-0 pe-3 ps-3 pb-2">
+                                <div class="col-md-4 mb-0 p-0 pe-3 ps-3 pb-2">
                                     <div class="d-grid">
                                         <label for="bulan">Pilih Bulan Pemakaian</label>
                                         <select class="choices form-control" name="bulan" id="bulan">
@@ -46,7 +46,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3 mb-0 p-0 pe-3 ps-3 pb-2">
+                                <div class="col-md-4 mb-0 p-0 pe-3 ps-3 pb-2">
                                     <div class="d-grid">
                                         <label for="caters">Cater</label>
                                         <select class="choices form-control" id="caters" name="caters">
@@ -57,10 +57,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3 mb-0 p-0 pe-3 ps-3 pb-2">
-                                    &nbsp;
-                                </div>
-                                <div class="col-md-3 mb-0 p-0 pe-3 ps-3 pb-2">
+                                <div class="col-md-4 mb-0 p-0 pe-3 ps-3 pb-2">
                                     <div class="d-grid">
                                         <label for="">&nbsp;</label>
                                         @if (auth()->user()->jabatan == 1)

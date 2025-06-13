@@ -166,10 +166,16 @@
             timepicker: false,
             format: 'd/m/Y'
         });
-
         $(document).on('click', '#Simpan_status_I', function(e) {
             e.preventDefault();
             $('small').html('');
+
+            var btn = $(this);
+            var originalText = btn.html(); // Simpan isi tombol sebelum diubah
+            btn.html(
+                '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...'
+            );
+            btn.prop('disabled', true); // Disable tombol
 
             var form = $('#Form_status_I');
             var actionUrl = form.attr('action');
@@ -189,19 +195,20 @@
                                 window.location.href = '/installations/' + result.aktif.id;
                             }
                         });
+                    } else {
+                        btn.html(originalText).prop('disabled', false);
+                        Swal.fire('Gagal!', 'Terjadi kesalahan saat menyimpan data.', 'error');
                     }
                 },
                 error: function(result) {
                     const response = result.responseJSON;
-
                     Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error');
-
+                    btn.html(originalText).prop('disabled', false);
                     if (response && typeof response === 'object') {
                         $.each(response, function(key, message) {
                             $('#' + key)
                                 .closest('.input-group.input-group-static')
                                 .addClass('is-invalid');
-
                             $('#msg_' + key).html(message);
                         });
                     }
