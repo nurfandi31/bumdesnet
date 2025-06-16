@@ -109,6 +109,7 @@ Route::middleware(['auth', 'auth.token'])->group(function () {
     Route::get('/installations/CariTagihan_bulanan', [InstallationsController::class, 'CariTagihanbulanan']);
     Route::get('/installations/usage/{kode_instalasi}', [InstallationsController::class, 'usage']);
     Route::get('/installations/KembaliStatus_A/{id}', [InstallationsController::class, 'KembaliStatus_A']);
+    Route::post('/installations/blokirStatus/{id}', [InstallationsController::class, 'blokirStatus']);
     Route::resource('/installations', InstallationsController::class);
 
     // Packages || Paket
@@ -117,9 +118,7 @@ Route::middleware(['auth', 'auth.token'])->group(function () {
 
     // Usages || Penggunaan
     Route::get('/generatepemakaian', [UsageController::class, 'generatePemakaian']);
-    Route::get('/usages/cari_anggota', [UsageController::class, 'carianggota']);
     Route::get('/usages/detail_tagihan/', [UsageController::class, 'detailTagihan']);
-    Route::get('/usages/barcode/', [UsageController::class, 'barcode']);
     Route::post('/usages/cetak', [UsageController::class, 'cetak']);
     Route::resource('/usages', UsageController::class);
 

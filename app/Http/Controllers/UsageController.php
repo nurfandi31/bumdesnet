@@ -8,6 +8,7 @@ use App\Models\Installations;
 use App\Models\Package;
 use App\Models\Settings;
 use App\Models\Usage;
+use App\Models\Account;
 use App\Models\User;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
@@ -25,51 +26,81 @@ class UsageController extends Controller
     {
         if (request()->ajax()) {
             $bulan = request()->get('bulan') ?: date('m');
-            $cater = request()->get('cater') ?: '';
-
+            $caterId = request()->get('cater') ?: '';
             $tgl_pakai = date('Y-m', strtotime(date('Y') . '-' . $bulan . '-01'));
+
+            $rekening_denda = Account::where([
+                ['kode_akun', '4.1.01.04'],
+                ['business_id', Session::get('business_id')]
+            ])->first();
+
+            $pengaturan = Settings::where('business_id', Session::get('business_id'));
+            $trx_settings = $pengaturan->first();
+
             $usages = Usage::where([
                 ['business_id', Session::get('business_id')],
                 ['tgl_pemakaian', 'LIKE', $tgl_pakai . '%']
             ]);
 
-            if ($cater != '') {
-                $usages->where('cater', $cater);
+            if ($caterId != '') {
+                $usages->where('cater', $caterId);
             }
 
             $usages = $usages->with([
                 'customers',
                 'installation',
+                'installation.transaction' => function ($query) use ($rekening_denda) {
+                    $query->where('rekening_kredit', $rekening_denda->id);
+                },
                 'installation.village',
                 'usersCater',
                 'installation.package'
             ])->orderBy('created_at', 'DESC')->get();
+
             Session::put('usages', $usages);
 
             return DataTables::of($usages)
+                ->addColumn('kode_instalasi_dengan_inisial', function ($usage) {
+                    $kode = $usage->installation->kode_instalasi ?? '-';
+                    $inisial = $usage->installation->package->inisial ?? '';
+                    return $kode . ($inisial ? '-' . $inisial : '');
+                })
                 ->addColumn('aksi', function ($usage) {
-                    $edit = '<a href="/usages/' . $usage->id . '/edit" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></a>';
-                    $delete = '<a href="#" data-id="' . $usage->id . '" class="btn-sm btn-danger mx-1 Hapus_pemakaian"><i class="fas fa-trash-alt"></i></a>';
-
-                    return $edit . $delete;
+                    $edit = '<a href="/usages/' . $usage->id . '/edit" class="btn btn-warning btn-sm mb-1 mb-md-0 me-md-1"><i class="fas fa-pencil-alt"></i></a>&nbsp;';
+                    $delete = '<a href="#" data-id="' . $usage->id . '" class="btn btn-danger btn-sm Hapus_pemakaian"><i class="fas fa-trash-alt"></i></a>';
+                    return '<div class="d-flex flex-column flex-md-row">' . $edit . $delete . '</div>';
                 })
                 ->addColumn('tgl_akhir', function ($usage) {
                     return Tanggal::tglIndo($usage->tgl_akhir);
                 })
-                ->editColumn('nominal', function ($usage) {
-                    return number_format($usage->nominal, 2);
+                ->editColumn('nominal', function ($usage) use ($trx_settings) {
+                    $dendaPemakaianLalu = 0;
+                    foreach ($usage->installation->transaction as $trx_denda) {
+                        if ($trx_denda->tgl_transaksi < $usage->tgl_akhir) {
+                            $dendaPemakaianLalu = $trx_denda->total;
+                        }
+                    }
+
+                    $nominal = $usage->nominal + $dendaPemakaianLalu + $trx_settings->abodemen;
+                    return number_format($nominal, 2);
                 })
                 ->rawColumns(['aksi'])
                 ->make(true);
         }
-
+        // Ambil data cater (jabatan 5) untuk dropdown / hidden input
         $caters = User::where([
             ['business_id', Session::get('business_id')],
             ['jabatan', '5']
         ])->get();
 
+        $user = auth()->user(); // atau Session::get('user') kalau pakai session manual
+
+        // Kirim cater_id default untuk user jabatan 5 supaya otomatis filter
+        $cater_id = ($user->jabatan == 5) ? $user->id : '';
+
         $title = 'Data Pemakaian';
-        return view('penggunaan.index')->with(compact('title', 'caters'));
+
+        return view('penggunaan.index')->with(compact('title', 'caters', 'user', 'cater_id'));
     }
 
     /**
@@ -82,18 +113,7 @@ class UsageController extends Controller
     }
     public function create()
     {
-        $settings = Settings::where('business_id', Session::get('business_id'))->first();
-        $customer = Installations::where('business_id', Session::get('business_id'))->with('customer')->orderBy('id', 'ASC')->get();
-        $caters = User::where([
-            ['business_id', Session::get('business_id')],
-            ['jabatan', '5']
-        ])->get();
-        $usages = Usage::where('business_id', Session::get('business_id'))->get();
-        $installasi = Installations::where('business_id', Session::get('business_id'))->orderBy('id', 'ASC')->get();
-        $pilih_customer = 0;
-
-        $title = 'Register Pemakaian';
-        return view('penggunaan.create')->with(compact('customer', 'settings', 'pilih_customer', 'caters', 'title', 'usages'));
+        //create
     }
 
     public function generatePemakaian()

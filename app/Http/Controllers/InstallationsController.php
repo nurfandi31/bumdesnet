@@ -17,7 +17,7 @@ use App\Utils\Keuangan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Utils\Tanggal;
-
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -849,7 +849,6 @@ class InstallationsController extends Controller
     {
         $data = $request->only([
             "id",
-            "pasang_baru",
             "tgl_akhir",
         ]);
 
@@ -864,15 +863,16 @@ class InstallationsController extends Controller
         $lastUsage = usage::where('id_instalasi', $installation->id)->first();
         $package   = Package::where('id', $installation->package_id)->first();
         $jumlah_hari_bulan_ini = date('t');
-        $tgl_akhir = date('m', strtotime($request->tgl_akhir));
+        $date = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir);
+        $tgl_akhir = $date->format('d');
         $harga = $package->harga;
 
-        $jumlah_rasio = $tgl_akhir / $jumlah_hari_bulan_ini;
+        $jumlah_rasio = round($tgl_akhir / $jumlah_hari_bulan_ini, 2);
         $nominal = $harga * $jumlah_rasio;
 
         $Usages = usage::where('business_id', Session::get('business_id'))->where('id', $lastUsage->id)->update([
             'business_id'    => Session::get('business_id'),
-            'akhir'          => date('m', strtotime($request->tgl_akhir)),
+            'akhir'          => $tgl_akhir,
             'jumlah'         => $jumlah_rasio,
             'nominal'        => $nominal,
             'tgl_akhir'      => Tanggal::tglNasional($request->tgl_akhir),
@@ -898,7 +898,7 @@ class InstallationsController extends Controller
     {
         $data = $request->only([
             "cabut",
-
+            "id"
         ]);
 
         $rules = [
@@ -910,7 +910,23 @@ class InstallationsController extends Controller
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
-        // INSTALLATION
+        $lastUsage = usage::where('id_instalasi', $installation->id)->first();
+        $package   = Package::where('id', $installation->package_id)->first();
+        $jumlah_hari_bulan_ini = date('t');
+        $date = Carbon::createFromFormat('d/m/Y', $request->cabut);
+        $tgl_akhir = $date->format('d');
+        $harga = $package->harga;
+
+        $jumlah_rasio = round($tgl_akhir / $jumlah_hari_bulan_ini, 2);
+        $nominal = $harga * $jumlah_rasio;
+
+        $Usages = usage::where('business_id', Session::get('business_id'))->where('id', $lastUsage->id)->update([
+            'business_id'    => Session::get('business_id'),
+            'akhir'          => $tgl_akhir,
+            'jumlah'         => $jumlah_rasio,
+            'nominal'        => $nominal,
+            'tgl_akhir'      => Tanggal::tglNasional($request->cabut),
+        ]);
         $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $installation->id)->update([
             'business_id' => Session::get('business_id'),
             'cabut' => Tanggal::tglNasional($request->cabut),
@@ -960,6 +976,24 @@ class InstallationsController extends Controller
     /**
      * Update Detail Status B kembali menjaddi Aktif.
      */
+    public function blokirStatus(Request $request, $id)
+    {
+        $data = $request->only([
+            'id',
+            'tgl_blokir',
+        ]);
+        $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $id)->update([
+            'business_id' => Session::get('business_id'),
+            'status' => 'B',
+            'blokir' => Tanggal::tglNasional($request->tgl_blokir),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => '"Data berhasil diblokir dan statusnya  menjadi Blokir."',
+            'kembaliA' => $instal
+        ]);
+    }
     public function KembaliStatus_A($id)
     {
         $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $id)->update([

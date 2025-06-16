@@ -6,6 +6,7 @@
         @method('PUT')
         <input type="text" name="status" id="status" value="{{ $installation->status }}" hidden>
         <input type="text" value="{{ number_format($tampil_settings->pasang_baru, 2) }}" name="pasang_baru" hidden>
+        <input type="hidden" name="id" value="{{ $installation->id }}" id="id">
         <div class="page-heading">
             <br>
             <section class="section">
@@ -117,31 +118,25 @@
                                 <div class="card-body pb-2 pt-2 pe-2 ps-2">
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-between align-items-center">
-                                            <!-- Kiri -->
                                             <div>
-                                                <button class="btn btn-warning btn-icon-split"
+                                                <button class="btn btn-success btn-icon-split"
                                                     data-id="{{ $installation->id }}" type="submit" id="Kembali_Status_A">
                                                     <span class="text-white">Kembali ke Aktif</span>
                                                 </button>
-                                            </div>
-
-                                            <!-- Kanan -->
-                                            <div class="d-flex gap-2">
-                                                <a href="/installations/blokir" class="btn btn-light btn-icon-split">
-                                                    <span class="text-white">Kembali</span>
-                                                </a>
-
-                                                <button class="btn btn-secondary btn-icon-split" type="submit"
+                                                <button class="btn btn-danger btn-icon-split" type="submit"
                                                     id="Simpan_status_B">
                                                     <span class="text-wehite">Cabut Sekarang</span>
                                                 </button>
                                             </div>
+                                            <div class="d-flex gap-2">
+                                                <a href="/installations/blokir" class="btn btn-light btn-icon-split">
+                                                    <span class="text-white">Kembali</span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -210,9 +205,7 @@
                 },
                 error: function(result) {
                     const response = result.responseJSON;
-
                     Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error');
-
                     if (response && typeof response === 'object') {
                         $.each(response, function(key, message) {
                             $('#' + key)

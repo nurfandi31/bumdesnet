@@ -123,8 +123,15 @@
                             <div class="card-content">
                                 <div class="card-body pb-2 pt-2 pe-2 ps-2">
                                     <div class="col-12 d-flex justify-content-between align-items-center">
-                                        <button type="button" id="btnCabut" class="btn btn-warning text-white">Cabut
-                                            Pemakaian</button>
+                                        <div class="d-flex gap-2">
+                                            <button type="button" id="btnBlokir" data-id="{{ $installation->id }}"
+                                                class="btn btn-warning text-white">
+                                                Blokir Pemakaian
+                                            </button>
+                                            <button type="button" id="btnCabut" class="btn btn-danger text-white">
+                                                Cabut Pemakaian
+                                            </button>
+                                        </div>
                                         <a href="/installations/aktif" class="btn btn-light btn-icon-split">
                                             <span class="text">Kembali</span>
                                         </a>
@@ -132,7 +139,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
@@ -169,30 +175,26 @@
             format: 'd/m/Y'
         });
     </script>
-    <script>
-        const toast = Swal.mixin({
-            toast: true,
-            icon: 'success',
-            position: 'top-right',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
-        });
 
+    <script>
+        jQuery.datetimepicker.setLocale('de');
+        //CABUT
         $(document).on('click', '#btnCabut', function(e) {
             e.preventDefault();
+
             const today = new Date();
             const formattedDate = today.toLocaleDateString('de-DE').replace(/\./g, '/');
 
             Swal.fire({
                 title: 'Hentikan layanan ini?',
                 html: `
-                    <p style="text-align: justify;">
-                        Setelah proses Cabut dilakukan, data <b style="color: orange;">{{ $installation->customer->nama }}</b> akan dipindahkan ke status <b class="text-danger">Cabut</b> dan seluruh aktivitas pemakaian dihentikan.
-                    </p>
-                    <label>Tentukan Tanggal Akhir Pemakaian:</label>
-                    <input type="text" id="tgl_akhir" class="form-control date" value="${formattedDate}">
-                    <hr class="mb-0">`,
+            <p style="text-align: justify;">
+                Setelah proses Cabut dilakukan, data <b style="color: orange;">{{ $installation->customer->nama }}</b> 
+                akan dipindahkan ke status <b class="text-danger">Cabut</b> dan seluruh aktivitas pemakaian dihentikan.
+            </p>
+            <label>Tentukan Tanggal Akhir Pemakaian:</label>
+            <input type="text" id="tgl_akhir" class="form-control date" value="${formattedDate}">
+            <hr class="mb-0">`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, cabut!',
@@ -210,21 +212,94 @@
                 preConfirm: () => $('#tgl_akhir').val()
             }).then(res => {
                 if (!res.isConfirmed) return;
-                const formData = $('#Form_status_A').serialize() + '&tgl_akhir=' + encodeURIComponent(res
-                    .value);
-                $.post($('#Form_status_A').attr('action'), formData, function(result) {
-                    if (result.success) {
-                        toast.fire({
-                            title: result.msg
-                        });
-                        setTimeout(() => {
-                            window.location.href = '/installations/' + result.aktif.id;
-                        }, 1500);
-                    } else {
-                        Swal.fire('Gagal!', 'Terjadi kesalahan saat menyimpan data.', 'error');
+
+                const form = $('#Form_status_A');
+                const actionUrl = form.attr('action');
+
+                form.find('input[name="_method"]').remove();
+                form.append('<input type="hidden" name="_method" value="PUT">');
+                form.append('<input type="hidden" name="tgl_akhir" value="' + res.value + '">');
+
+                $.ajax({
+                    url: actionUrl,
+                    method: 'POST',
+                    data: form.serialize(),
+                    success: function(result) {
+                        if (result.success) {
+                            Swal.fire("Sukses!", result.msg ?? "Status berhasil diubah.",
+                                    "success")
+                                .then(() => {
+                                    window.location.href = '/installations/' + result.aktif
+                                        .id;
+                                });
+                        } else {
+                            Swal.fire('Gagal!', result.msg ||
+                                'Terjadi kesalahan saat menyimpan data.', 'error');
+                        }
+                    },
+                    error: () => {
+                        Swal.fire('Gagal!', 'Terjadi kesalahan saat menghubungi server.',
+                            'error');
                     }
-                }).fail(() => {
-                    Swal.fire('Gagal!', 'Terjadi kesalahan saat menghubungi server.', 'error');
+                });
+            });
+        });
+
+        //BLOKIR
+        $(document).on('click', '#btnBlokir', function(e) {
+            e.preventDefault();
+
+            const cek_id = $(this).data('id');
+            const actionUrl = '/installations/blokirStatus/' + cek_id;
+            const form = $('#Form_status_A');
+            const today = new Date();
+            const formattedToday =
+                `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+
+            Swal.fire({
+                title: 'Blokir Sekarang?',
+                icon: 'question',
+                html: `
+            <p style="text-align: center;">
+                Pemakaian layanan atas nama <b style="color: orange;">{{ $installation->customer->nama }}</b> 
+                akan dihentikan, dan status pelanggan akan diperbarui menjadi 
+                <b class="text-dark">Blokir</b>.
+            </p>
+            <div class="text-content mt-3">
+                <label class="form-label fw-semibold mb-1">Tentukan Tanggal Blokir:</label>
+                <input type="text" id="tglBlokir" name= "tgl_blokir" class="form-control date" value="${formattedToday}" readonly>
+            </div>`,
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Blokir!',
+                cancelButtonText: 'Batal',
+                didOpen: () => {
+                    $('#tglBlokir').datetimepicker({
+                        locale: 'de',
+                        timepicker: false,
+                        format: 'd/m/Y',
+                        defaultDate: today
+                    });
+                },
+                preConfirm: () => $('#tglBlokir').val()
+            }).then(res => {
+                if (!res.isConfirmed) return;
+                form.find('input[name="_method"]').remove();
+                form.find('input[name="tgl_blokir"]').remove();
+                form.append(`<input type="hidden" name="tgl_blokir" value="${res.value}">`);
+                $.ajax({
+                    url: actionUrl,
+                    method: 'POST',
+                    data: form.serialize(),
+                    success: function(r) {
+                        Swal.fire("Sukses!", r.msg ?? "Status berhasil diubah ke BLOKIR.",
+                                "success")
+                            .then(() => {
+                                window.location.href = '/installations/' + cek_id;
+                            });
+                    },
+                    error: function() {
+                        Swal.fire("Oops!", "Terjadi kesalahan saat memproses.", "error");
+                    }
                 });
             });
         });

@@ -93,7 +93,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                         </tbody>
                     </table>
                 </div>
@@ -164,231 +163,256 @@
         @csrf
     </form>
 @endsection
-
 @section('script')
     <script>
-        $(document).on('click', '#kembali', function(e) {
+        let table = '';
+        let cater = $('#caters').val();
+        let bulan = $('#bulan').val();
+        console.log(cater, bulan);
+
+
+        $(document).on('click', '#kembali', e => {
             e.preventDefault();
             $('#CetakBuktiTagihan').modal('hide');
         });
 
-        $(document).on(' click', '#Registerpemakaian', function(e) {
+        $(document).on('click', '#Registerpemakaian', e => {
             e.preventDefault();
-            window.location.href = '/usages/create';
-        });
-
-        var cater = $('#caters').val()
-        var bulan = $('#bulan').val()
-        var table = $('#table1').DataTable({
-            "ajax": {
-                "url": "/usages?bulan=" + bulan + "&cater=" + cater,
-                "type": "GET"
-            },
-            "language": {
-                "emptyTable": "Tidak ada data yang tersedia",
-                "search": "",
-                "searchPlaceholder": "Pencarian...",
-                "paginate": {
-                    "next": "<i class='fas fa-angle-right'></i>",
-                    "previous": "<i class='fas fa-angle-left'></i>"
-                }
-            },
-            "columns": [{
-                    "data": "customers.nama"
-                },
-                {
-                    "data": "installation.kode_instalasi"
-                },
-                {
-                    "data": "awal"
-                },
-                {
-                    "data": "akhir"
-                },
-                {
-                    "data": "jumlah"
-                },
-                {
-                    "data": "nominal"
-                },
-                {
-                    "data": "tgl_akhir"
-                },
-                {
-                    "data": "status"
-                },
-                {
-                    "data": "aksi",
-                }
-            ]
-        });
-
-        $('#caters').on('change', function() {
-            cater = $(this).val()
-            table.ajax.url("/usages?bulan=" + bulan + "&cater=" + cater).load();
-        });
-
-        $('#bulan').on('change', function() {
-            bulan = $(this).val()
-            table.ajax.url("/usages?bulan=" + bulan + "&cater=" + cater).load();
-        });
-
-        $(document).on('click', '#DetailCetakBuktiTagihan', function(e) {
-            var data = table.data().toArray()
-            var tbTagihan = $('#TbTagihan');
-
-            tbTagihan.find('tbody').html('')
-            data.forEach((item) => {
-                var row = tbTagihan.find('tbody').append(`
-                    <tr>
-                        <td align="center">
-                            <div class="form-check text-center ps-0 mb-0">
-                                <input checked class="form-check-input" type="checkbox" value="${item.id}" id="${item.id}" name="cetak[]" data-input="checked" data-bulan="${item.bulan}">
-                            </div>
-                        </td>
-                        <td align="left">${item.customers.nama}</td>
-                        <td align="left">${item.users_cater.nama}</td>
-                        <td align="left">${item.installation.kode_instalasi} ${item.installation.package.kelas.charAt(0)}</td>
-                        <td align="right">${item.awal}</td>
-                        <td align="right">${item.akhir}</td>
-                        <td align="right">${item.jumlah}</td>
-                        <td align="right">${item.nominal}</td>
-                        <td align="center">${item.status}</td>
-                        <td align="center">${item.tgl_akhir}</td>
-                    </tr>
-                `);
-            })
-
-            $('#CetakBuktiTagihan').modal('show');
-        });
-
-        $(document).on('click', '#BtnCetak', function(e) {
-            e.preventDefault()
-
-            if ($('#FormCetakBuktiTagihan').serializeArray().length > 1) {
-                $('#FormCetakBuktiTagihan').submit();
+            const bulanTerpilih = `01/${$('#bulan').val()}/{{ date('Y') }}`;
+            const caterId = $('#caters').val();
+            if (bulanTerpilih && caterId) {
+                window.location.href = `/usages/create?bulan=${bulanTerpilih}&cater_id=${caterId}`;
             } else {
-                Swal.fire('Error', "Tidak ada transaksi yang dipilih.", 'error')
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: 'Silakan pilih bulan dan cater terlebih dahulu.'
+                });
             }
-        })
-        $(document).on('click', '#BtnCetak1', function(e) {
-            e.preventDefault()
+        });
 
-            var data = table.data().toArray()
-            var formTagihan = $('#form');
+        const columns = [{
+                data: "customers.nama"
+            },
+            {
+                data: "kode_instalasi_dengan_inisial"
+            },
+            {
+                data: "awal"
+            },
+            {
+                data: "akhir"
+            },
+            {
+                data: "jumlah"
+            },
+            {
+                data: "nominal"
+            },
+            {
+                data: "tgl_akhir",
+                render(data) {
+                    if (!data) return '';
+                    const [d, m, y] = data.split('/').map(Number);
+                    const t = new Date(y, m - 1, d - 1);
+                    return `${String(t.getDate()).padStart(2, '0')}/${String(t.getMonth() + 1).padStart(2, '0')}/${t.getFullYear()}`;
+                }
+            },
+            {
+                data: "status"
+            },
+            @if (Session::get('jabatan') != 5)
+                {
+                    data: "aksi"
+                }
+            @endif
+        ];
 
-            var bulan = $('#bulan').val()
-            var caters = $('#caters').val()
+        $('#caters, #bulan').on('change', function() {
+            cater = $('#caters').val();
+            bulan = $('#bulan').val();
 
-            formTagihan.find('form').html('')
-            var row = formTagihan.append(`
-                <input type="hidden" name="bulan_tagihan" value="${bulan}">
-                <input type="hidden" name="pemakaian_cater" value="${cater}">
-            `);
+            if (cater) {
+                if (!table) {
+                    table = $('#TbPemakain').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        ajax: `/usages?bulan=${bulan}&cater=${cater}`,
+                        language: {
+                            processing: `<i class="fas fa-spinner fa-spin"></i> Mohon Tunggu....`,
+                            emptyTable: "Tidak ada data yang tersedia",
+                            search: "",
+                            searchPlaceholder: "Pencarian...",
+                            paginate: {
+                                next: "<i class='fas fa-angle-right'></i>",
+                                previous: "<i class='fas fa-angle-left'></i>"
+                            }
+                        },
+                        columns
+                    });
+                } else {
+                    table.ajax.url(`/usages?bulan=${bulan}&cater=${cater}`).load();
+                }
+            }
+        });
 
+        function fetchAllDataFullAndShowModal() {
+            $.get("/usages", {
+                bulan: $('#bulan').val(),
+                cater: $('#caters').val()
+            }, response => {
+                const data = response.data || response;
+                if (data.length) {
+                    const caterText = $('#caters option:selected').text();
+                    const [d, m, y] = data[0].tgl_akhir.split('/');
+                    $('#NamaCater').text(caterText);
+                    $('#TanggalCetak').text(`${d - 1}/${m}/${y}`);
+                    $('#InputCater').val($('#caters').val());
+                    $('#InputTanggal').val(data[0].tgl_akhir);
+                }
+                setTableData(data);
+                $('#CetakBuktiTagihan').modal('show');
+            }).fail(() => alert('Gagal mengambil data lengkap'));
+        }
+
+        $(document).on('click', '#DetailCetakBuktiTagihan', fetchAllDataFullAndShowModal);
+
+        function setTableData(data) {
+            const tbody = $('#TbTagihan tbody').empty();
+            const grouped = {};
+
+            data.forEach(item => {
+                const dusun = item.installation.village.dusun || '';
+                (grouped[dusun] ||= []).push(item);
+            });
+
+            Object.keys(grouped).sort().forEach(dusun => {
+                tbody.append(`<tr class="table-secondary fw-bold"><td colspan="11">Dusun : ${dusun}</td></tr>`);
+                grouped[dusun].sort((a, b) => parseInt(a.installation.rt) - parseInt(b.installation.rt)).forEach(
+                    item => {
+                        tbody.append(`
+                                <tr>
+                                    <td align="center"><div class="form-check text-center ps-0 mb-0">
+                                        <input checked class="form-check-input" type="checkbox" value="${item.id}" id="${item.id}" name="cetak[]" data-input="checked" data-bulan="${item.bulan}">
+                                    </div></td>
+                                    <td align="left">${item.customers.nama}</td>
+                                    <td align="left">${item.installation.village.nama}</td>
+                                    <td align="center">${item.installation.rt}</td>
+                                    <td align="center">${item.installation.kode_instalasi} ${item.installation.package.kelas.charAt(0)}</td>
+                                    <td align="center">${item.awal}</td>
+                                    <td align="center">${item.akhir}</td>
+                                    <td align="center">${item.jumlah}</td>
+                                    <td align="right">${item.nominal}</td>
+                                    <td align="center">${item.status}</td>
+                                </tr>`);
+                    });
+            });
+        }
+
+        $('#BtnCetak').on('click', e => {
+            e.preventDefault();
+            if ($('#FormCetakBuktiTagihan').serializeArray().length > 1) {
+                const form = $('#FormCetakBuktiTagihan');
+                form.append(`<input type="hidden" name="bulan_tagihan" value="${$('#bulan').val()}">`);
+                form.append(`<input type="hidden" name="pemakaian_cater" value="${$('#caters').val()}">`);
+                form.submit();
+            } else {
+                Swal.fire('Error', "Tidak ada transaksi yang dipilih.", 'error');
+            }
+        });
+
+        $('#BtnCetak1').on('click', e => {
+            e.preventDefault();
+            const form = $('#form');
+            form.append(`<input type="hidden" name="bulan_tagihan" value="${$('#bulan').val()}">`);
+            form.append(`<input type="hidden" name="cater" value="${$('#caters').val()}">`);
             $('#FormCetakTagihan').submit();
-        })
-    </script>
+        });
 
-    @if (Session::has('berhasil'))
-        <script>
+        $('#BtnCetak2').on('click', e => {
+            e.preventDefault();
+            const form = $('#formbonggol').html('');
+            form.append(`<input type="hidden" name="bulan_tagihan" value="${$('#bulan').val()}">`);
+            form.append(`<input type="hidden" name="cater" value="${$('#caters').val()}">`);
+            $('#FormCetakBonggol').submit();
+        });
+
+        @if (Session::has('berhasil'))
             toastMixin.fire({
                 text: '{{ Session::get('berhasil') }}',
                 showConfirmButton: false,
                 timer: 2000
             });
-        </script>
-    @endif
-    <script>
-        // Tunggu hingga DOM selesai dimuat
-        document.addEventListener('DOMContentLoaded', function() {
-            // Pilih elemen notifikasi
-            const alert = document.getElementById('success-alert');
-            if (alert) {
-                // Atur timer untuk menghilangkan notifikasi setelah 3 detik
-                setTimeout(() => {
-                    alert.style.transition = 'opacity 0.5s'; // Animasi hilang
-                    alert.style.opacity = '0';
-                    setTimeout(() => alert.remove(), 500); // Hapus elemen setelah animasi selesai
-                }, 3000);
-            }
+        @endif
+
+        $(document).ready(function() {
+            $('#filter-bulan').on('change', function() {
+                const selectedMonth = $(this).val();
+                $('[data-input=checked]').each(function() {
+                    const row = $(this).closest('tr');
+                    const bulan = $(this).data('bulan');
+                    const show = !selectedMonth || bulan == selectedMonth;
+                    row.toggle(show);
+                    if (!show) $(this).prop('checked', false);
+                });
+            });
+
+            $('#checked').on('click', function() {
+                $('[data-input=checked]:visible').prop('checked', $(this).is(':checked'));
+            });
         });
+
         $(document).on('click', '.Hapus_pemakaian', function(e) {
             e.preventDefault();
-
-            var hapus_pemakaian = $(this).attr('data-id'); // Ambil ID yang terkait dengan tombol hapus
-            var actionUrl = '/usages/' + hapus_pemakaian; // URL endpoint untuk proses hapus
-
+            const id = $(this).data('id');
             Swal.fire({
                 title: "Apakah Anda yakin?",
-                text: "Data Akan dihapus secara permanen dari aplikasi tidak bisa dikembalikan!",
+                text: "Data Akan dihapus secara permanen!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Hapus",
                 cancelButtonText: "Batal",
                 reverseButtons: true
-            }).then((result) => {
+            }).then(result => {
                 if (result.isConfirmed) {
-                    var form = $('#FormHapusPemakaian')
                     $.ajax({
-                        type: form.attr('method'), // Gunakan metode HTTP DELETE
-                        url: actionUrl,
-                        data: form.serialize(),
-                        success: function(response) {
-                            Swal.fire({
-                                title: "Berhasil!",
-                                text: response.message || "Data berhasil dihapus.",
-                                icon: "success",
-                                confirmButtonText: "OK"
-                            }).then((res) => {
-                                if (res.isConfirmed) {
-                                    window.location.reload()
-                                } else {
-                                    window.location.href = '/usages/';
-                                }
-                            });
-                        },
-                        error: function(response) {
-                            const errorMsg = "Terjadi kesalahan.";
-                            Swal.fire({
-                                title: "Error",
-                                text: errorMsg,
-                                icon: "error",
-                                confirmButtonText: "OK"
-                            });
-                        }
+                        type: 'POST',
+                        url: `/usages/${id}`,
+                        data: $('#FormHapusPemakaian').serialize(),
+                        success: r => Swal.fire("Berhasil!", r.message || "Data berhasil dihapus.",
+                            "success").then(() => window.location.reload()),
+                        error: () => Swal.fire("Error", "Terjadi kesalahan.", "error")
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: "Dibatalkan",
-                        text: "Data tidak jadi dihapus.",
-                        icon: "info",
-                        confirmButtonText: "OK"
-                    });
+                } else {
+                    Swal.fire("Dibatalkan", "Data tidak jadi dihapus.", "info");
                 }
             });
         });
 
-        $(document).ready(function() {
-            // Filter baris berdasarkan bulan akhir
-            $('#filter-bulan').on('change', function() {
-                var selectedMonth = $(this).val();
-                $('[data-input=checked]').each(function() {
-                    var row = $(this).closest('tr');
-                    var bulan = $(this).data('bulan');
-                    if (!selectedMonth || bulan == selectedMonth) {
-                        row.show();
-                    } else {
-                        row.hide();
-                        $(this).prop('checked', false); // Uncheck jika disembunyikan
-                    }
-                });
-            });
+        document.getElementById('SearchTagihan').addEventListener('keyup', function() {
+            const keyword = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#TbTagihan tbody tr');
+            let currentGroup = null;
+            let groupVisible = false;
 
-            // Centang semua baris yang terlihat saat checkbox utama diklik
-            $('#checked').on('click', function() {
-                var status = $(this).is(':checked');
-                $('[data-input=checked]:visible').prop('checked', status);
+            rows.forEach(row => {
+                if (row.classList.contains('table-secondary')) {
+                    currentGroup = row;
+                    groupVisible = false;
+                    return;
+                }
+
+                const match = row.textContent.toLowerCase().includes(keyword);
+                row.style.display = match ? '' : 'none';
+                if (match && currentGroup) groupVisible = true;
+
+                const nextRow = row.nextElementSibling;
+                if (!nextRow || nextRow.classList.contains('table-secondary')) {
+                    if (currentGroup) {
+                        currentGroup.style.display = groupVisible ? '' : 'none';
+                        currentGroup = null;
+                    }
+                }
             });
         });
     </script>
