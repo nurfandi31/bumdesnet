@@ -156,7 +156,7 @@ Route::middleware(['auth', 'auth.token'])->group(function () {
     Route::post('/transactions/hapus', [TransactionController::class, 'hapus']);
     Route::resource('/transactions', TransactionController::class);
 
-    // Setting || Pengaturan
+    // Setting
     Route::get('/pengaturan/sop', [SopController::class, 'profil']);
     Route::get('/pengaturan/coa', [SopController::class, 'coa']);
     Route::get('/pengaturan/akun_coa', [SopController::class, 'akun_coa']);
