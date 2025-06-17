@@ -44,9 +44,7 @@
                                     <td>{{ $status_A->customer ? $status_A->customer->email : '' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($status_A->order)->format('d-m-Y') }}</td>
                                     <td>
-                                        @if ($status_A->status === 'A')
-                                            <span class="badge bg-success">Aktif</span>
-                                        @endif
+                                        <span class="badge bg-success">{{ $status_A->status_tunggakan }}</span>
                                     </td>
                                 </tr>
                             @endforeach

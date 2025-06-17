@@ -12,37 +12,37 @@
 
     <link rel="stylesheet" crossorigin href="/assets/compiled/css/iconly.css">
     <link rel="stylesheet" href="/assets/extensions/choices.js/public/assets/styles/choices.css">
-    <link rel="stylesheet" href="/assets/extensions/simple-datatables/style.css">
-    <link rel="stylesheet" crossorigin href="/assets/compiled/css/table-datatable.css">
+    <link rel="stylesheet" href="/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" crossorigin href="/assets/compiled/css/table-datatable-jquery.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
     <link rel="stylesheet" href="assets/extensions/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
         integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-<meta name="csrf-token" content="{{ csrf_token() }}">
-        
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <style>
         .tt-menu {
-        background-color: #f0f0f0;
-        border: 1px solid #a50000;
-        padding: 4px;
-        width: 100%; 
-        z-index: 1000;
-        border-radius: 4px;
+            background-color: #f0f0f0;
+            border: 1px solid #a50000;
+            padding: 4px;
+            width: 100%;
+            z-index: 1000;
+            border-radius: 4px;
         }
 
         .tt-suggestion {
-        padding: 8px 12px;
-        cursor: pointer;
-        background-color: rgba(243, 243, 243, 0.968);
-        border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: rgba(243, 243, 243, 0.968);
+            border-radius: 4px;
         }
 
         .tt-suggestion:hover,
         .tt-suggestion.tt-cursor {
-        background-color: #d3d3d3; 
-        border-radius: 4px;
+            background-color: #d3d3d3;
+            border-radius: 4px;
         }
 
         .twitter-typeahead {
@@ -112,10 +112,12 @@
             box-sizing: border-box;
             z-index: 3;
         }
+
         #table1 tbody tr:hover {
-        background-color: #cce5ff;
-        transition: background-color 0.2s ease-in-out;
-    }
+            background-color: #cce5ff;
+            transition: background-color 0.2s ease-in-out;
+        }
+
     </style>
 </head>
 
@@ -153,37 +155,51 @@
     <script src="/assets/static/js/pages/ui-apexchart.js"></script>
     <script src="/assets/extensions/choices.js/public/assets/scripts/choices.js"></script>
     <script src="/assets/static/js/pages/form-element-select.js"></script>
-    <script src="/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
-    <script src="/assets/static/js/pages/simple-datatables.js"></script>
+    <script src="/assets/extensions/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js" integrity="sha512-AnBkpfpJIa1dhcAiiNTK3JzC3yrbox4pRdrpw+HAI3+rIcfNGFbVXWNJI0Oo7kGPb8/FG+CMSG8oADnfIbYLHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"
+        integrity="sha512-AnBkpfpJIa1dhcAiiNTK3JzC3yrbox4pRdrpw+HAI3+rIcfNGFbVXWNJI0Oo7kGPb8/FG+CMSG8oADnfIbYLHw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"
-    integrity="sha512-Rdk63VC+1UYzGSgd3u2iadi0joUrcwX0IWp2rTh6KXFoAmgOjRS99Vynz1lJPT8dLjvo6JZOqpAHJyfCEZ5KoA=="
+        integrity="sha512-Rdk63VC+1UYzGSgd3u2iadi0joUrcwX0IWp2rTh6KXFoAmgOjRS99Vynz1lJPT8dLjvo6JZOqpAHJyfCEZ5KoA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.js"
         integrity="sha512-+UiyfI4KyV1uypmEqz9cOIJNwye+u+S58/hSwKEAeUMViTTqM9/L4lqu8UxJzhmzGpms8PzFJDzEqXL9niHyjA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-        @if (Session::get('success'))
         <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Login Berhasil',
-                text: @json(Session::get('success')),
-            }).then((result) => {
-                window.open('/generatepemakaian', '_blank', 'width=500,height=500,top=100,left=100');
-                window.open('/dataset/{{ time() }}', '_blank', 'width=500,height=500,top=100,left=100');
+            $(function () {
+                const table = $('.table').DataTable();
+        
+                $(document).on('change', '.table', function () {
+                    table.rows().data().each((v, i) => {
+                        console.log("Row " + i + ":", v);
+                    });
+                });
             });
-        </script> @endif
-        <script>
-            setTimeout(function() {
-                window.close();
-            }, 2000);
-        </script>
-    
+        </script>        
+        
+    @if (Session::get('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Login Berhasil',
+            text: @json(Session::get('success')),
+        }).then((result) => {
+            window.open('/generatepemakaian', '_blank', 'width=500,height=500,top=100,left=100');
+            window.open('/dataset/{{ time() }}', '_blank', 'width=500,height=500,top=100,left=100');
+        });
+
+    </script> @endif
+    <script>
+        setTimeout(function() {
+            window.close();
+        }, 2000);
+    </script>
+
 
     {{-- Logout --}}
     <script>
@@ -328,7 +344,8 @@
                     const states = [];
 
                     result.map(function(item) {
-                        const name = item.nama + ' - ' + item.kode_instalasi + ' [' + item.nik +
+                        const name = item.nama + ' - ' + item.kode_instalasi + ' [' + item
+                            .nik +
                             ']';
 
                         states.push({

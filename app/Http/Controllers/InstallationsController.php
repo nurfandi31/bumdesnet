@@ -985,6 +985,7 @@ class InstallationsController extends Controller
         $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $id)->update([
             'business_id' => Session::get('business_id'),
             'status' => 'B',
+            'status_tunggakan' => 'menunggak2',
             'blokir' => Tanggal::tglNasional($request->tgl_blokir),
         ]);
 

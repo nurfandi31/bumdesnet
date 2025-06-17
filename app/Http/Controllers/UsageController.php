@@ -56,9 +56,7 @@ class UsageController extends Controller
                 'usersCater',
                 'installation.package'
             ])->orderBy('created_at', 'DESC')->get();
-
             Session::put('usages', $usages);
-
             return DataTables::of($usages)
                 ->addColumn('kode_instalasi_dengan_inisial', function ($usage) {
                     $kode = $usage->installation->kode_instalasi ?? '-';
@@ -99,7 +97,6 @@ class UsageController extends Controller
         $cater_id = ($user->jabatan == 5) ? $user->id : '';
 
         $title = 'Data Pemakaian';
-
         return view('penggunaan.index')->with(compact('title', 'caters', 'user', 'cater_id'));
     }
 
@@ -144,9 +141,7 @@ class UsageController extends Controller
             $jumlah_hari_pemakaian = date_diff(date_create($tanggal_akhir), date_create($tanggal_awal))->days;
             $jumlah_hari_bulan_ini = date('t');
             $jumlah_rasio = round($jumlah_hari_pemakaian / $jumlah_hari_bulan_ini, 2);
-
             $harga = $instal->package->harga;
-
             $new_usage = Usage::create([
                 'business_id'    => Session::get('business_id'),
                 'id_instalasi'   => $instal->id,
