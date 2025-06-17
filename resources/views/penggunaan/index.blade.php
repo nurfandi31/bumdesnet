@@ -35,8 +35,7 @@
                                 <div class="col-md-4 mb-0 p-0 pe-3 ps-3 pb-2">
                                     <div class="d-grid">
                                         <label for="bulan">Pilih Bulan Pemakaian</label>
-                                        <select class=" set-table form-control" name="bulan" id="bulan"
-                                            data-should-sort="false">
+                                        <select class="choices set-table form-control" name="bulan" id="bulan">
                                             <option value="">Pilih Bulan</option>
                                             @for ($i = 1; $i <= 12; $i++)
                                                 <option {{ date('m') == $i ? 'selected' : '' }}
@@ -151,10 +150,20 @@
                         data: "tgl_akhir"
                     },
                     {
-                        data: "status"
+                        data: "status",
+                        render: function(data, type, row) {
+                            if (data === 'UNPAID') {
+                                return '<span class="badge bg-warning">Unpaid</span>';
+                            } else if (data === 'PAID') {
+                                return '<span class="badge bg-success">Paid</span>';
+                            }
+                        }
                     }
                 ],
                 responsive: true,
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+                }
             });
         }
 
