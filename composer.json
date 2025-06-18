@@ -20,7 +20,8 @@
         "silvertipsoftware/wkhtmltoimage-amd64": "0.12.5",
         "silvertipsoftware/wkhtmltopdf-amd64": "0.12.5",
         "simplesoftwareio/simple-qrcode": "^4.2",
-        "yajra/laravel-datatables": "^10.1"
+        "yajra/laravel-datatables": "^10.1",
+        "yajra/laravel-datatables-oracle": "^10.11"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

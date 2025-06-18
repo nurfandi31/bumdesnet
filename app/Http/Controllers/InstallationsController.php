@@ -21,7 +21,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Yajra\DataTables\DataTables as DataTablesDataTables;
 use Yajra\DataTables\Facades\DataTables;
 
 class InstallationsController extends Controller
@@ -38,7 +37,7 @@ class InstallationsController extends Controller
     {
         if ($request->ajax()) {
             $business_id = Session::get('business_id');
-            return DataTablesDataTables::of(
+            return DataTables::eloquent(
                 Installations::select([
                     'id',
                     'kode_instalasi',
@@ -59,7 +58,7 @@ class InstallationsController extends Controller
     {
         if ($request->ajax()) {
             $business_id = Session::get('business_id');
-            return DataTablesDataTables::of(
+            return DataTables::eloquent(
                 Installations::select([
                     'id',
                     'kode_instalasi',
@@ -80,7 +79,7 @@ class InstallationsController extends Controller
     {
         if ($request->ajax()) {
             $business_id = Session::get('business_id');
-            return DataTablesDataTables::of(
+            return DataTables::eloquent(
                 Installations::select([
                     'id',
                     'kode_instalasi',
@@ -101,7 +100,7 @@ class InstallationsController extends Controller
     {
         if ($request->ajax()) {
             $business_id = Session::get('business_id');
-            return DataTablesDataTables::of(
+            return DataTables::eloquent(
                 Installations::select([
                     'id',
                     'kode_instalasi',
@@ -122,7 +121,7 @@ class InstallationsController extends Controller
     {
         if ($request->ajax()) {
             $business_id = Session::get('business_id');
-            return DataTablesDataTables::of(
+            return DataTables::eloquent(
                 Installations::select([
                     'id',
                     'kode_instalasi',
