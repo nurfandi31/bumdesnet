@@ -14,6 +14,7 @@ use App\Utils\Keuangan;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
 
 
 class CustomerController extends Controller
@@ -21,12 +22,31 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::where('business_id', Session::get('business_id'))->with('installation')->get();
+        if ($request->ajax()) {
+            $business_id = Session::get('business_id');
 
-        $title = 'Data penduduk';
-        return view('pelanggan.index')->with(compact('title', 'customers'));
+            return DataTables::eloquent(
+                Customer::select([
+                    'id',
+                    'nik',
+                    'nama',
+                    'alamat',
+                    'hp',
+                    'email',
+                ])->where([
+                    'business_id', $business_id,
+                    'Installations'
+                ])
+            )
+                ->addColumn('aksi', function ($row) {
+                    return $row->id;
+                })
+                ->toJson();
+        }
+
+        return view('cater.index', ['title' => 'Data Pelanggan']);
     }
 
     /**

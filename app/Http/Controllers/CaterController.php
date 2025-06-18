@@ -9,20 +9,37 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
 
 class CaterController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $caters = User::where([
-            ['business_id', Session::get('business_id')],
-            ['jabatan', '5']
-        ])->get();
-        $title = 'Data Cater';
-        return view('cater.index')->with(compact('title', 'caters'));
+        if ($request->ajax()) {
+            $business_id = Session::get('business_id');
+
+            return DataTables::eloquent(
+                User::select([
+                    'id',
+                    'nama',
+                    'alamat',
+                    'telpon',
+                    'username'
+                ])->where([
+                    ['business_id', $business_id],
+                    ['jabatan', '5']
+                ])
+            )
+                ->addColumn('aksi', function ($row) {
+                    return $row->id;
+                })
+                ->toJson();
+        }
+
+        return view('cater.index', ['title' => 'Data Cater']);
     }
 
     /**

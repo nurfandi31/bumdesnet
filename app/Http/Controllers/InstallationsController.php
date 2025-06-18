@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Yajra\DataTables\Facades\DataTables;
 
 class InstallationsController extends Controller
 {
@@ -32,59 +33,111 @@ class InstallationsController extends Controller
         //
     }
 
-    public function permohonan()
+    public function permohonan(Request $request)
     {
-        $installations = Installations::where('business_id', Session::get('business_id'))->get();
-        $Status_Permohonan = Installations::where('business_id', Session::get('business_id'))->whereIn('status', ['R', '0'])->with(
-            'customer',
-            'village',
-            'package'
-        )->get();
-        $title = 'Data Permohonan';
-        return view('perguliran.permohonan')->with(compact('title', 'installations', 'Status_Permohonan'));
+        if ($request->ajax()) {
+            $business_id = Session::get('business_id');
+            return DataTables::eloquent(
+                Installations::select([
+                    'id',
+                    'kode_instalasi',
+                    'desa',
+                    'customer_id',
+                    'order',
+                    'status'
+                ])->where('business_id', $business_id)->where('status', 'R')->with([
+                    'customer',
+                    'package',
+                    'village'
+                ])
+            )->make(true);
+        }
+        return view('perguliran.permohonan', ['title' => 'Data Permohonan']);
     }
-    public function pasang()
+    public function pasang(Request $request)
     {
-        $installations = Installations::where('business_id', Session::get('business_id'))->get();
-        $Status_Pasang = Installations::where('business_id', Session::get('business_id'))->where('status', 'I')->with(
-            'customer',
-            'package'
-        )->get();
-        $title = 'Data Pasang';
-        return view('perguliran.pasang')->with(compact('title', 'installations', 'Status_Pasang'));
+        if ($request->ajax()) {
+            $business_id = Session::get('business_id');
+            return DataTables::eloquent(
+                Installations::select([
+                    'id',
+                    'kode_instalasi',
+                    'desa',
+                    'customer_id',
+                    'pasang',
+                    'status'
+                ])->where('business_id', $business_id)->where('status', 'I')->with([
+                    'customer',
+                    'package',
+                    'village'
+                ])
+            )->make(true);
+        }
+        return view('perguliran.pasang', ['title' => 'Data Pasang']);
     }
-    public function aktif()
+    public function aktif(Request $request)
     {
-        $installations = Installations::where('business_id', Session::get('business_id'))->get();
-        $Status_Aktif = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')->with(
-            'customer',
-            'package'
-        )->get();
-        $title = 'Data Aktif';
-        return view('perguliran.aktif')->with(compact('title', 'installations', 'Status_Aktif'));
+        if ($request->ajax()) {
+            $business_id = Session::get('business_id');
+            return DataTables::eloquent(
+                Installations::select([
+                    'id',
+                    'kode_instalasi',
+                    'desa',
+                    'customer_id',
+                    'aktif',
+                    'status'
+                ])->where('business_id', $business_id)->where('status', 'A')->with([
+                    'customer',
+                    'package',
+                    'village'
+                ])
+            )->make(true);
+        }
+        return view('perguliran.aktif', ['title' => 'Data Aktif']);
     }
-    public function blokir()
+    public function blokir(Request $request)
     {
-        $installations = Installations::where('business_id', Session::get('business_id'))->get();
-        $Status_Blokir = Installations::where('business_id', Session::get('business_id'))->where('status', 'B')->with(
-            'customer',
-            'package'
-        )->get();
-        $title = 'Data Blokir';
-        return view('perguliran.blokir')->with(compact('title', 'installations', 'Status_Blokir'));
+        if ($request->ajax()) {
+            $business_id = Session::get('business_id');
+            return DataTables::eloquent(
+                Installations::select([
+                    'id',
+                    'kode_instalasi',
+                    'desa',
+                    'customer_id',
+                    'blokir',
+                    'status'
+                ])->where('business_id', $business_id)->where('status', 'B')->with([
+                    'customer',
+                    'package',
+                    'village'
+                ])
+            )->make(true);
+        }
+        return view('perguliran.blokir', ['title' => 'Data Blokir']);
     }
-    public function cabut()
+    public function cabut(Request $request)
     {
-        $installations = Installations::where('business_id', Session::get('business_id'))->get();
-        $Status_Cabut = Installations::where('business_id', Session::get('business_id'))->where('status', 'C')->with(
-            'customer',
-            'package'
-        )->get();
-
-        $title = 'Data Cabut';
-        return view('perguliran.cabut')->with(compact('title', 'installations', 'Status_Cabut'));
+        if ($request->ajax()) {
+            $business_id = Session::get('business_id');
+            return DataTables::eloquent(
+                Installations::select([
+                    'id',
+                    'kode_instalasi',
+                    'desa',
+                    'customer_id',
+                    'cabut',
+                    'status'
+                ])->where('business_id', $business_id)->where('status', 'C')->with([
+                    'customer',
+                    'package',
+                    'village'
+                ])
+            )->make(true);
+        }
+        return view('perguliran.cabut', ['title' => 'Data Cabut']);
     }
-
 
     /**
      * cari custommer trx instalasi.

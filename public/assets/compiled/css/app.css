@@ -2439,6 +2439,7 @@ progress {
     border-color: var(--bs-table-border-color)
 }
 
+
 .table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;

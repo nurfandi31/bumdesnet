@@ -44,7 +44,7 @@
                                         <div class="form-group">
                                             <label for="nama">Nama Desa</label>
                                             <input autocomplete="off" type="text" name="nama" id="nama"
-                                                class="form-control" value="{{ $village->nama }}">
+                                                class="form-control" value="{{ $village->nama }}" required>
                                             <small class="text-danger" id="msg_nama">{{ $errors->first('nama') }}</small>
                                         </div>
                                     </div>
@@ -52,7 +52,7 @@
                                         <div class="form-group">
                                             <label for="dusun">Dusun/Pedukuhan</label>
                                             <input type="text" name="dusun" id="dusun"
-                                                value="{{ $village->dusun }}" class="form-control">
+                                                value="{{ $village->dusun }}" class="form-control" required>
                                             <small class="text-danger" id="msg_dusun"></small>
                                         </div>
                                     </div>
@@ -60,7 +60,7 @@
                                         <div class="form-group">
                                             <label for="hp">No Hp</label>
                                             <input type="text" name="hp" id="hp" value="{{ $village->hp }}"
-                                                class="form-control">
+                                                class="form-control"required>
                                             <small class="text-danger" id="msg_hp"></small>
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@
                                         <div class="form-group mb-3">
                                             <label for="alamat">Alamat</label>
                                             <input autocomplete="off" type="text" name="alamat" id="alamat"
-                                                class="form-control" value="{{ $village->alamat }}">
+                                                class="form-control" value="{{ $village->alamat }}" required>
                                             <small class="text-danger">{{ $errors->first('alamat') }}</small>
                                         </div>
                                     </div>

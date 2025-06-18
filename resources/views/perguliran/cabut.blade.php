@@ -20,7 +20,7 @@
         <section class="section">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-striped" id="table1">
+                    <table class="table table-striped" id="cabut">
                         <thead>
                             <tr>
                                 <th>No.Induk</th>
@@ -33,21 +33,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($Status_Cabut as $status_C)
-                                <tr onclick="handleRowClick('{{ $status_C->id }}')" style="cursor: pointer;">
-                                    <td>{{ $status_C->kode_instalasi }} {{ substr($status_C->package->kelas, 0, 1) }}</td>
-                                    <td>{{ $status_C->customer ? $status_C->customer->nama : '' }}</td>
-                                    <td>{{ $status_C->village ? $status_C->village->nama : '' }}</td>
-                                    <td>{{ $status_C->customer ? $status_C->customer->hp : '' }}</td>
-                                    <td>{{ $status_C->customer ? $status_C->customer->email : '' }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($status_C->order)->format('d-m-Y') }}</td>
-                                    <td>
-                                        @if ($status_C->status === 'C')
-                                            <span class="badge bg-danger">Cabut</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -56,26 +41,67 @@
     </div>
 @endsection
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function handleRowClick(id) {
-        Swal.fire({
-            title: 'Sedang menyiapkan data...',
-            html: `
-        <div style="margin-top: 10px; text-align: center;">
-            <img src="data:image/svg+xml,%3c!--%20By%20Sam%20Herbert%20(@sherb),%20for%20everyone.%20--%3e%3csvg%20width='55'%20height='80'%20viewBox='0%200%2055%2080'%20xmlns='http://www.w3.org/2000/svg'%20fill='%235d79d3'%3e%3cg%20transform='matrix(1%200%200%20-1%200%2080)'%3e%3crect%20width='10'%20height='20'%20rx='3'%3e%3canimate%20attributeName='height'%20begin='0s'%20dur='1.2s'%20values='20;80;20'%20repeatCount='indefinite'/%3e%3c/rect%3e%3crect%20x='15'%20width='10'%20height='50'%20rx='3'%3e%3canimate%20attributeName='height'%20begin='0.2s'%20dur='1.2s'%20values='50;80;50'%20repeatCount='indefinite'/%3e%3c/rect%3e%3crect%20x='30'%20width='10'%20height='30'%20rx='3'%3e%3canimate%20attributeName='height'%20begin='0.4s'%20dur='1.2s'%20values='30;80;30'%20repeatCount='indefinite'/%3e%3c/rect%3e%3crect%20x='45'%20width='10'%20height='60'%20rx='3'%3e%3canimate%20attributeName='height'%20begin='0.6s'%20dur='1.2s'%20values='60;80;60'%20repeatCount='indefinite'/%3e%3c/rect%3e%3c/g%3e%3c/svg%3e"
-                style="width: 40px; display: block; margin: 0 auto 15px auto;">
-            <p style="margin: 0; font-size: 14px; color: #555;">Mohon tunggu sebentar</p>
-        </div>
-    `,
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            allowEscapeKey: false
+@section('script')
+    <script>
+        let table = setAjaxDatatable('#cabut', '{{ url('/installations/cabut') }}', [{
+                data: 'kode_instalasi',
+                name: 'kode_instalasi'
+            },
+            {
+                data: 'customer.nama',
+                name: 'customer.nama'
+            },
+            {
+                data: 'village.nama',
+                name: 'village.nama'
+            },
+            {
+                data: 'customer.hp',
+                name: 'customer.hp'
+            },
+            {
+                data: 'customer.email',
+                name: 'customer.email'
+            },
+            {
+                data: 'cabut',
+                name: 'cabut'
+            }, {
+                data: 'status',
+                name: 'status',
+                render: function(data, type, row, meta) {
+                    if (data == 'C') {
+                        return '<span class="badge bg-warning">Cabut</span>';
+                    }
+                }
+            }
+        ]);
+
+        $(document).on('change', '.set-table', function() {
+            table.ajax.reload();
         });
 
+        $('#cabut').on('click', 'tbody tr', function() {
+            var data = table.row(this).data();
+            if (data && data.id) {
+                Swal.fire({
+                    title: `sedang menyiapkan data...`,
+                    html: `
+                        <div style="margin-top: 0px; text-align: center;">
+                            <img src="data:image/svg+xml,%3c!--%20By%20Sam%20Herbert%20(@sherb),%20for%20everyone.%20--%3e%3csvg%20width='55'%20height='80'%20viewBox='0%200%2055%2080'%20xmlns='http://www.w3.org/2000/svg'%20fill='%235d79d3'%3e%3cg%20transform='matrix(1%200%200%20-1%200%2080)'%3e%3crect%20width='10'%20height='20'%20rx='3'%3e%3canimate%20attributeName='height'%20begin='0s'%20dur='1.2s'%20values='20;80;20'%20repeatCount='indefinite'/%3e%3c/rect%3e%3crect%20x='15'%20width='10'%20height='50'%20rx='3'%3e%3canimate%20attributeName='height'%20begin='0.2s'%20dur='1.2s'%20values='50;80;50'%20repeatCount='indefinite'/%3e%3c/rect%3e%3crect%20x='30'%20width='10'%20height='30'%20rx='3'%3e%3canimate%20attributeName='height'%20begin='0.4s'%20dur='1.2s'%20values='30;80;30'%20repeatCount='indefinite'/%3e%3c/rect%3e%3crect%20x='45'%20width='10'%20height='60'%20rx='3'%3e%3canimate%20attributeName='height'%20begin='0.6s'%20dur='1.2s'%20values='60;80;60'%20repeatCount='indefinite'/%3e%3c/rect%3e%3c/g%3e%3c/svg%3e"
+                                style="width: 40px; display: block; margin: 0 auto 15px auto;">
+                            <p style="margin: 0; font-size: 14px; color: #555;">Mohon tunggu sebentar</p>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                });
 
-        setTimeout(() => {
-            window.location.href = '/installations/' + id;
-        }, 900);
-    }
-</script>
+                setTimeout(() => {
+                    window.location.href = '/installations/' + data.id;
+                }, 900);
+            }
+        });
+    </script>
+@endsection

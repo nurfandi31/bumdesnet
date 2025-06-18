@@ -23,6 +23,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
+        
+        .responsive {
+            box-shadow: none;
+        }
         .tt-menu {
             background-color: #f0f0f0;
             border: 1px solid #a50000;
@@ -171,15 +175,21 @@
         integrity="sha512-+UiyfI4KyV1uypmEqz9cOIJNwye+u+S58/hSwKEAeUMViTTqM9/L4lqu8UxJzhmzGpms8PzFJDzEqXL9niHyjA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
-            $(function () {
-                const table = $('.table').DataTable();
-        
-                $(document).on('change', '.table', function () {
-                    table.rows().data().each((v, i) => {
-                        console.log("Row " + i + ":", v);
-                    });
-                });
-            });
+            function setAjaxDatatable(target,url, columns) {
+                return $(target).DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: url,
+                    },
+                    columns: columns,
+                    responsive: true,
+                })
+            }
+
+            function setDataTable(target) {
+                return $(target).DataTable()
+            }
         </script>        
         
     @if (Session::get('success'))

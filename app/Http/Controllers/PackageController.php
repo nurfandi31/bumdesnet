@@ -18,19 +18,28 @@ use App\Utils\Keuangan;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
 
 class PackageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $business_id = Session::get('business_id');
-        $packages = Package::where('business_id', Session::get('business_id'))->get();
+        if ($request->ajax()) {
+            $business_id = Session::get('business_id');
 
-        $title = 'Data Paket';
-        return view('paket.index')->with(compact('title', 'packages'));
+            return DataTables::eloquent(
+                Package::where('business_id', $business_id)
+            )
+                ->editColumn('harga', fn ($row) => number_format($row->harga, 2))
+                ->editColumn('abodemen', fn ($row) => number_format($row->abodemen, 2))
+                ->editColumn('denda', fn ($row) => number_format($row->denda, 2))
+                ->toJson();
+        }
+
+        return view('paket.index', ['title' => 'Data Paket']);
     }
 
     /**

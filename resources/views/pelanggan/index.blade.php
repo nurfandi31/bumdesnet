@@ -34,26 +34,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($customers as $customer)
-                                <tr>
-                                    <td>{{ $customer->nik }}</td>
-                                    <td>{{ $customer->nama }}</td>
-                                    <td>{{ $customer->alamat }}</td>
-                                    <td>{{ $customer->hp }}</td>
-                                    <td>{{ $customer->email }}</td>
-                                    <td>
-                                        <div class="d-flex flex-wrap gap-1">
-                                            <a href="/customers/{{ $customer->id }}/edit" class="btn btn-warning btn-sm">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </a>
-                                            <a href="#" data-id="{{ $customer->id }}"
-                                                class="btn btn-danger btn-sm Hapus_pelanggan">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -79,7 +59,51 @@
             });
         </script>
     @endif
+    <script>
+        let table = setAjaxDatatable('#cater', '{{ url('caters') }}', [{
+                data: 'nik',
+                name: 'nik'
+            },
+            {
+                data: 'nama',
+                name: 'nama'
+            },
+            {
+                data: 'alamat',
+                name: 'alamat'
+            },
+            {
+                data: 'hp',
+                name: 'hp'
+            },
+            {
+                data: 'email',
+                name: 'email'
+            },
+            {
+                data: 'aksi',
+                name: 'aksi',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row, meta) {
+                    return `
+                    <div class="d-flex flex-wrap gap-1">
+                        <a href="/customers/${data}/edit" class="btn btn-warning btn-sm">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                        <a href="#" data-id="${data}" class="btn btn-danger btn-sm Hapus_pelanggan">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                `;
+                }
+            }
+        ]);
 
+        $(document).on('change', '.set-table', function() {
+            table.ajax.reload();
+        });
+    </script>
     <script>
         //hapus pelangan
         $(document).on('click', '.Hapus_pelanggan', function(e) {

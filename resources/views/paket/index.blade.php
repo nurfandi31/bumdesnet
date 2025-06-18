@@ -20,47 +20,27 @@
     <div class="page-heading">
         <section class="section">
             <div class="card">
-                <div class="card-header p-2 pe-3 pb-2 ps-2 pt-3">
-                    <div class="col-12 d-flex justify-content-end">
+                <div class="card-body">
+                    <div class="col-12 d-flex justify-content-end pb-3">
                         <button type="button" class="btn btn-primary block btn-create">
                             Tambah Paket Baru
                         </button>
                     </div>
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped" id="table1">
-                        <thead class="thead-light">
-                            <div>&nbsp;</div>
-                            <tr>
-                                <th>KELAS</th>
-                                <th>HARGA</th>
-                                <th>ABODEMEN</th>
-                                <th>DENDA</th>
-                                <th style="text-align: center;">AKSI</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($packages as $paket)
+                    <div class="table-responsive responsive p-2 ">
+                        <table class="table table-striped" id="packages">
+                            <thead class="thead-light">
                                 <tr>
-                                    <td>{{ $paket->kelas }}</td>
-                                    <td>{{ number_format($paket->harga, 2) }}</td>
-                                    <td>{{ number_format($paket->abodemen, 2) }}</td>
-                                    <td>{{ number_format($paket->denda, 2) }}</td>
-                                    <td style="text-align: center; display: flex; gap: 5px; justify-content: center;">
-                                        <a href="#" data-id="{{ $paket->id }}"
-                                            class="btn btn-warning btn-sm btn-edit">
-                                            <i class="fas fa-pencil-alt"></i>
-                                        </a>
-
-                                        <a href="#" data-id="{{ $paket->id }}"
-                                            class="btn-sm btn btn-danger mx-1 Hapus_paket">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
-                                    </td>
+                                    <th>KELAS</th>
+                                    <th>HARGA</th>
+                                    <th>ABODEMEN</th>
+                                    <th>DENDA</th>
+                                    <th style="text-align: center;">AKSI</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
@@ -75,6 +55,47 @@
 @endsection
 
 @section('script')
+    <script>
+        let table = setAjaxDatatable('#packages', '{{ url('packages') }}', [{
+                data: 'kelas',
+                name: 'kelas'
+            },
+            {
+                data: 'harga',
+                name: 'harga'
+            },
+            {
+                data: 'abodemen',
+                name: 'abodemen'
+            },
+            {
+                data: 'denda',
+                name: 'denda'
+            },
+            {
+                data: 'id',
+                name: 'aksi',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row, meta) {
+                    return `
+                    <div style="display: flex; gap: 5px; justify-content: center;">
+                        <a href="#" data-id="${data}" class="btn btn-warning btn-sm btn-edit">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                        <a href="#" data-id="${data}" class="btn btn-danger btn-sm Hapus_paket">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                `;
+                }
+            }
+        ]);
+        $(document).on('change', '.set-table', function() {
+            table.ajax.reload();
+        });
+    </script>
+
     <script>
         $("#harga").maskMoney({
             allowNegative: true
@@ -136,18 +157,24 @@
         $(document).on('click', '.btn-edit', function(e) {
             e.preventDefault();
 
-            var id = $(this).data('id');
+            const id = $(this).data('id');
             $.get('/packages/' + id + '/edit', function(result) {
                 if (result.success) {
-                    var data = result.data;
-                    var form = $('#modalPaket');
+                    const data = result.data;
+                    const form = $('#modalPaket');
                     form.attr('action', '/packages/' + id);
                     form.find('input[name="_method"]').val('PUT');
 
+                    const formatRupiah = new Intl.NumberFormat('id-ID', {
+                        style: 'decimal',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+
                     $('#kelas').val(data.kelas);
-                    $('#harga').val(data.harga);
-                    $('#abodemen').val(data.abodemen);
-                    $('#denda').val(data.denda);
+                    $('#harga').val(formatRupiah.format(data.harga));
+                    $('#abodemen').val(formatRupiah.format(data.abodemen));
+                    $('#denda').val(formatRupiah.format(data.denda));
 
                     $('#border-less').modal('show');
                 }

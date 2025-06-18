@@ -10,19 +10,32 @@ use Illuminate\Http\Response;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
 
 class VillageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $villages = Village::where('kategori', '!=', 0)->get();
+        if ($request->ajax()) {
+            return DataTables::eloquent(
+                Village::select([
+                    'id',
+                    'kode',
+                    'nama',
+                    'dusun',
+                    'alamat',
+                    'hp'
+                ])
+            )
+                ->addColumn('aksi', function ($row) {
+                    return $row->id;
+                })->toJson();
+        }
 
-
-        $title = 'Data Desa';
-        return view('desa.index')->with(compact('title', 'villages'));
+        return view('desa.index', ['title' => 'Data Desa']);
     }
 
     /**
@@ -201,8 +214,15 @@ class VillageController extends Controller
      */
     public function update(Request $request, Village $village)
     {
-        // Validasi input
-        $validasi = [
+        $data = $request->only([
+            "kode",
+            "nama",
+            "dusun",
+            "alamat",
+            "hp"
+        ]);
+
+        $rules = [
             'kode' => 'required',
             'nama' => 'required',
             'dusun' => 'required',
@@ -210,7 +230,10 @@ class VillageController extends Controller
             'hp' => 'required'
         ];
 
-        $this->validate($request, $validasi);
+        $validate = Validator::make($data, $rules);
+        if ($validate->fails()) {
+            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+        }
 
         // Update data 
         Village::where('id', $village->id)->update([

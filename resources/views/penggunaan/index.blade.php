@@ -100,6 +100,76 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="CetakBuktiTagihan" tabindex="-1" aria-labelledby="CetakBuktiTagihanLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form action="/usages/cetak" method="post" id="FormCetakBuktiTagihan" target="_blank">
+                        @csrf
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="mb-1 small">
+                                    <strong>Cater</strong>: <span id="NamaCater"></span>
+                                </div>
+                                <div class="small">
+                                    <strong>Maksimal Bayar</strong>: <span id="TanggalCetak"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <table id="TbTagihan" class="table table-bordered table-striped align-middle">
+                                    <thead class="table-dark text-center">
+                                        <tr>
+                                            <th class="align-middle text-center">
+                                                <div class="form-check d-flex justify-content-center">
+                                                    <input class="form-check-input" type="checkbox" id="checked"
+                                                        name="checked" checked>
+                                                </div>
+                                            </th>
+                                            <th>Nama</th>
+                                            <th>Desa</th>
+                                            <th>RT</th>
+                                            <th>No. Induk</th>
+                                            <th>Meter Awal</th>
+                                            <th>Meter Akhir</th>
+                                            <th>Pemakaian</th>
+                                            <th>Tagihan Air</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form action="/usages/cetak_input" method="post" id="FormCetakBonggol" target="_blank" class="d-none">
+                        @csrf
+                        <div id="formbonggol"></div>
+                    </form>
+                    <form action="/usages/cetak_tagihan" method="post" id="FormCetakTagihan" target="_blank"
+                        class="d-none">
+                        @csrf
+                        <div id="form"></div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div class="text-muted small">
+                        Total pelanggan: <span id="TotalPelanggan">0</span>
+                    </div>
+                    <div>
+                        <button type="button" id="BtnCetak1" class="btn btn-sm btn-dark">Cetak Daftar Tagihan</button>
+                        <button type="button" id="BtnCetak" class="btn btn-sm btn-info text-white">Cetak Struk</button>
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <form action="" method="post" id="FormHapusPemakaian">
         @method('DELETE')
         @csrf
@@ -107,70 +177,126 @@
 @endsection
 @section('script')
     <script>
-        let table;
+        // Datatable
+        let Table = setDataTable('#TbTagihan')
+        let table = setAjaxDatatable('#table1', '{{ url('usages') }}', [{
+                data: "customers.nama"
+            },
+            {
+                data: "kode_instalasi_dengan_inisial"
+            },
+            {
+                data: "awal"
+            },
+            {
+                data: "akhir"
+            },
+            {
+                data: "jumlah"
+            },
+            {
+                data: "nominal"
+            },
+            {
+                data: "tgl_akhir"
+            },
+            {
+                data: "status",
+                render: function(data, type, row) {
+                    if (data == 'UNPAID') {
+                        return '<span class="badge bg-warning">Unpaid</span>';
+                    } else if (data == 'PAID') {
+                        return '<span class="badge bg-success">Paid</span>';
+                    }
+                }
+            }
+        ])
 
-        function loadTable() {
+        $(document).on('change', '.set-table', function() {
             const cater = $('#caters').val();
             const bulan = $('#bulan').val();
 
-            if (table) {
-                table.destroy();
-                $('#table1 tbody').empty();
-            }
+            table.ajax.url('/usages?cater=' + cater + '&bulan=' + bulan).load();
+        })
+    </script>
+    <script>
+        $(document).on('click', '#DetailCetakBuktiTagihan', function() {
+            fetchAllDataFullAndShowModal();
+        });
+        $(document).on('change', '#checked', function() {
+            const isChecked = $(this).is(':checked');
+            $('#TbTagihan tbody input[type="checkbox"]').prop('checked', isChecked);
+        });
 
-            table = $('#table1').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: '{{ url('usages') }}',
-                    data: {
-                        cater: cater,
-                        bulan: bulan
-                    }
+        function fetchAllDataFullAndShowModal() {
+            $.ajax({
+                url: "/usages",
+                type: "GET",
+                data: {
+                    bulan: $('#bulan').val(),
+                    cater: $('#caters').val(),
                 },
-                columns: [{
-                        data: "customers.nama"
-                    },
-                    {
-                        data: "kode_instalasi_dengan_inisial"
-                    },
-                    {
-                        data: "awal"
-                    },
-                    {
-                        data: "akhir"
-                    },
-                    {
-                        data: "jumlah"
-                    },
-                    {
-                        data: "nominal"
-                    },
-                    {
-                        data: "tgl_akhir"
-                    },
-                    {
-                        data: "status",
-                        render: function(data, type, row) {
-                            if (data === 'UNPAID') {
-                                return '<span class="badge bg-warning">Unpaid</span>';
-                            } else if (data === 'PAID') {
-                                return '<span class="badge bg-success">Paid</span>';
-                            }
-                        }
+                success: function(response) {
+                    const fullData = response.data || response;
+
+                    if (fullData.length > 0) {
+                        const caterText = $('#caters option:selected').text();
+                        const tanggal = fullData[0].tgl_akhir;
+                        const tgl = tanggal.split('/');
+                        const hari = tgl[0] - 1;
+
+                        $('#NamaCater').text(caterText);
+                        $('#TanggalCetak').text(`${hari}/${tgl[1]}/${tgl[2]}`);
+                        $('#TotalPelanggan').text(fullData.length);
                     }
-                ],
-                responsive: true,
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+
+                    setTableData('#TbTagihan', fullData);
+                    $('#CetakBuktiTagihan').modal('show');
+                },
+                error: function() {
+                    alert('Gagal mengambil data lengkap');
                 }
             });
         }
 
-        $(document).on('change', '.set-table', function() {
-            loadTable()
-        })
+        function setTableData(target, data) {
+            Table.destroy();
+            var $tbody = $(target).find('tbody');
+            $tbody.empty();
 
-        loadTable()
+            const groupedByDusun = {};
+            data.forEach(item => {
+                const dusun = item.installation.village.dusun || 'Lainnya';
+                if (!groupedByDusun[dusun]) groupedByDusun[dusun] = [];
+                groupedByDusun[dusun].push(item);
+            });
+
+            const sortedDusun = Object.keys(groupedByDusun).sort();
+
+            sortedDusun.forEach(dusun => {
+                groupedByDusun[dusun].forEach(item => {
+                    $tbody.append(`
+                <tr>
+                    <td align="center">
+                        <div class="form-check ps-5 mb-0">
+                            <input checked class="form-check-input" type="checkbox" value="${item.id}" id="${item.id}" name="cetak[]" data-input="checked" data-bulan="${item.bulan}">
+                        </div>
+                    </td>
+                    <td>${item.customers.nama}</td>
+                    <td>${item.installation.village.nama}</td>
+                    <td class="text-center">${item.installation.rt}</td>
+                    <td class="text-center">${item.installation.kode_instalasi} ${item.installation.package.kelas.charAt(0)}</td>
+                    <td class="text-center">${item.awal}</td>
+                    <td class="text-center">${item.akhir}</td>
+                    <td class="text-center">${item.jumlah}</td>
+                    <td class="text-end">${item.nominal}</td>
+                    <td class="text-center">${item.status}</td>
+                </tr>
+            `);
+                });
+            });
+
+            Table = setDataTable(target);
+        }
     </script>
 @endsection

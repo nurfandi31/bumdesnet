@@ -21,43 +21,22 @@
         <section class="section">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-striped" id="table1">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>Kode</th>
-                                <th>Desa/Kalurahan</th>
-                                <th>Dusun/Pedukuhan</th>
-                                <th>Alamat</th>
-                                <th>Telpon</th>
-                                <th style="text-align: center;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($villages as $village)
+                    <div class="table-responsive responsive p-2">
+                        <table class="table table-striped" id="desa">
+                            <thead class="thead-light">
                                 <tr>
-                                    <td>{{ $village->kode }}</td>
-                                    <td>{{ $village->nama }}</td>
-                                    <td>{{ $village->dusun }}</td>
-                                    <td style="padding: 3px; word-wrap: break-word; max-width: 200px;">
-                                        {{ $village->alamat }}
-                                    </td>
-                                    <td>{{ $village->hp }}</td>
-                                    <td>
-                                        <div class="d-flex flex-wrap gap-1">
-
-                                            <a href="/villages/{{ $village->id }}/edit" class="btn btn-warning btn-sm">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </a>
-                                            <a href="#" data-id="{{ $village->id }}"
-                                                class="btn btn-danger btn-sm mx-1 Hapus_desa"><i
-                                                    class="fas fa-trash-alt"></i>
-                                            </a>
-                                        </div>
-                                    </td>
+                                    <th>Kode</th>
+                                    <th>Desa/Kalurahan</th>
+                                    <th>Dusun/Pedukuhan</th>
+                                    <th>Alamat</th>
+                                    <th>Telpon</th>
+                                    <th style="text-align: center;">Aksi</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
@@ -70,12 +49,6 @@
 @endsection
 
 @section('script')
-    <script>
-        $(document).ready(function() {
-            $('#TbDesa').DataTable(); // ID From dataTable 
-        });
-    </script>
-
     @if (session('jsedit'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -87,6 +60,51 @@
             });
         </script>
     @endif
+    <script>
+        let table = setAjaxDatatable('#desa', '{{ url('villages') }}', [{
+                data: 'kode',
+                name: 'kode'
+            },
+            {
+                data: 'nama',
+                name: 'nama'
+            },
+            {
+                data: 'dusun',
+                name: 'dusun'
+            },
+            {
+                data: 'alamat',
+                name: 'alamat'
+            },
+            {
+                data: 'hp',
+                name: 'hp'
+            },
+            {
+                data: 'aksi',
+                name: 'aksi',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row, meta) {
+                    return `
+                <div style="display: flex; gap: 5px; justify-content: center;">
+                    <a href="/villages/${data}/edit" class="btn btn-warning btn-sm btn-edit">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <a href="#" data-id="${data}" class="btn btn-danger btn-sm Hapus_desa">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </div>
+            `;
+                }
+            }
+        ]);
+
+        $(document).on('change', '.set-table', function() {
+            table.ajax.reload();
+        });
+    </script>
 
     <script>
         $(document).on('click', '.Hapus_desa', function(e) {

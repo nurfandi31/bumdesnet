@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Yajra\DataTables\DataTables;
+use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
 
 class UsageController extends Controller
@@ -37,13 +37,13 @@ class UsageController extends Controller
             $pengaturan = Settings::where('business_id', Session::get('business_id'));
             $trx_settings = $pengaturan->first();
 
-            $usages = Usage::where([
-                ['business_id', Session::get('business_id')],
-                ['tgl_pemakaian', 'LIKE', $tgl_pakai . '%']
+            $usages = Usage::select('usages.*')->where([
+                ['usages.business_id', Session::get('business_id')],
+                ['usages.tgl_pemakaian', 'LIKE', $tgl_pakai . '%']
             ]);
 
             if ($caterId != '') {
-                $usages->where('cater', $caterId);
+                $usages = $usages->where('usages.cater', $caterId);
             }
 
             $usages = $usages->with([
@@ -55,9 +55,9 @@ class UsageController extends Controller
                 'installation.village',
                 'usersCater',
                 'installation.package'
-            ])->orderBy('created_at', 'DESC')->get();
-            Session::put('usages', $usages);
-            return DataTables::of($usages)
+            ])->orderBy('created_at', 'DESC');
+            // Session::put('usages', $usages);
+            return DataTables::eloquent($usages)
                 ->addColumn('kode_instalasi_dengan_inisial', function ($usage) {
                     $kode = $usage->installation->kode_instalasi ?? '-';
                     $inisial = $usage->installation->package->inisial ?? '';
