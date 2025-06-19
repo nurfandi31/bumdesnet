@@ -38,7 +38,6 @@
                                         </a>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -60,7 +59,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -85,7 +83,6 @@
 
     <form action="/transactions/hapus" method="post" id="formHapus">
         @csrf
-
         <input type="hidden" name="del_id" id="del_id">
         <input type="hidden" name="del_istal_id" id="del_istal_id">
     </form>

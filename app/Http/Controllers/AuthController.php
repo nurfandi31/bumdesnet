@@ -77,13 +77,20 @@ class AuthController extends Controller
             User::where('id', $user->id)->update([
                 'auth_token' => $auth_token,
             ]);
+            $menu = Menu::where('parent_id', '0')
+                ->where('status', 'A')
+                ->whereNotIn('id', json_decode($user->akses_menu, true))
+                ->with([
+                    'child' => function ($query) use ($user) {
+                        $query->where('status', 'A')
+                            ->whereNotIn('id', json_decode($user->akses_menu, true));
+                    },
+                    'child.subchild' => function ($query) {
+                        $query->where('status', 'A');
+                    }
+                ])
+                ->get();
 
-            $menu = Menu::where('parent_id', '0')->whereNotIn('id', json_decode($user->akses_menu, true))->with([
-                'child' => function ($query) use ($user) {
-                    $query->whereNotIn('id', json_decode($user->akses_menu, true));
-                },
-                'child.subchild'
-            ])->get();
 
             $request->session()->regenerate();
             session([

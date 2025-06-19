@@ -25,8 +25,7 @@
                                     <p class="text-small">
                                         {{ $installation->village->nama }} {{ $installation->alamat }}</p>
                                 </div>
-                                <hr>
-                                <div class="row">
+                                <div class="row p-2">
                                     <div class="col-md-12">
                                         <div class="position-relative mb-3">
                                             <label for="aktif">Tanggal Aktivasi</label>
@@ -42,18 +41,6 @@
                                                 id="kode_instalasi"
                                                 value="{{ number_format($tampil_settings->pasang_baru, 2) }}" disabled>
                                             <small class="text-info" id="msg_kode_instalasi"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="position-relative mb-3">
-                                            <label for="biaya_instalasi">Status Pembayaran</label>
-                                            @if (number_format($trx, 2) == number_format($installation->biaya_instalasi, 2))
-                                                <input type="text" class="form-control" value="PAID" disabled>
-                                                <small class="text-info" id="msg_biaya_instalasi"></small>
-                                            @else
-                                                <input type="text" class="form-control" value="UNPAID" disabled>
-                                                <small class="text-info" id="msg_biaya_instalasi"></small>
-                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -96,22 +83,9 @@
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Status</span>
-                                            @if (number_format($trx) == number_format($installation->biaya_instalasi))
-                                                <span class="badge bg-success badge-pill badge-round ms-1">PASANG</span>
-                                            @endif
+                                            <span class="badge bg-success badge-pill badge-round ms-1">PASANG</span>
                                         </li>
                                     </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body pb-2 pt-2 pe-2 ps-2">
-                                    <div class="d-flex gap-2">
-                                        <button id="cetakBrcode" class="btn btn-info btn-icon-split flex-fill">
-                                            <span class="text-white">Cetak Pemakaian</span>
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -1176,6 +1176,7 @@ class TransactionController extends Controller
             "denda",
             "abodemen"
         ]);
+        dd($data);
 
         $data['tagihan'] = str_replace(',', '', $data['tagihan']);
         $data['tagihan'] = str_replace('.00', '', $data['tagihan']);
@@ -1243,7 +1244,6 @@ class TransactionController extends Controller
             $rek_denda = $kode_denda->id;
         }
 
-
         $trx_id = substr(password_hash($usage->id, PASSWORD_DEFAULT), 7, 6);
 
         if ($data['abodemen'] != 0) {
@@ -1296,12 +1296,12 @@ class TransactionController extends Controller
         }
 
         if ($usage->installation->status_tunggakan) {
-            // SPS
+            // Menunggak
         }
 
         Transaction::insert($insert);
 
-        if ($biaya_instalasi  >= $biaya_tagihan) {
+        if ($biaya_instalasi  == $biaya_tagihan) {
             Usage::where('business_id', Session::get('business_id'))->where('id', $request->id_usage)->update([
                 'status' => 'PAID',
             ]);

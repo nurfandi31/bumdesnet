@@ -26,8 +26,7 @@
                                     <p class="text-small">
                                         {{ $installation->village->nama }} {{ $installation->alamat }}</p>
                                 </div>
-                                <hr>
-                                <div class="row">
+                                <div class="row p-2">
                                     <div class="col-md-12">
                                         <div class="position-relative mb-3">
                                             <label for="cabut">Tentukan Tanggal Cabut</label>
@@ -41,14 +40,6 @@
                                             <label for="kode_instalasi">Nik</label>
                                             <input type="text" class="form-control" name="kode_instalasi"
                                                 id="kode_instalasi" value="{{ $installation->customer->nik }}" disabled>
-                                            <small class="text-danger" id="msg_kode_instalasi"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="position-relative mb-3">
-                                            <label for="kode_instalasi">desa</label>
-                                            <input type="text" class="form-control" name="kode_instalasi"
-                                                id="kode_instalasi" value="{{ $installation->village->nama }}" disabled>
                                             <small class="text-danger" id="msg_kode_instalasi"></small>
                                         </div>
                                     </div>
@@ -99,17 +90,6 @@
                                             @endif
                                         </li>
                                     </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body pb-2 pt-2 pe-2 ps-2">
-                                    <div class="d-flex gap-2">
-                                        <button id="cetakBrcode" class="btn btn-info btn-icon-split flex-fill">
-                                            <span class="text-white">Cetak Pemakaian</span>
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>

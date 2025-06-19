@@ -24,38 +24,33 @@
 
                                     <h4 class="mt-3">{{ $installation->customer->nama }}</h4>
                                     <p class="text-small">
-                                        {{ $installation->village->nama }} {{ $installation->alamat }}</p>
+                                        {{ $installation->kode_instalasi }}
+                                        {{ substr($installation->package->kelas, 0, 1) }}</p>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="position-relative mb-3">
-                                            <label for="aktif">Tanggal Aktivasi</label>
-                                            <input type="text" class="form-control date" name="aktif" id="aktif"
-                                                value="{{ \Carbon\Carbon::parse($installation->aktif)->format('d-m-Y') }}"
-                                                disabled>
-                                            <small class="text-info" id="msg_aktif"></small>
+                                            <label for="">Nik</label>
+                                            <input type="text" class="form-control date" name="" id=""
+                                                value="{{ $installation->customer->nik }}" disabled>
+                                            <small class="text-info" id="msg_"></small>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="position-relative mb-3">
-                                            <label for="kode_instalasi">Biaya Pemasangan baru</label>
-                                            <input type="text" class="form-control date" name="kode_instalasi"
-                                                id="kode_instalasi"
-                                                value="{{ number_format($tampil_settings->pasang_baru, 2) }}" disabled>
-                                            <small class="text-info" id="msg_kode_instalasi"></small>
+                                            <label for="">Pekerjaan</label>
+                                            <input type="text" class="form-control date" name="" id=""
+                                                value="{{ $installation->customer->pekerjaan }}" disabled>
+                                            <small class="text-info" id="msg_"></small>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="position-relative mb-3">
-                                            <label for="biaya_instalasi">Status Pembayaran</label>
-                                            @if (number_format($trx, 2) == number_format($installation->biaya_instalasi, 2))
-                                                <input type="text" class="form-control" value="PAID" disabled>
-                                                <small class="text-info" id="msg_biaya_instalasi"></small>
-                                            @else
-                                                <input type="text" class="form-control" value="UNPAID" disabled>
-                                                <small class="text-info" id="msg_biaya_instalasi"></small>
-                                            @endif
+                                            <label for="biaya_instalasi">E-mail</label>
+                                            <input type="text" class="form-control date" name="" id=""
+                                                value="{{ $installation->customer->email }}" disabled>
+                                            <small class="text-info" id="msg_"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -71,35 +66,34 @@
                                 <div class="card-body">
                                     <ul class="list-group">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>No. Induk</span>
-                                            <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ $installation->kode_instalasi }}
-                                                {{ substr($installation->package->kelas, 0, 1) }}</span>
+                                            <span>Desa</span>
+                                            <span style="background-color: #A9DFBF; color: #145A32;"
+                                                class="badge badge-pill badge-round ms-1">{{ $installation->village->nama }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>Tgl Order</span>
-                                            <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ \Carbon\Carbon::parse($installation->order)->format('d-m-Y') }}</span>
+                                            <span>koordinate</span>
+                                            <span style="background-color: #A9DFBF; color: #145A32;"
+                                                class="badge badge-pill badge-round ms-1">{{ $installation->koordinate }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>Tgl Pasang</span>
-                                            <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ \Carbon\Carbon::parse($installation->pasang)->format('d-m-Y') }}</span>
+                                            <span>Tgl Aktivasi</span>
+                                            <span style="background-color: #A9DFBF; color: #145A32;"
+                                                class="badge badge-pill badge-round ms-1">{{ \Carbon\Carbon::parse($installation->aktif)->format('d-m-Y') }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span> Paket Instalasi</span>
-                                            <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ $installation->package->kelas }}</span>
+                                            <span style="background-color: #A9DFBF; color: #145A32;"
+                                                class="badge badge-pill badge-round ms-1">{{ $installation->package->kelas }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>Abodemen</span>
-                                            <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ number_format($installation->abodemen, 2) }}</span>
+                                            <span>Status Pemakaian</span>
+                                            <span style="background-color: #A9DFBF; color: #145A32;"
+                                                class="badge badge-pill badge-round ms-1">{{ $installation->status_tunggakan }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>Status</span>
+                                            <span>Status Instalasi</span>
                                             @if ($installation->status === 'A')
-                                                <span class="badge bg-info">
+                                                <span style="background-color: #A9DFBF; color: #145A32;" class="badge">
                                                     Aktif
                                                 </span>
                                             @endif
@@ -113,7 +107,10 @@
                                 <div class="card-body pb-2 pt-2 pe-2 ps-2">
                                     <div class="d-flex gap-2">
                                         <button id="cetakBrcode" class="btn btn-info btn-icon-split flex-fill">
-                                            <span class="text-white">Cetak Pemakaian</span>
+                                            <span class="text-white">Cetak Struk Tagihan</span>
+                                        </button>
+                                        <button id="suratTagihan" class="btn btn-primary btn-icon-split flex-fill">
+                                            <span class="text-white">Cetak Surat Tagihan</span>
                                         </button>
                                     </div>
                                 </div>
@@ -149,7 +146,11 @@
     <script>
         $(document).on('click', '#cetakBrcode', function(e) {
             e.preventDefault();
-            window.open('/installations/cetak/{{ $installation->id }}', '_blank');
+            window.open('/installations/struk_Tagihan/{{ $installation->id }}', '_blank');
+        });
+        $(document).on('click', '#suratTagihan', function(e) {
+            e.preventDefault();
+            window.open('/installations/surat_tagihan/{{ $installation->id }}', '_blank');
         });
 
         $("#total").maskMoney({
@@ -261,9 +262,9 @@
                 icon: 'question',
                 html: `
             <p style="text-align: center;">
-                Pemakaian layanan atas nama <b style="color: orange;">{{ $installation->customer->nama }}</b> 
+                layanan atas nama <b style="color: orange;">{{ $installation->customer->nama }}</b> 
                 akan dihentikan, dan status pelanggan akan diperbarui menjadi 
-                <b class="text-dark">Blokir</b>.
+                <b class="text-dark">Blokir</b>, sehingga aktivitas Pemakaian Internet akan dihentikan.
             </p>
             <div class="text-content mt-3">
                 <label class="form-label fw-semibold mb-1">Tentukan Tanggal Blokir:</label>

@@ -103,6 +103,8 @@ Route::middleware(['auth', 'auth.token'])->group(function () {
     Route::get('/installations/cater/{cater_id?}', [InstallationsController::class, 'list']);
     Route::get('/installations/jenis_paket/{id}', [InstallationsController::class, 'jenis_paket']);
     Route::get('/installations/kode_instalasi', [InstallationsController::class, 'kode_instalasi']);
+    Route::get('/installations/struk_Tagihan/{installation}', [InstallationsController::class, 'strukTagihan']);
+    Route::get('/installations/surat_tagihan/{installation}', [InstallationsController::class, 'surat_tagihan']);
     Route::get('/installations/cetak/{installation}', [InstallationsController::class, 'cetak_pemakaian']);
 
     Route::get('/installations/CariPelunasan_Instalasi', [InstallationsController::class, 'CariPelunasanInstalasi']);

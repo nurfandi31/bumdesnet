@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use Yajra\DataTables\Facades\DataTables;
 
 class InstallationsController extends Controller
@@ -85,11 +86,14 @@ class InstallationsController extends Controller
                     'kode_instalasi',
                     'desa',
                     'customer_id',
+                    'package_id',
+                    'cater_id',
                     'aktif',
                     'status'
                 ])->where('business_id', $business_id)->where('status', 'A')->with([
                     'customer',
                     'package',
+                    'users',
                     'village'
                 ])
             )->make(true);
@@ -702,7 +706,53 @@ class InstallationsController extends Controller
         $qr = QrCode::generate($installation->id);
         return view('perguliran.partials.DetailCopot')->with(compact('installation', 'tampil_settings', 'trx', 'qr'));
     }
+    public function surat_tagihan(Installations $installation)
+    {
+        $data['installation'] = $installation;
+        $data['bisnis'] = Business::where('id', Session::get('business_id'))->first();
+        $data['usages'] = Usage::where('id_instalasi', $installation->id)->where('status', 'UNPAID')->get();
+        $data['title'] = 'Surat Tagihan';
+        $view = view('perguliran.document.surat_tagihan', $data)->render();
+        $pdf = PDF::loadHTML($view)->setOptions([
+            'margin-top'    => 10,
+            'margin-bottom' => 20,
+            'margin-left'   => 25,
+            'margin-right'  => 20,
+            'enable-local-file-access' => true,
+        ]);
+        return $pdf->inline();
+    }
 
+    public function strukTagihan(Installations $installation)
+    {
+        $keuangan = new Keuangan;
+        $id = $installation->id;
+        $data['bisnis'] = Business::where('id', Session::get('business_id'))->first();
+        $data['usage'] = Usage::where('business_id', Session::get('business_id'))
+            ->whereIn('id_instalasi', [$id])->with(
+                'customers',
+                'installation',
+                'usersCater',
+                'installation.package'
+            )->get();
+        $data['jabatan'] = User::where([
+            ['business_id', Session::get('business_id')],
+            ['jabatan', '3']
+        ])->first();
+        $logo = $data['bisnis']->logo;
+        $data['gambar'] = $logo;
+        $data['keuangan'] = $keuangan;
+
+        $view = view('perguliran.document.struk', $data)->render();
+        $pdf = PDF::loadHTML($view)->setOptions([
+            'margin-top'    => 10,
+            'margin-bottom' => 20,
+            'margin-left'   => 25,
+            'margin-right'  => 20,
+            'enable-local-file-access' => true,
+        ]);
+        return $pdf->inline();
+    }
     public function cetak_pemakaian(Installations $installation)
     {
         $keuangan = new Keuangan;
@@ -722,10 +772,8 @@ class InstallationsController extends Controller
         $data['installation'] = $installation;
         $data['bisnis'] = $bisnis;
 
-        return view('perguliran.partials.cetak', $data);
+        return view('perguliran.document.cetak', $data);
     }
-
-
 
     /**
      * Show the form for editing the specified resource.

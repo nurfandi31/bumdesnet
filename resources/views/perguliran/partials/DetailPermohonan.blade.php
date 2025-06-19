@@ -106,9 +106,6 @@
                                             class="btn btn-warning btn-icon-split flex-fill">
                                             <span class="text-white">Edit Pemakaian</span>
                                         </a>
-                                        <button id="cetakBrcode" class="btn btn-info btn-icon-split flex-fill">
-                                            <span class="text-white">Cetak Pemakaian</span>
-                                        </button>
                                         <a href="#" data-id="{{ $installation->id }}"
                                             class="btn btn-danger btn-icon-split flex-fill Hapus_id">
                                             <span class="text-white">Hapus Pemakaian</span>

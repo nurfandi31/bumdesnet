@@ -117,7 +117,7 @@
             z-index: 3;
         }
 
-        #table1 tbody tr:hover {
+        .table tbody tr:hover {
             background-color: #cce5ff;
             transition: background-color 0.2s ease-in-out;
         }
@@ -191,239 +191,232 @@
                 return $(target).DataTable()
             }
         </script>        
-        
-    @if (Session::get('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Login Berhasil',
-            text: @json(Session::get('success')),
-        }).then((result) => {
-            window.open('/generatepemakaian', '_blank', 'width=500,height=500,top=100,left=100');
-            window.open('/dataset/{{ time() }}', '_blank', 'width=500,height=500,top=100,left=100');
-        });
-
-    </script> @endif
-    <script>
-        setTimeout(function() {
-            window.close();
-        }, 2000);
-    </script>
-
-
-    {{-- Logout --}}
-    <script>
-        $(document).on('click', '#logoutButton', function(e) {
-            e.preventDefault();
-
+        @if (Session::get('success'))
+        <script>
             Swal.fire({
-                title: "Konfirmasi Logout",
-                icon: 'info',
-                showDenyButton: true,
-                confirmButtonText: "Logout",
-                denyButtonText: "Batal",
+                icon: 'success',
+                title: 'Login Berhasil',
+                text: @json(Session::get('success')),
             }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#logoutForm').submit();
-                }
+                window.open('/generatepemakaian', '_blank', 'width=500,height=500,top=100,left=100');
+                window.open('/dataset/{{ time() }}', '_blank', 'width=500,height=500,top=100,left=100');
             });
-        })
-    </script>
 
+        </script> @endif
+        <script>
+            setTimeout(function() {
+                window.close();
+            }, 2000);
+        </script>
+        <script>
+            $(document).on('click', '#logoutButton', function(e) {
+                e.preventDefault();
 
-    <script>
-        //property lainya
-        function open_window(link) {
-            return window.open(link)
-        }
-
-        $(document).on('click', '.btn-modal-close', function(e) {
-            e.preventDefault();
-            $('.modal').modal('hide');
-        });
-        $(document).on('click', '.btn-modal-close', function(e) {
-            e.preventDefault();
-            $('.modal').modal('hide');
-        });
-
-        const formatDate = (dateString) => {
-            const date = new Date(dateString);
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-
-            return `${day}/${month}/${year}`;
-        };
-
-        var toastMixin = Swal.mixin({
-            toast: true,
-            icon: 'success',
-            position: 'top-right',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-        });
-    </script>
-    <script>
-        //pelunasan instalasi
-        var numFormat = new Intl.NumberFormat('en-EN', {
-            minimumFractionDigits: 2
-        })
-
-        $('#PelunasanInstalasi').typeahead(null, {
-            source: function(query, syncResults, asyncResults) {
-                $.get('/installations/CariPelunasan_Instalasi', {
-                    query: query
-                }, function(result) {
-                    var states = [];
-                    result.map(function(item) {
-                        if (item.installation.length > 0) {
-                            item.installation.map(function(instal) {
-                                var name = item.nama +
-                                    ' - ' + instal.village
-                                    .nama +
-                                    ' - ' + instal
-                                    .kode_instalasi +
-                                    ' [' + item.nik + ']';
-
-                                states.push({
-                                    name,
-                                    instal,
-                                    nama_customer: item.nama,
-                                })
-                            })
-                        }
-                    });
-                    asyncResults(states);
+                Swal.fire({
+                    title: "Konfirmasi Logout",
+                    icon: 'info',
+                    showDenyButton: true,
+                    confirmButtonText: "Logout",
+                    denyButtonText: "Batal",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#logoutForm').submit();
+                    }
                 });
-            },
+            })
+        </script>
+        <script>
+            //property lainya
+            function open_window(link) {
+                return window.open(link)
+            }
 
-            displayKey: 'name',
-            autoSelect: true,
-            fitToElement: true,
-            items: 10
+            $(document).on('click', '.btn-modal-close', function(e) {
+                e.preventDefault();
+                $('.modal').modal('hide');
+            });
+            $(document).on('click', '.btn-modal-close', function(e) {
+                e.preventDefault();
+                $('.modal').modal('hide');
+            });
 
-        }).bind('typeahead:selected', function(event, item) {
-            var installation = item.instal
-            var NamaCustomer = item.nama_customer
-            var trx = installation.transaction
-            var sum_total = 0;
-            var rekening_debit = 0;
-            var rekening_kredit = 0;
+            const formatDate = (dateString) => {
+                const date = new Date(dateString);
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
 
-            trx.map(function(item) {
-                rekening_debit = item.rekening_debit;
-                rekening_kredit = item.rekening_kredit;
-                sum_total += item.total;
+                return `${day}/${month}/${year}`;
+            };
+
+            var toastMixin = Swal.mixin({
+                toast: true,
+                icon: 'success',
+                position: 'top-right',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        </script>
+        <script>
+            //pelunasan instalasi
+            var numFormat = new Intl.NumberFormat('en-EN', {
+                minimumFractionDigits: 2
             })
 
-            var rek_debit = rekening_debit;
-            var rek_kredit = rekening_kredit;
-            var tagihan = (installation.biaya_instalasi);
+            $('#PelunasanInstalasi').typeahead(null, {
+                source: function(query, syncResults, asyncResults) {
+                    $.get('/installations/CariPelunasan_Instalasi', {
+                        query: query
+                    }, function(result) {
+                        var states = [];
+                        result.map(function(item) {
+                            if (item.installation.length > 0) {
+                                item.installation.map(function(instal) {
+                                    var name = item.nama +
+                                        ' - ' + instal.village
+                                        .nama +
+                                        ' - ' + instal
+                                        .kode_instalasi +
+                                        ' [' + item.nik + ']';
 
-            $("#nama_customer").html(NamaCustomer);
-            $("#installation").val(installation.id);
-            $("#order").html(installation.order);
-            $("#kode_instalasi").html(installation.kode_instalasi);
-            $("#alamat").html(installation.village.nama);
-            $("#package").html(installation.package.kelas);
-            $("#abodemen").val(numFormat.format(installation.abodemen));
-            $("#biaya_sudah_dibayar").val(numFormat.format(sum_total));
-            $("#tagihan").val(numFormat.format(tagihan));
-            $("#pembayaran").val(numFormat.format(tagihan - sum_total));
-            $("#_total").val(numFormat.format(tagihan - sum_total));
-            $("#rek_debit").val(rek_debit);
-            $("#rek_kredit").val(rek_kredit);
-        });
-    </script>
-
-    <script>
-        //Tagihan Bulanan (Aktif)
-        var numFormat = new Intl.NumberFormat('en-EN', {
-            minimumFractionDigits: 2
-        })
-        var dataCustomer;
-
-        $('#TagihanBulanan').typeahead(null, {
-            source: function(query, syncResults, asyncResults) {
-                if (query.length < 2) return;
-
-                $.get('/installations/CariTagihan_bulanan', {
-                    query: query
-                }, function(result) {
-                    const states = [];
-
-                    result.map(function(item) {
-                        const name = item.nama + ' - ' + item.kode_instalasi + ' [' + item
-                            .nik +
-                            ']';
-
-                        states.push({
-                            name,
-                            value: item.kode_instalasi,
-                            item
+                                    states.push({
+                                        name,
+                                        instal,
+                                        nama_customer: item.nama,
+                                    })
+                                })
+                            }
                         });
+                        asyncResults(states);
                     });
-
-                    asyncResults(states);
-                }).fail(function(xhr, status, error) {
-                    console.error("Terjadi kesalahan saat pemanggilan TagihanBulanan:", error);
-                    asyncResults([]);
-                });
-            },
-
-            displayKey: 'name',
-            autoSelect: true,
-            fitToElement: true,
-            items: 10
-        }).bind('typeahead:selected', function(event, selectedItem) {
-            formTagihanBulanan(selectedItem.item);
-        });
-
-        function formTagihanBulanan(installation) {
-            let timerInterval;
-            Swal.fire({
-                title: 'Menyiapkan data...',
-                html: 'Harap tunggu <b></b> ms.',
-                timer: 30000,
-                timerProgressBar: true,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                    const timer = Swal.getPopup().querySelector('b');
-                    timerInterval = setInterval(() => {
-                        timer.textContent = `${Swal.getTimerLeft()}`;
-                    }, 100);
                 },
-                willClose: () => {
-                    clearInterval(timerInterval);
-                }
+
+                displayKey: 'name',
+                autoSelect: true,
+                fitToElement: true,
+                items: 10
+
+            }).bind('typeahead:selected', function(event, item) {
+                var installation = item.instal
+                var NamaCustomer = item.nama_customer
+                var trx = installation.transaction
+                var sum_total = 0;
+                var rekening_debit = 0;
+                var rekening_kredit = 0;
+
+                trx.map(function(item) {
+                    rekening_debit = item.rekening_debit;
+                    rekening_kredit = item.rekening_kredit;
+                    sum_total += item.total;
+                })
+
+                var rek_debit = rekening_debit;
+                var rek_kredit = rekening_kredit;
+                var tagihan = (installation.biaya_instalasi);
+
+                $("#nama_customer").html(NamaCustomer);
+                $("#installation").val(installation.id);
+                $("#order").html(installation.order);
+                $("#kode_instalasi").html(installation.kode_instalasi);
+                $("#alamat").html(installation.village.nama);
+                $("#package").html(installation.package.kelas);
+                $("#abodemen").val(numFormat.format(installation.abodemen));
+                $("#biaya_sudah_dibayar").val(numFormat.format(sum_total));
+                $("#tagihan").val(numFormat.format(tagihan));
+                $("#pembayaran").val(numFormat.format(tagihan - sum_total));
+                $("#_total").val(numFormat.format(tagihan - sum_total));
+                $("#rek_debit").val(rek_debit);
+                $("#rek_kredit").val(rek_kredit);
+            });
+        </script>
+        <script>
+            //Tagihan Bulanan (Aktif)
+            var numFormat = new Intl.NumberFormat('en-EN', {
+                minimumFractionDigits: 2
+            })
+            var dataCustomer;
+
+            $('#TagihanBulanan').typeahead(null, {
+                source: function(query, syncResults, asyncResults) {
+                    if (query.length < 2) return;
+
+                    $.get('/installations/CariTagihan_bulanan', {
+                        query: query
+                    }, function(result) {
+                        const states = [];
+
+                        result.map(function(item) {
+                            const name = item.nama + ' - ' + item.kode_instalasi + ' [' + item
+                                .nik +
+                                ']';
+
+                            states.push({
+                                name,
+                                value: item.kode_instalasi,
+                                item
+                            });
+                        });
+
+                        asyncResults(states);
+                    }).fail(function(xhr, status, error) {
+                        console.error("Terjadi kesalahan saat pemanggilan TagihanBulanan:", error);
+                        asyncResults([]);
+                    });
+                },
+
+                displayKey: 'name',
+                autoSelect: true,
+                fitToElement: true,
+                items: 10
+            }).bind('typeahead:selected', function(event, selectedItem) {
+                formTagihanBulanan(selectedItem.item);
             });
 
-            $.get('/installations/usage/' + installation.kode_instalasi, (result) => {
-                Swal.close();
-                if (result.success) {
-                    $('#accordion').html(result.view);
-                } else {
-                    $('#accordion').html(result.view);
-                }
-
-                window.dataCustomer = {
-                    item: installation,
-                    rek_debit: result.rek_debit,
-                    rek_kredit: result.rek_kredit,
-                };
-            }).fail(() => {
-                Swal.close();
+            function formTagihanBulanan(installation) {
+                let timerInterval;
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal memuat data',
-                    text: 'Terjadi kesalahan saat mengambil data dari server.',
+                    title: 'Menyiapkan data...',
+                    html: 'Harap tunggu <b></b> ms.',
+                    timer: 30000,
+                    timerProgressBar: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector('b');
+                        timerInterval = setInterval(() => {
+                            timer.textContent = `${Swal.getTimerLeft()}`;
+                        }, 100);
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
                 });
-            });
-        }
-    </script>
+
+                $.get('/installations/usage/' + installation.kode_instalasi, (result) => {
+                    Swal.close();
+                    if (result.success) {
+                        $('#accordion').html(result.view);
+                    } else {
+                        $('#accordion').html(result.view);
+                    }
+
+                    window.dataCustomer = {
+                        item: installation,
+                        rek_debit: result.rek_debit,
+                        rek_kredit: result.rek_kredit,
+                    };
+                }).fail(() => {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal memuat data',
+                        text: 'Terjadi kesalahan saat mengambil data dari server.',
+                    });
+                });
+            }
+        </script>
 
     @yield('script')
 </body>
