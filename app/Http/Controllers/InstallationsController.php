@@ -1101,6 +1101,7 @@ class InstallationsController extends Controller
         $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $id)->update([
             'business_id' => Session::get('business_id'),
             'status' => 'A',
+            'status_tunggakan' => 'lancar',
         ]);
 
         return response()->json([
