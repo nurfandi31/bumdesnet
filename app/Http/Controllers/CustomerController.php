@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Utils\Tanggal;
 use App\Utils\Keuangan;
-
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -46,7 +45,7 @@ class CustomerController extends Controller
                 ->toJson();
         }
 
-        return view('cater.index', ['title' => 'Data Pelanggan']);
+        return view('cater.index', ['title' => 'Data Pelanggan / Calon Pelanggan']);
     }
 
     /**
@@ -57,7 +56,7 @@ class CustomerController extends Controller
         $desa = Village::all();
         $hubungan = Family::orderBy('id', 'ASC')->get();
 
-        $title = 'Register Penduduk';
+        $title = 'Register Pelanggan / Calon Pelanggan';
         return view('pelanggan.create')->with(compact('desa', 'hubungan', 'title'));
     }
 
