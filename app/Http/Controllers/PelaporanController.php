@@ -342,47 +342,53 @@ class PelaporanController extends Controller
         $data['transaction_id'] = [];
         $data['transactions'] = [];
         foreach ($transactions as $trx) {
-            if (in_array($trx->transaction_id, $data['transaction_id'])) {
-                continue;
-            }
-
-            $trx_debit = [
-                'id' => $trx->id,
-                'nomor' => $nomor,
-                'tgl_transaksi' => $trx->tgl_transaksi,
-                'kode_akun' => $trx->acc_debit->kode_akun,
-                'nama_akun' => $trx->acc_debit->nama_akun,
-                'jumlah' => $trx->total,
-                'ins' => '',
-                'trx_kredit' => []
-            ];
-
-            $trx_kredit = [];
-            if ($trx->transaction_id != '0') {
-                $trx_debit['jumlah'] = 0;
-                foreach ($trx->transaction as $child) {
-                    $trx_kredit[] = [
-                        'kode_akun' => $child->acc_kredit->kode_akun,
-                        'nama_akun' => $child->acc_kredit->nama_akun,
-                        'jumlah' => $child->total,
-                    ];
-
-                    $trx_debit['jumlah'] += $child->total;
-                }
-            } else {
-                $trx_kredit[] = [
-                    'kode_akun' => $trx->acc_kredit->kode_akun,
-                    'nama_akun' => $trx->acc_kredit->nama_akun,
-                    'jumlah' => $trx->total,
-                ];
-            }
-
-            $trx_debit['trx_kredit'] = $trx_kredit;
-            array_push($data['transactions'], $trx_debit);
-
-            $data['transaction_id'][] = $trx->transaction_id;
-            $nomor++;
+    // Abaikan hanya jika transaction_id bukan 0 dan sudah pernah diproses
+        if ($trx->transaction_id != '0' && in_array($trx->transaction_id, $data['transaction_id'])) {
+            continue;
         }
+
+        $trx_debit = [
+            'id' => $trx->id,
+            'nomor' => $nomor,
+            'tgl_transaksi' => $trx->tgl_transaksi,
+            'kode_akun' => $trx->acc_debit->kode_akun,
+            'nama_akun' => $trx->acc_debit->nama_akun,
+            'jumlah' => $trx->total,
+            'ins' => '',
+            'trx_kredit' => []
+        ];
+
+        $trx_kredit = [];
+
+        if ($trx->transaction_id != '0') {
+            $trx_debit['jumlah'] = 0;
+            foreach ($trx->transaction as $child) {
+                $trx_kredit[] = [
+                    'kode_akun' => $child->acc_kredit->kode_akun,
+                    'nama_akun' => $child->acc_kredit->nama_akun,
+                    'jumlah' => $child->total,
+                ];
+                $trx_debit['jumlah'] += $child->total;
+            }
+        } else {
+            $trx_kredit[] = [
+                'kode_akun' => $trx->acc_kredit->kode_akun,
+                'nama_akun' => $trx->acc_kredit->nama_akun,
+                'jumlah' => $trx->total,
+            ];
+        }
+
+        $trx_debit['trx_kredit'] = $trx_kredit;
+        $data['transactions'][] = $trx_debit;
+
+        // Hanya tambahkan ke daftar pengecualian jika transaction_id bukan 0
+        if ($trx->transaction_id != '0') {
+            $data['transaction_id'][] = $trx->transaction_id;
+        }
+
+        $nomor++;
+    }
+
 
         $data['title'] = 'Jurnal Transaksi';
         $view = view('pelaporan.partials.views.jurnal_transaksi', $data)->render();

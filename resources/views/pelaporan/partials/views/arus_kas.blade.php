@@ -6,30 +6,33 @@
 @include('pelaporan.layouts.style')
 <title>{{ $title }} {{ $sub_judul }}</title>
 
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
+{{-- Header --}}
+<table width="100%" cellspacing="0" cellpadding="4" style="font-size: 12px;">
     <tr>
-        <td colspan="3" align="center">
-            <div style="font-size: 18px;">
-                <b>ARUS KAS</b>
-            </div>
-            <div style="font-size: 16px;">
-                <b>{{ strtoupper($sub_judul) }}</b>
-            </div>
+        <td colspan="3" align="center" style="font-size: 18px; font-weight: bold;">
+            ARUS KAS
         </td>
     </tr>
     <tr>
-        <td colspan="3" height="3"></td>
+        <td colspan="3" align="center" style="font-size: 16px; font-weight: bold;">
+            {{ strtoupper($sub_judul) }}
+        </td>
     </tr>
 </table>
 
+{{-- Spacer kecil, tidak menyebabkan page break --}}
+<table width="100%">
+    <tr>
+        <td style="height: 10px;"></td>
+    </tr>
+</table>
+
+{{-- Tabel Data --}}
 <table border="0" width="100%" align="center" style="font-size: 12px;">
-    <tr style="background: rgb(200, 200, 200); font-weight: bold; text-align: center;">
+    <tr style="background: rgb(200, 200, 200); text-align: center;">
         <th width="5%">&nbsp;</th>
         <th width="75%">Nama Akun</th>
-        <th width="25%">Jumlah</th>
-    </tr>
-    <tr>
-        <td colspan="3" height="0.1"></td>
+        <th width="20%">Jumlah</th>
     </tr>
 
     @php
@@ -64,17 +67,11 @@
     @endphp
 
     @foreach ($arus_kas as $ak)
-        <tr style="background: rgb(148, 148, 148);">
+        <tr style="background: rgb(194, 193, 193);">
             <td align="center">{{ toRoman($nomor) }}</td>
             <td>{{ $ak->nama_akun }}</td>
-            <td align="center"></td>
+            <td></td>
         </tr>
-
-        @if (!$loop->last)
-            <tr>
-                <td colspan="3" style="height: 0.1;"></td>
-            </tr>
-        @endif
 
         @php
             $total_subtotal = 0;
@@ -82,21 +79,14 @@
 
         @foreach ($ak->child as $child)
             @php
-                $akun_level_3 = $child->rek_debit;
-                if ($child->rek_kredit) {
-                    $akun_level_3 = $child->rek_kredit;
-                }
+                $akun_level_3 = $child->rek_debit ?? $child->rek_kredit;
             @endphp
 
             @if ($akun_level_3)
                 @php
                     $jumlah_saldo = 0;
                     foreach ($akun_level_3->accounts as $account) {
-                        $transactions = $account->rek_debit;
-                        if ($child->rek_kredit) {
-                            $transactions = $account->rek_kredit;
-                        }
-
+                        $transactions = $child->rek_kredit ? $account->rek_kredit : $account->rek_debit;
                         foreach ($transactions as $transaction) {
                             $jumlah_saldo += $transaction->total;
                         }
@@ -104,8 +94,8 @@
                 @endphp
 
                 <tr class="{{ $loop->iteration % 2 == 1 ? 'row-white' : 'row-black' }}">
-                    <td align="center"></td>
-                    <td align="left">{{ $akun_level_3->nama_akun }}</td>
+                    <td></td>
+                    <td>{{ $akun_level_3->nama_akun }}</td>
                     <td align="right">
                         {{ $jumlah_saldo < 0 ? '(' . number_format(abs($jumlah_saldo), 2) . ')' : number_format($jumlah_saldo, 2) }}
                     </td>
@@ -118,7 +108,7 @@
         @endforeach
 
         @if (!in_array($nomor, ['1', '3', '6', '9']))
-            <tr style="background: rgb(148, 148, 148); font-weight: bold;">
+            <tr style="background: rgb(148, 148, 148);">
                 <td></td>
                 <td align="left">Jumlah {{ $ak->nama_akun }}</td>
                 <td align="right">
@@ -126,9 +116,7 @@
                 </td>
             </tr>
         @endif
-        @php
-            $nomor++;
-        @endphp
-    @endforeach
 
+        @php $nomor++; @endphp
+    @endforeach
 </table>

@@ -16,7 +16,7 @@
     }
 
     table th {
-        background-color: #5c5c5c;
+        background-color: #686666;
         color: white;
     }
 

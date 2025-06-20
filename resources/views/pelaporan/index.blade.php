@@ -1,6 +1,7 @@
 @extends('Layout.base')
 @php
     $thn_awal = explode('-', $busines->created_at)[0];
+    $bulan_sekarang = date('m');
 @endphp
 @section('content')
     <div class="page-title">
@@ -46,18 +47,37 @@
                                     <label for="bulan">Bulan</label>
                                     <select class="choices form-control" name="bulan" id="bulan">
                                         <option value="">---</option>
-                                        <option value="01">01. JANUARI</option>
-                                        <option value="02">02. FEBRUARI</option>
-                                        <option value="03">03. MARET</option>
-                                        <option value="04">04. APRIL</option>
-                                        <option value="05">05. MEI</option>
-                                        <option value="06">06. JUNI</option>
-                                        <option value="07">07. JULI</option>
-                                        <option value="08">08. AGUSTUS</option>
-                                        <option value="09">09. SEPTEMBER</option>
-                                        <option value="10">10. OKTOBER</option>
-                                        <option value="11">11. NOVEMBER</option>
-                                        <option value="12">12. DESEMBER</option>
+                                        <option value="01"
+                                            {{ old('bulan', $bulan_sekarang) == '01' ? 'selected' : '' }}>01. JANUARI
+                                        </option>
+                                        <option value="02"
+                                            {{ old('bulan', $bulan_sekarang) == '02' ? 'selected' : '' }}>02. FEBRUARI
+                                        </option>
+                                        <option value="03"
+                                            {{ old('bulan', $bulan_sekarang) == '03' ? 'selected' : '' }}>03. MARET</option>
+                                        <option value="04"
+                                            {{ old('bulan', $bulan_sekarang) == '04' ? 'selected' : '' }}>04. APRIL</option>
+                                        <option value="05"
+                                            {{ old('bulan', $bulan_sekarang) == '05' ? 'selected' : '' }}>05. MEI</option>
+                                        <option value="06"
+                                            {{ old('bulan', $bulan_sekarang) == '06' ? 'selected' : '' }}>06. JUNI</option>
+                                        <option value="07"
+                                            {{ old('bulan', $bulan_sekarang) == '07' ? 'selected' : '' }}>07. JULI</option>
+                                        <option value="08"
+                                            {{ old('bulan', $bulan_sekarang) == '08' ? 'selected' : '' }}>08. AGUSTUS
+                                        </option>
+                                        <option value="09"
+                                            {{ old('bulan', $bulan_sekarang) == '09' ? 'selected' : '' }}>09. SEPTEMBER
+                                        </option>
+                                        <option value="10"
+                                            {{ old('bulan', $bulan_sekarang) == '10' ? 'selected' : '' }}>10. OKTOBER
+                                        </option>
+                                        <option value="11"
+                                            {{ old('bulan', $bulan_sekarang) == '11' ? 'selected' : '' }}>11. NOVEMBER
+                                        </option>
+                                        <option value="12"
+                                            {{ old('bulan', $bulan_sekarang) == '12' ? 'selected' : '' }}>12. DESEMBER
+                                        </option>
                                     </select>
                                     <small class="text-danger" id="msg_bulan"></small>
                                 </div>
@@ -275,7 +295,7 @@
 
         function namaBulan(bulan) {
             switch (bulan) {
-                case '01s':
+                case '01':
                     return 'Januari';
                     break;
                 case '02':

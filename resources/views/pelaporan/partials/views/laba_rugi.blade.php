@@ -40,10 +40,10 @@
     </thead>
 
     <tbody>
-        <tr style="background: rgb(200, 200, 200); font-weight: bold; text-transform: uppercase;">
+        <tr style="background: rgb(200, 200, 200); text-transform: uppercase;">
             <td colspan="4" height="14">4. Pendapatan</td>
         </tr>
-        <tr style="background: rgb(150, 150, 150); font-weight: bold; text-transform: uppercase;">
+        <tr style="background: rgb(150, 150, 150); text-transform: uppercase;">
             <td colspan="4" height="14">4.1.00.00. Pendapatan Usaha</td>
         </tr>
 
@@ -74,17 +74,17 @@
             @endphp
         @endforeach
 
-        <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+        <tr style="background: rgb(150, 150, 150);">
             <td align="left">Jumlah Pendapatan:</td>
             <td align="right">{{ number_format($total_sd_bulan_lalu, 2) }}</td>
             <td align="right">{{ number_format($total_bulan_ini, 2) }}</td>
             <td align="right">{{ number_format($total_sd_bulan_ini, 2) }}</td>
         </tr>
 
-        <tr style="background: rgb(200, 200, 200); font-weight: bold; text-transform: uppercase;">
+        <tr style="background: rgb(200, 200, 200); text-transform: uppercase;">
             <td colspan="4" height="16">5. Beban</td>
         </tr>
-        <tr style="background: rgb(150, 150, 150); font-weight: bold; text-transform: uppercase;">
+        <tr style="background: rgb(150, 150, 150); text-transform: uppercase;">
             <td colspan="4" height="14">5.1.00.00. Beban Usaha</td>
         </tr>
 
@@ -116,13 +116,13 @@
             @endphp
         @endforeach
 
-        <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+        <tr style="background: rgb(150, 150, 150);">
             <td align="left">Jumlah 5.1.00.00. Beban Usaha</td>
             <td align="right">{{ number_format($total_sd_bulan_lalu, 2) }}</td>
             <td align="right">{{ number_format($total_bulan_ini, 2) }}</td>
             <td align="right">{{ number_format($total_sd_bulan_ini, 2) }}</td>
         </tr>
-        <tr style="background: rgb(150, 150, 150); font-weight: bold; text-transform: uppercase;">
+        <tr style="background: rgb(150, 150, 150); text-transform: uppercase;">
             <td colspan="4" height="16">5.2.00.00. Beban Pemasaran
             </td>
         </tr>
@@ -155,20 +155,20 @@
             @endphp
         @endforeach
 
-        <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+        <tr style="background: rgb(150, 150, 150);">
             <td align="left">Jumlah 5.2.00.00. Beban Pemasaran</td>
             <td align="right">{{ number_format($total_sd_bulan_lalu, 2) }}</td>
             <td align="right">{{ number_format($total_bulan_ini, 2) }}</td>
             <td align="right">{{ number_format($total_sd_bulan_ini, 2) }}</td>
         </tr>
-        <tr style="background: rgb(200, 200, 200); font-weight: bold;">
+        <tr style="background: rgb(200, 200, 200);">
             <td align="left">A. Laba Rugi OPERASIONAL (Kode Akun 4.1 - 5.1 - 5.2) </td>
             <td align="right">{{ number_format($saldo_bln_lalu1, 2) }}</td>
             <td align="right">{{ number_format($saldo_sd_bulan_ini1 - $saldo_bln_lalu1, 2) }}</td>
             <td align="right">{{ number_format($saldo_sd_bulan_ini1, 2) }}</td>
         </tr>
 
-        <tr style="background: rgb(150, 150, 150); font-weight: bold; text-transform: uppercase;">
+        <tr style="background: rgb(150, 150, 150); text-transform: uppercase;">
             <td colspan="4" height="16">4.2.00.00. Pendapatan Non Usaha</td>
         </tr>
 
@@ -200,13 +200,13 @@
             @endphp
         @endforeach
 
-        <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+        <tr style="background: rgb(150, 150, 150);">
             <td align="left">Jumlah 4.2.00.00. Pendapatan Non Usaha</td>
             <td align="right">{{ number_format($total_sd_bulan_lalu, 2) }}</td>
             <td align="right">{{ number_format($total_bulan_ini, 2) }}</td>
             <td align="right">{{ number_format($total_sd_bulan_ini, 2) }}</td>
         </tr>
-        <tr style="background: rgb(150, 150, 150); font-weight: bold; text-transform: uppercase;">
+        <tr style="background: rgb(150, 150, 150); text-transform: uppercase;">
             <td colspan="4" height="16">4.3.00.00. Pendapatan Luar biasa</td>
         </tr>
 
@@ -234,14 +234,14 @@
             @endphp
         @endforeach
 
-        <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+        <tr style="background: rgb(150, 150, 150);">
             <td align="left">Jumlah 4.3.00.00. Pendapatan Luar Biasa</td>
             <td align="right">{{ number_format($total_sd_bulan_lalu, 2) }}</td>
             <td align="right">{{ number_format($total_bulan_ini, 2) }}</td>
             <td align="right">{{ number_format($total_sd_bulan_ini, 2) }}</td>
         </tr>
 
-        <tr style="background: rgb(150, 150, 150); font-weight: bold; text-transform: uppercase;">
+        <tr style="background: rgb(150, 150, 150); text-transform: uppercase;">
             <td colspan="4" height="16">5.3.00.00. Beban Non Usaha</td>
         </tr>
         @php
@@ -273,19 +273,19 @@
             @endphp
         @endforeach
 
-        <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+        <tr style="background: rgb(150, 150, 150);">
             <td align="left">Jumlah 5.3.00.00. Beban Non Usaha</td>
             <td align="right">{{ number_format($total_sd_bulan_lalu, 2) }}</td>
             <td align="right">{{ number_format($total_bulan_ini, 2) }}</td>
             <td align="right">{{ number_format($total_sd_bulan_ini, 2) }}</td>
         </tr>
-        <tr style="background: rgb(200, 200, 200); font-weight: bold;">
+        <tr style="background: rgb(200, 200, 200);">
             <td align="left">B. Laba Rugi OPERASIONAL (Kode Akun 4.2 - 5.3) </td>
             <td align="right">{{ number_format($saldo_bln_lalu2, 2) }}</td>
             <td align="right">{{ number_format($saldo_sd_bulan_ini2 - $saldo_bln_lalu2, 2) }}</td>
             <td align="right">{{ number_format($saldo_sd_bulan_ini2, 2) }}</td>
         </tr>
-        <tr style="background: rgb(200, 200, 200); font-weight: bold;">
+        <tr style="background: rgb(200, 200, 200);">
             <td align="left">C. Laba Rugi Sebelum Taksiran Pajak (A + B) </td>
             <td align="right">{{ number_format($saldo_bln_lalu1 + $saldo_bln_lalu2, 2) }}</td>
             <td align="right">
@@ -293,7 +293,7 @@
             </td>
             <td align="right">{{ number_format($saldo_sd_bulan_ini1 + $saldo_sd_bulan_ini2, 2) }}</td>
         </tr>
-        <tr style="background: rgb(150, 150, 150); font-weight: bold; text-transform: uppercase;">
+        <tr style="background: rgb(150, 150, 150); text-transform: uppercase;">
             <td colspan="4" height="16">5.4 Beban Pajak</td>
         </tr>
 
@@ -311,7 +311,7 @@
             </tr>
         @endforeach
 
-        <tr style="background: rgb(200, 200, 200); font-weight: bold;">
+        <tr style="background: rgb(200, 200, 200);">
             <td align="left">C. Laba Rugi Setelah Taksiran Pajak (A + B) </td>
             <td align="right">{{ number_format($saldo_bln_lalu1 + $saldo_bln_lalu2, 2) }}</td>
             <td align="right">

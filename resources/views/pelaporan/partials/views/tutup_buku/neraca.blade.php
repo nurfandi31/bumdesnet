@@ -19,7 +19,7 @@
 
 <table border="0">
     <thead>
-        <tr style="background: #000; color: #fff;">
+        <tr style="background: #c5c5c5; color: #000000;">
             <td width="10%">Kode</td>
             <td width="70%">Nama Akun</td>
             <td align="right" width="20%">Saldo</td>
@@ -36,7 +36,7 @@
         @php
             $saldo_akun = 0;
         @endphp
-        <tr class="bold" style="background: rgb(74, 74, 74); color: #fff;">
+        <tr class="bold" style="background: rgb(104, 104, 104); color: #fff;">
             <td style="height: 28px;" colspan="3" align="center">
                 {{ $lev1->kode_akun }}. {{ $lev1->nama_akun }}
             </td>
