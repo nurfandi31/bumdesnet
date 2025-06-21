@@ -151,9 +151,9 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative mb-3">
-                                    <label for="cater">Nama Cater</label>
+                                    <label for="cater">Nama Sales</label>
                                     <select class="choices form-control" name="cater" id="cater">
-                                        <option value="">Pilih Cater</option>
+                                        <option value="">Pilih Sales</option>
                                         @foreach ($caters as $ct)
                                             <option value="{{ $ct->id }}">
                                                 {{ $ct->nama }}

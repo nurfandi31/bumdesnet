@@ -128,7 +128,7 @@ class PelaporanController extends Controller
             $sub_laporan = [
                 0 => [
                     'value' => '',
-                    'title' => 'Pilih Cater'
+                    'title' => 'Pilih Sales'
                 ]
             ];
 
@@ -149,7 +149,7 @@ class PelaporanController extends Controller
             $sub_laporan = [
                 0 => [
                     'value' => '',
-                    'title' => 'Pilih Cater'
+                    'title' => 'Pilih Sales'
                 ]
             ];
 
@@ -169,7 +169,7 @@ class PelaporanController extends Controller
             $sub_laporan = [
                 0 => [
                     'value' => '',
-                    'title' => 'Pilih Cater'
+                    'title' => 'Pilih Sales'
                 ]
             ];
 
