@@ -75,7 +75,6 @@
                                     <span class="badge bg-success"
                                         style="float: right; width: 30%; padding: 5px; text-align: center;">
                                         {{ $installations->kode_instalasi }}
-                                        {{ substr($installations->package->kelas, 0, 1) }}
                                     </span>
                                 </td>
                             </tr>

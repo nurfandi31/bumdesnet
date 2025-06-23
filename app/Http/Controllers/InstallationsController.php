@@ -110,11 +110,14 @@ class InstallationsController extends Controller
                     'kode_instalasi',
                     'desa',
                     'customer_id',
-                    'blokir',
+                    'package_id',
+                    'cater_id',
+                    'aktif',
                     'status'
                 ])->where('business_id', $business_id)->where('status', 'B')->with([
                     'customer',
                     'package',
+                    'users',
                     'village'
                 ])
             )->make(true);
@@ -131,11 +134,14 @@ class InstallationsController extends Controller
                     'kode_instalasi',
                     'desa',
                     'customer_id',
-                    'cabut',
+                    'package_id',
+                    'cater_id',
+                    'aktif',
                     'status'
                 ])->where('business_id', $business_id)->where('status', 'C')->with([
                     'customer',
                     'package',
+                    'users',
                     'village'
                 ])
             )->make(true);
@@ -205,7 +211,7 @@ class InstallationsController extends Controller
             })->where(function ($query) {
                 $query->where('installations.business_id', Session::get('business_id'))
                     ->orWhere('customers.business_id', Session::get('business_id'));
-            })->whereNotIn('installations.status', ['B', 'C'])->get();
+            })->whereNotIn('installations.status', ['R', 'I'])->get();
 
         return response()->json($installations);
     }
@@ -245,8 +251,6 @@ class InstallationsController extends Controller
                 },
             ], 'total')
             ->first();
-
-
         $pengaturan = Settings::where('business_id', $business_id);
         $trx_settings = $pengaturan->first();
         $package = Package::where('business_id', Session::get('business_id'))->get();
@@ -1032,6 +1036,7 @@ class InstallationsController extends Controller
             'business_id' => Session::get('business_id'),
             'cabut' => Tanggal::tglNasional($request->cabut),
             'status' => 'C',
+            'status_tunggakan' => 'menunggak2',
         ]);
 
         return response()->json([
@@ -1086,7 +1091,7 @@ class InstallationsController extends Controller
         $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $id)->update([
             'business_id' => Session::get('business_id'),
             'status' => 'B',
-            'status_tunggakan' => 'menunggak2',
+            'status_tunggakan' => 'menunggak1',
             'blokir' => Tanggal::tglNasional($request->tgl_blokir),
         ]);
 

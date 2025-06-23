@@ -1176,7 +1176,6 @@ class TransactionController extends Controller
             "denda",
             "abodemen"
         ]);
-        dd($data);
 
         $data['tagihan'] = str_replace(',', '', $data['tagihan']);
         $data['tagihan'] = str_replace('.00', '', $data['tagihan']);
@@ -1212,6 +1211,7 @@ class TransactionController extends Controller
         $kode_denda = $accounts['4.1.01.04'] ?: null;
         $kode_fee = $accounts['5.1.02.04'] ?: null;
 
+        dd($data, $kode_kas, $accounts);
         $transaksi_piutang = Transaction::where('business_id', Session::get('business_id'))
             ->where('tgl_transaksi', '<=', $tgl_transaksi)
             ->where('usage_id', $data['id_usage'])->where('installation_id', $data['id_instal'])

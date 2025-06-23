@@ -123,10 +123,7 @@ class CustomerController extends Controller
     public function show(Customer $customer)
     {
         // Menghapus customer berdasarkan id yang diterima
-
     }
-
-
     /**
      * Show the form for editing the specified resource.
      */

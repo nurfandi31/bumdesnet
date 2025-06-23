@@ -24,8 +24,7 @@
 
                                     <h4 class="mt-3">{{ $installation->customer->nama }}</h4>
                                     <p class="text-small">
-                                        {{ $installation->kode_instalasi }}
-                                        {{ substr($installation->package->kelas, 0, 1) }}</p>
+                                        {{ $installation->kode_instalasi }}</p>
                                 </div>
                                 <hr>
                                 <div class="row">

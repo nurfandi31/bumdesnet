@@ -52,7 +52,7 @@
                                             <span>No. Induk</span>
                                             <span
                                                 class="badge bg-info badge-pill badge-round ms-1">{{ $installation->kode_instalasi }}
-                                                {{ substr($installation->package->kelas, 0, 1) }}</span>
+                                            </span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Tgl Order</span>

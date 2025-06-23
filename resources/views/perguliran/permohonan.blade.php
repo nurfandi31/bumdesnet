@@ -25,7 +25,7 @@
                             <thead>
                                 <tr>
                                     <th>No.Induk</th>
-                                    <th>Customer</th>
+                                    <th>Pelanggan</th>
                                     <th>alamat</th>
                                     <th>Nomor HP</th>
                                     <th>Email</th>

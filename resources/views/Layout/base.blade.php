@@ -192,16 +192,22 @@
             }
         </script>        
         @if (Session::get('success'))
-        <script>
-            Swal.fire({
+            <script>
+                Swal.fire({
                 icon: 'success',
                 title: 'Login Berhasil',
                 text: @json(Session::get('success')),
-            }).then((result) => {
-                window.open('/generatepemakaian', '_blank', 'width=500,height=500,top=100,left=100');
-                window.open('/dataset/{{ time() }}', '_blank', 'width=500,height=500,top=100,left=100');
-            });
+                }).then((result) => {
+                    const win1 = window.open('', '_blank', 'width=500,height=500,top=100,left=100');
+                    const win2 = window.open('', '_blank', 'width=500,height=500,top=150,left=150');
 
+                    win1.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /generate pemakaian...</h6>');
+                    win2.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /dataset tunggakan...</h6>');
+                    setTimeout(() => {
+                        win1.location.href = '/generatepemakaian';
+                        win2.location.href = '/dataset/{{ time() }}';
+                    }, 1000);
+                });
         </script> @endif
         <script>
             setTimeout(function() {

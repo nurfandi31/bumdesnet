@@ -24,11 +24,11 @@
                         <thead>
                             <tr>
                                 <th>No.Induk</th>
-                                <th>Customer</th>
+                                <th>Pelanggan</th>
+                                <th>Sales</th>
                                 <th>alamat</th>
                                 <th>Nomor HP</th>
-                                <th>Email</th>
-                                <th>Tanggal Order</th>
+                                <th>Paket</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -52,6 +52,10 @@
                 name: 'customer.nama'
             },
             {
+                data: 'users.nama',
+                name: 'users.nama'
+            },
+            {
                 data: 'village.nama',
                 name: 'village.nama'
             },
@@ -60,18 +64,14 @@
                 name: 'customer.hp'
             },
             {
-                data: 'customer.email',
-                name: 'customer.email'
-            },
-            {
-                data: 'blokir',
-                name: 'blokir'
+                data: 'package.kelas',
+                name: 'package.kelas'
             }, {
                 data: 'status',
                 name: 'status',
                 render: function(data, type, row, meta) {
                     if (data == 'B') {
-                        return '<span class="badge bg-danger">Blokir</span>';
+                        return '<span class="badge bg-danger">Menunggak</span>';
                     }
                 }
             }

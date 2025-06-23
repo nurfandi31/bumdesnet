@@ -151,7 +151,7 @@ class UsageController extends Controller
                 'awal'           => date('d', strtotime($tanggal_awal)),
                 'akhir'          => date('d', strtotime($tanggal_akhir)),
                 'jumlah'         => $jumlah_rasio,
-                'cater'          => Session::get('userID'),
+                'cater'          => $instal->cater_id,
                 'nominal'        => $jumlah_rasio * $harga,
                 'customer'       => $instal->customer_id,
                 'created_at'     => now(),

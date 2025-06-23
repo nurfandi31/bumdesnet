@@ -19,112 +19,57 @@ class SystemController extends Controller
         $setting = Settings::where('business_id', Session::get('business_id'))->first();
 
         $date = date('Y-m-d', $waktu);
-        $created_at = date('Y-m-d H:i:s');
-        $batas_toleransi = $setting->tanggal_toleransi ?: '27';
+        $created_at = now();
         $businessId = Session::get('business_id');
-        $installations = Installations::where('business_id', Session::get('business_id'))->with([
-            'package',
-            'usage' => function ($query) use ($date) {
-                $query->where('status', 'UNPAID')->where('tgl_akhir', '<=', $date)->orderBy('tgl_akhir')->orderBy('id');
-            },
-            'usage.transaction'
-        ])->get();
-
-        $accounts = Account::where('business_id', $businessId)
-            ->whereIn('kode_akun', ['1.1.03.01', '4.1.01.02', '4.1.01.03', '4.1.01.04'])
-            ->get()
-            ->keyBy('kode_akun');
-
-        $kode_piutang = $accounts['1.1.03.01'] ?? null;
-        $kode_abodemen = $accounts['4.1.01.02'] ?? null;
-        $kode_pemakaian = $accounts['4.1.01.03'] ?? null;
-        $kode_denda = $accounts['4.1.01.04'] ?? null;
-
-        $update_sps = [];
-        $trx_tunggakan = [];
-        foreach ($installations as $ins) {
-            if (count($ins->usage) >= 3) {
-                $update_sps[] = $ins->id;
-            }
-
-            $abodemen = $ins->abodemen;
-            $denda = $ins->package->denda;
-            foreach ($ins->usage as $usage) {
-                $jumlah_pembayaran = 0;
-                foreach ($usage->transaction as $trx) {
-                    if ($trx->rekening_kredit == $kode_pemakaian->id) {
-                        $jumlah_pembayaran += $trx->total;
-                    }
+        $installations = Installations::where('business_id', $businessId)
+            ->with([
+                'package',
+                'usage' => function ($query) {
+                    $query->where('status', 'UNPAID');
                 }
+            ])->get();
 
-                $nominal = $usage->nominal;
-                if ($usage->nominal <= 0) {
-                    $nominal = 1;
-                }
+        $menunggak3 = [
+            'update' => [
+                'status_tunggakan' => 'menunggak2',
+                'status' => 'C'
+            ],
+            'id' => []
+        ];
+        $menunggak2 = [
+            'update' => [
+                'status_tunggakan' => 'menunggak1',
+                'status' => 'B'
+            ],
+            'id' => []
+        ];
+        $menunggak1 = [
+            'update' => [
+                'status_tunggakan' => 'lancar',
+                'status' => 'A'
+            ],
+            'id' => []
+        ];
+        foreach ($installations as $installation) {
+            $unpaidCount = count($installation->usage);
 
-                $trx_id = substr(password_hash($usage->id, PASSWORD_DEFAULT), 7, 6);
-                if ($usage->tgl_akhir <= $date && $jumlah_pembayaran < $nominal) {
-                    $trx_tunggakan[] = [
-                        'business_id' => $businessId,
-                        'tgl_transaksi' => $usage->tgl_akhir,
-                        'rekening_debit' => $kode_piutang->id,
-                        'rekening_kredit' => $kode_abodemen->id,
-                        'user_id' => '1',
-                        'usage_id' => $usage->id,
-                        'installation_id' => $usage->id_instalasi,
-                        'transaction_id' => $trx_id,
-                        'total' => $abodemen,
-                        'relasi' => $usage->customers->nama,
-                        'keterangan' => 'Hutang Abodemen pemakaian atas nama ' . $usage->customers->nama . ' (' . $ins->id . ')',
-                        'urutan' => '0',
-                        'created_at' => $created_at
-                    ];
-
-                    $trx_tunggakan[] = [
-                        'business_id' => $businessId,
-                        'tgl_transaksi' => $usage->tgl_akhir,
-                        'rekening_debit' => $kode_piutang->id,
-                        'rekening_kredit' => $kode_pemakaian->id,
-                        'user_id' => '1',
-                        'usage_id' => $usage->id,
-                        'installation_id' => $usage->id_instalasi,
-                        'transaction_id' => $trx_id,
-                        'total' => $usage->nominal - $jumlah_pembayaran,
-                        'relasi' => $usage->customers->nama,
-                        'keterangan' => 'Hutang Pemakaian atas nama ' . $usage->customers->nama . ' (' . $ins->id . ')',
-                        'urutan' => '0',
-                        'created_at' => $created_at
-                    ];
-
-                    $trx_tunggakan[] = [
-                        'business_id' => $businessId,
-                        'tgl_transaksi' => $usage->tgl_akhir,
-                        'rekening_debit' => $kode_piutang->id,
-                        'rekening_kredit' => $kode_denda->id,
-                        'user_id' => '1',
-                        'usage_id' => $usage->id,
-                        'installation_id' => $usage->id_instalasi,
-                        'transaction_id' => $trx_id,
-                        'total' => $denda,
-                        'relasi' => $usage->customers->nama,
-                        'keterangan' => 'Hutang Denda pemakaian atas nama ' . $usage->customers->nama . ' (' . $ins->id . ')',
-                        'urutan' => '0',
-                        'created_at' => $created_at
-                    ];
-                }
+            if ($unpaidCount >= 3) {
+                $menunggak3['id'][] = $installation->id;
+            } elseif ($unpaidCount == 2) {
+                $menunggak2['id'][] = $installation->id;
+            } else {
+                $menunggak1['id'][] = $installation->id;
             }
         }
 
-        // dd($trx_tunggakan);
-        Installations::whereIn('id', $update_sps)->update(['status_tunggakan' => 'sps']);
-        DB::statement('SET @DISABLE_TRIGGER = 1');
-        Transaction::insert($trx_tunggakan);
-        DB::statement('SET @DISABLE_TRIGGER = 0');
+        Installations::whereIn('id', $menunggak3['id'])->update($menunggak3['update']);
+        Installations::whereIn('id', $menunggak2['id'])->update($menunggak2['update']);
+        Installations::whereIn('id', $menunggak1['id'])->update($menunggak1['update']);
 
-        $this->saldo(date('Y', $waktu), date('m', $waktu), $kode_piutang->id, $kode_abodemen->id, $kode_pemakaian->id, $kode_denda->id);
         echo '<script>window.close()</script>';
         exit;
     }
+
 
     private function saldo($tahun, $bulan, ...$akun)
     {
