@@ -174,6 +174,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.js"
         integrity="sha512-+UiyfI4KyV1uypmEqz9cOIJNwye+u+S58/hSwKEAeUMViTTqM9/L4lqu8UxJzhmzGpms8PzFJDzEqXL9niHyjA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        {{-- <script>
+            document.addEventListener('contextmenu', event => event.preventDefault());
+        </script> --}}
         <script>
             function setAjaxDatatable(target,url, columns) {
                 return $(target).DataTable({
@@ -190,25 +193,36 @@
             function setDataTable(target) {
                 return $(target).DataTable()
             }
-        </script>        
+        </script>
         @if (Session::get('success'))
-            <script>
-                Swal.fire({
+        <script>
+            Swal.fire({
                 icon: 'success',
                 title: 'Login Berhasil',
                 text: @json(Session::get('success')),
-                }).then((result) => {
-                    const win1 = window.open('', '_blank', 'width=500,height=500,top=100,left=100');
-                    const win2 = window.open('', '_blank', 'width=500,height=500,top=150,left=150');
+            }).then((result) => {
+                const today = new Date();
+                const date = today.getDate();
 
-                    win1.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /generate pemakaian...</h6>');
+                const win1 = window.open('', '_blank', 'width=500,height=500,top=100,left=100');
+                win1.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /generate pemakaian...</h6>');
+
+                let win2 = null;
+                if (date === 27) {
+                    win2 = window.open('', '_blank', 'width=500,height=500,top=150,left=150');
                     win2.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /dataset tunggakan...</h6>');
-                    setTimeout(() => {
-                        win1.location.href = '/generatepemakaian';
+                }
+
+                setTimeout(() => {
+                    win1.location.href = '/generatepemakaian';
+
+                    if (date === 27 && win2) {
                         win2.location.href = '/dataset/{{ time() }}';
-                    }, 1000);
-                });
+                    }
+                }, 1000);
+            });
         </script> @endif
+
         <script>
             setTimeout(function() {
                 window.close();

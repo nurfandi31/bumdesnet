@@ -65,6 +65,8 @@
             if (date('Y-m-d') >= $usage->tgl_akhir) {
                 $denda = $installations->package->denda;
             }
+            $abodemen = $installations->package->abodemen;
+            $total = $usage->nominal + $denda + $abodemen;
         @endphp
         <div class="basic-choices position-relative">
             <div class="row">
@@ -138,7 +140,7 @@
                                                                 name="abodemen"
                                                                 id="abodemen-bulanan-{{ $usage->id }}" readonly
                                                                 placeholder="0.00"
-                                                                value="{{ number_format($installations->package->denda, 2) }}">
+                                                                value="{{ number_format($installations->package->abodemen, 2) }}">
                                                         </div>
                                                         <div class="col-md-4 mb-2">
                                                             <label for="denda">Denda</label>
@@ -155,7 +157,7 @@
                                                                 class="form-control total perhitungan"
                                                                 name="pembayaran" id="pembayaran-{{ $usage->id }}"
                                                                 data-id="{{ $usage->id }}"
-                                                                value="{{ number_format($usage->nominal + $denda + $installations->package->abodemen, 2) }}">
+                                                                value="{{ number_format($total, 2) }}">
                                                         </div>
                                                     </div>
                                                     <div class="d-flex justify-content-end mt-3">
