@@ -46,12 +46,12 @@
                                             <span class="fa-fw select-all fas"></span>&nbsp; Pasang Baru
                                         </dt>
                                     </a>
-                                    <a class="nav-link w-100 text-left" id="tagihan-tab" data-bs-toggle="pill"
+                                    {{-- <a class="nav-link w-100 text-left" id="tagihan-tab" data-bs-toggle="pill"
                                         href="#tagihan" role="tab" aria-controls="tagihan" aria-selected="false">
                                         <dt class="the-icon">
                                             <span class="fa-fw select-all fas"></span>&nbsp; Sistem Tagihan
                                         </dt>
-                                    </a>
+                                    </a> --}}
                                     <a class="nav-link w-100 text-left" id="logo-tab" data-bs-toggle="pill" href="#logo"
                                         role="tab" aria-controls="logo" aria-selected="false">
                                         <dt class="the-icon">
@@ -88,8 +88,7 @@
                                         </h5>
                                         @include('sop.partials.logo')
                                     </div>
-                                    <div class="tab-pane fade" id="whasapp" role="tabpanel"
-                                        aria-labelledby="whasapp-tab">
+                                    <div class="tab-pane fade" id="whasapp" role="tabpanel" aria-labelledby="whasapp-tab">
                                         <h5 class="card-title font-weight-bold">
                                             Pengaturan Pesan Whatsapp
                                         </h5>
