@@ -177,7 +177,9 @@ class VillageController extends Controller
         }
 
         $kode_dusun = $kode_desa .  '.' . $jumlah_urutan;
+
         $Dusun = Village::create([
+            'business_id' => Session::get('business_id'),
             'kode' => $kode_dusun,
             'nama' => $region->nama,
             'dusun' => $request->dusun,
