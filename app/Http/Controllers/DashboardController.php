@@ -21,8 +21,16 @@ class DashboardController extends Controller
     {
         $keuangan = new Keuangan;
 
-        $Installation = Installations::where('business_id', Session::get('business_id'))->count();
-        $Usages = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')->with([
+        $installations = Installations::selectRaw("
+                SUM(CASE WHEN status = 'R' THEN 1 ELSE 0 END) AS permohonan,
+                SUM(CASE WHEN status = 'I' THEN 1 ELSE 0 END) AS pasang,
+                SUM(CASE WHEN status = 'A' THEN 1 ELSE 0 END) AS aktif
+            ")
+            ->where('business_id', Session::get('business_id'))
+            ->first();
+
+        $Installation = $installations->permohonan + $installations->pasang + $installations->aktif;
+            $Usages = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')->with([
             'customer',
             'package',
             'oneUsage' => function ($query) {
@@ -40,11 +48,11 @@ class DashboardController extends Controller
                     ['status', 'UNPAID'],
                     ['tgl_akhir', '<=', date('Y-m-d')]
                 ]);
-            }, '>=', '3')->count();
+            }, '>=', '1')->count();
 
         $UsageCount = 0;
         foreach ($Usages as $usage) {
-            if ($usage->one_usage != null) {
+            if ($usage->oneUsage != null) {
                 $UsageCount += 1;
             }
         }
@@ -214,38 +222,31 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function tagihan()
-    {
-        $tgl_akhir = request()->get('tgl_akhir') ?: date('Y-m-d');
-        $Tagihan = Usage::where('business_id', Session::get('business_id'))->where([
+ public function tagihan()
+{
+    $tgl_akhir = request()->get('tgl_akhir') ?: date('Y-m-d');
+
+    $Tagihan = Usage::where('business_id', Session::get('business_id'))
+        ->where([
             ['status', 'UNPAID'],
             ['tgl_akhir', '<', $tgl_akhir]
-        ])->with([
+        ])
+        ->with([
             'installation',
             'installation.customer',
             'installation.customer.village',
             'installation.package'
-        ])->get();
-        $setting = Settings::where('business_id', Session::get('business_id'))->first();
+        ])
+        ->get();
 
-        $result = [];
-        $block = json_decode($setting->block, true);
-        foreach ($block as $index => $item) {
-            preg_match_all('/\d+/', $item['jarak'], $matches);
-            $start = (int)$matches[0][0];
-            $end = (int)$matches[0][1];
+    $setting = Settings::where('business_id', Session::get('business_id'))->first();
 
-            for ($i = $start; $i <= $end; $i++) {
-                $result[$i] = $index;
-            }
-        }
+    return response()->json([
+        'Tagihan' => $Tagihan,
+        'setting' => $setting,
+    ]);
+}
 
-        return response()->json([
-            'Tagihan' => $Tagihan,
-            'setting' => $setting,
-            'block' => $result
-        ]);
-    }
 
     public function sps($id)
     {

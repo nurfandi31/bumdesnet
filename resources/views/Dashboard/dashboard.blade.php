@@ -99,7 +99,7 @@
                                     <!-- Teks di samping ikon -->
                                     <div>
                                         <h6 class="text-muted font-semibold mb-1">Tunggakan</h6>
-                                        <h6 class="font-extrabold mb-0 text-warning" id="TagihanCount">
+                                        <h6 class="font-extrabold mb-0 text-warning" id="TunggakanCount">
                                             {{ $Tunggakan }}</h6>
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@
                                     <!-- Teks di samping ikon -->
                                     <div>
                                         <h6 class="text-muted font-semibold mb-1">Tagihan</h6>
-                                        <h6 class="font-extrabold mb-0 text-danger"id="TagihanCount">
+                                        <h6 class="font-extrabold mb-0 text-danger" id="TagihanCount">
                                             {{ $Tagihan }}</h6>
                                     </div>
                                 </div>
@@ -182,10 +182,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalInstalasiLabel">Daftar Instalasi</h5>
-                    <button type="button" class="close btn-modal-close" aria-label="Close">
+                    <button type="button" class="close btn-modal-close" aria-label="Tutup">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
                 <div class="modal-body">
                     <div class="col-md-12">
                         <div class="card pe-3">
@@ -275,8 +276,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary btn-modal-close">
-                        Close
+                    <button type="button" class="btn btn-primary btn-modal-close">
+                        Tutup
                     </button>
                 </div>
             </div>
@@ -311,7 +312,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary btn-modal-close">Close</button>
+                    <button type="button" class="btn btn-primary btn-modal-close">Tutup</button>
                 </div>
             </div>
         </div>
@@ -347,7 +348,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-modal-close">Close</button>
+                    <button type="button" class="btn btn-primary btn-modal-close">Tutup</button>
                 </div>
             </div>
         </div>
@@ -383,7 +384,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary btn-modal-close">Close</button>
+                    <button type="button" class="btn btn-primary btn-modal-close">Tutup</button>
                     <button type="button" id="SendWhatsappMessage" class="btn btn-primary">Kirim Pesan</button>
                 </div>
             </div>
@@ -700,111 +701,51 @@
             $('#ModalTunggakan').modal('toggle');
         });
 
-
-        // $(document).on('click', '#BtnModalTunggakan', async function(e) {
-        //     e.preventDefault();
-        //     var result = await dataTunggakan();
-        //     var tunggakan = result.tunggakan;
-        //     console.log(tunggakan);
-
-        //     var data = 0;
-        //     var empty = 0;
-        //     $('#TableTunggakan').html('');
-
-        //     tunggakan.forEach((item, index) => {
-        //         // Default warna tombol: abu-abu
-        //         let stClass = 'btn-secondary';
-        //         let spClass = 'btn-secondary';
-        //         let spsClass = 'btn-secondary';
-
-        //         // Terapkan logika warna sesuai jumlah tunggakan
-        //         if (item.jumlah_tunggakan == 1) {
-        //             stClass = 'btn-primary'; // ST biru
-        //         } else if (item.jumlah_tunggakan == 2) {
-        //             spClass = 'btn-primary'; // SP biru
-        //         } else if (item.jumlah_tunggakan > 2) {
-        //             spsClass = 'btn-primary'; // SPS biru
-        //         }
-
-        //         $('#TableTunggakan').append(`
-    //             <tr>
-    //                 <td>${item.kode_instalasi} ${item.package.kelas.charAt(0)}</td>
-    //                 <td>${item.customer.nama} ( ${item.status_tunggakan})</td>
-    //                 <td>${item.alamat}</td>
-    //                 <td>${item.package.kelas}</td>
-    //                 <td>${item.jumlah_tunggakan} Bulan</td>
-    //                 <td class="text-center">
-    //                     <a target="_blank"
-    //                         href="/dashboard/Cetaktunggakan1/${item.id}"
-    //                         class="btn ${stClass} btn-sm" data-id="">
-    //                         st
-    //                     </a>
-    //                     <a target="_blank"
-    //                         href="/dashboard/Cetaktunggakan2/${item.id}"
-    //                         class="btn ${spClass} btn-sm" data-id="">
-    //                         sp
-    //                     </a>
-    //                     <a target="_blank"
-    //                         href="/dashboard/sps/${item.id}"
-    //                         class="btn ${spsClass} btn-sm" data-id="">
-    //                         sps
-    //                     </a>
-    //                 </td>
-    //             </tr>
-    //         `);
-
-        //         data += 1;
-        //     });
-
-        //     if (data - empty == 0) {
-        //         $('#TableTunggakan').append(`
-    //             <tr>
-    //                 <td align="center" colspan="4">Tidak ada data pemakaian</td>
-    //             </tr>
-    //         `);
-        //     }
-
-        //     $('#ModalTunggakan').modal('toggle');
-        // });
-
-
         $(document).on('click', '#BtnModalTagihan', async function(e) {
             e.preventDefault();
+
             var result = await dataTagihan();
             var Tagihan = result.Tagihan;
             var setting = result.setting;
-            var block = result.block
+            // var block = result.block; 
 
             $('#TableTagihan').html('');
             Tagihan.forEach((item, index) => {
-                var paket = JSON.parse(item.installation.package.harga)
+                var paket = JSON.parse(item.installation.package.harga);
+
+                // Ambil angka dari kelas, contoh: "Mbps [ 30 ]" → 30
+                var kelasStr = item.installation.package.kelas;
+                var match = kelasStr.match(/\[\s*(\d+)\s*\]/);
+                var kelas = match ? match[1] : null;
+                var harga = kelas && paket[kelas] ? paket[kelas] : 0;
 
                 var pesan_tagihan = ReplaceText(setting.pesan_tagihan, {
                     'customer': item.installation.customer.nama,
                     'desa': item.installation.customer.village.nama,
                     'kode_instalasi': item.installation.kode_instalasi,
                     'jatuh_tempo': formatDate(item.tgl_akhir),
-                    'jumlah_tagihan': paket[block[item.jumlah]],
+                    'jumlah_tagihan': harga,
                     'user_login': '{{ Auth::user()->nama }}',
                     'telpon': '{{ Auth::user()->telpon }}'
-                })
+                });
 
                 $('#TableTagihan').append(`
-                    <tr>
-                        <td>
-                            <input type="hidden" class="pesan" name="pesan_tagihan[]" value="${item.installation.customer.hp}||${pesan_tagihan}">
-                            ${item.installation.kode_instalasi}
-                        </td>
-                        <td>${item.installation.customer.nama}</td>
-                        <td>${item.tgl_akhir}</td>
-                        <td>${item.jumlah}</td>
-                        <td>${paket[block[item.jumlah]]}</td>
-                    </tr>
-                `)
-            })
+            <tr>
+                <td>
+                    <input type="hidden" class="pesan" name="pesan_tagihan[]" value="${item.installation.customer.hp}||${pesan_tagihan}">
+                    ${item.installation.kode_instalasi}
+                </td>
+                <td>${item.installation.customer.nama}</td>
+                <td>${item.tgl_akhir}</td>
+                <td>${item.jumlah}</td>
+                <td>${harga}</td>
+            </tr>
+        `);
+            });
 
             $('#ModalTagihan').modal('toggle');
         });
+
 
         $(document).on('click', '#SendWhatsappMessage', function(e) {
             e.preventDefault()
