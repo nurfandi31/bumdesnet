@@ -1256,7 +1256,7 @@ class TransactionController extends Controller
                 'usage_id' => $request->id_usage,
                 'user_id' => auth()->user()->id,
                 'relasi' => $usage->customers->nama,
-                'keterangan' => 'Pendapatan Abodemen pemakaian atas nama ' . $usage->customers->nama . ' (' . $usage->id_instalasi . ')',
+                'keterangan' => 'Pendapatan Abodemen pemakaian atas nama ' . $usage->customers->nama . ' (' . $usage->kode_instalasi . ')',
                 'created_at' => date('Y-m-d H:i:s')
             ];
         }
@@ -1272,7 +1272,7 @@ class TransactionController extends Controller
                 'usage_id' => $request->id_usage,
                 'user_id' => auth()->user()->id,
                 'relasi' => $usage->customers->nama,
-                'keterangan' => 'Pendapatan Tagihan pemakaian atas nama ' . $usage->customers->nama . ' (' . $usage->id_instalasi . ')',
+                'keterangan' => 'Pendapatan Tagihan pemakaian atas nama ' . $usage->customers->nama . ' (' . $usage->kode_instalasi . ')',
                 'created_at' => date('Y-m-d H:i:s')
             ];
         }
@@ -1288,7 +1288,7 @@ class TransactionController extends Controller
                 'usage_id' => $request->id_usage,
                 'user_id' => auth()->user()->id,
                 'relasi' => $usage->customers->nama,
-                'keterangan' => 'Pendapatan Denda pemakaian atas nama ' . $usage->customers->nama . ' (' . $usage->id_instalasi . ')',
+                'keterangan' => 'Pendapatan Denda pemakaian atas nama ' . $usage->customers->nama . ' (' . $usage->kode_instalasi . ')',
                 'created_at' => date('Y-m-d H:i:s')
             ];
         }

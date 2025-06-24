@@ -494,7 +494,7 @@ class InstallationsController extends Controller
                     'tgl_transaksi' => Tanggal::tglNasional($request->order),
                     'total' => $jumlah_instal,
                     'installation_id' => $install->id,
-                    'keterangan' => 'Biaya instalasi ' . $persen . '%',
+                    'keterangan' => 'Biaya instalasi An. ' . $install->customer->nama . ' (' . $install->kode_instalasi . ')',
                 ]);
             } else {
                 return response()->json([
