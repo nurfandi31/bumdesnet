@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-md-4 mb-0 p-0 pe-3 ps-3 pb-2">
                                     <div class="d-grid">
-                                        <label for="caters">Cater</label>
+                                        <label for="caters">Sales</label>
                                         <select class="choices set-table form-control" id="caters" name="caters">
                                             <option value="">Semua</option>
                                             @foreach ($caters as $cater)
