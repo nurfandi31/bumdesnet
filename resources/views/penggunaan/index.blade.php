@@ -238,7 +238,7 @@
                 formTagihan.find('form').html('')
                 var row = formTagihan.append(`
                     <input type="hidden" name="bulan_tagihan" value="${bulan}">
-                    <input type="hidden" name="pemakaian_cater" value="${cater}">
+                    <input type="hidden" name="pemakaian_cater" value="${caters}">
                 `);
                 formTagihan.submit();
             } else {

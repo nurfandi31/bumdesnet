@@ -46,7 +46,7 @@
 
         <!-- HEADER - letakkan di luar table -->
         <div style="text-align: center; max-width: 100%;">
-            <div style="font-size: 14px; margin-bottom: 2px;"><b>DAFTAR TAGIHAN PEMAKAIAN WIFI</b></div>
+            <div style="font-size: 14px; margin-bottom: 2px;"><b>DAFTAR TAGIHAN PEMAKAIAN INTERNET (WIFI)</b></div>
             <div style="font-size: 18px; margin-bottom: 2px;"><b>"{{ strtoupper($bisnis->nama) }}" BUMDes BANGUN
                     KENCANA</b>
             </div>
