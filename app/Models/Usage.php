@@ -20,7 +20,10 @@ class Usage extends Model
     {
         return $this->belongsTo(Package::class, 'package_id', 'id');
     }
-
+ public function village()
+    {
+        return $this->belongsTo(Village::class, 'desa');
+    }
     public function customers()
     {
         return $this->belongsTo(Customer::class, 'customer', 'id');

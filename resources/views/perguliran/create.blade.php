@@ -127,7 +127,7 @@
                                 <div class="position-relative mb-3">
                                     <label for="order">Tanggal Order</label>
                                     <input type="text" class="form-control date" name="order" id="order"
-                                        aria-describedby="order" placeholder="order" value="{{ date('d/m/Y') }}">
+                                        placeholder="order" value="{{ old('order', date('d/m/Y')) }}">
                                     <small class="text-danger" id="msg_order"></small>
                                 </div>
                             </div>
@@ -447,6 +447,23 @@
 
                 });
             }
+        });
+
+        function getTodayDate() {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        $(document).ready(function() {
+            $('#daftar-customer').on('change', function() {
+                // Pakai delay kecil agar ini dijalankan paling terakhir
+                setTimeout(function() {
+                    $('#order').val(getTodayDate());
+                }, 50);
+            });
         });
     </script>
 @endsection
