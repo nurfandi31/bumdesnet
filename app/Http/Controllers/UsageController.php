@@ -59,10 +59,13 @@ class UsageController extends Controller
             // Session::put('usages', $usages);
             return DataTables::eloquent($usages)
                 ->addColumn('kode_instalasi_dengan_inisial', function ($usage) {
-                    $kode = $usage->installation->kode_instalasi ?? '-';
-                    $inisial = $usage->installation->package->inisial ?? '';
-                    return $kode . ($inisial ? '-' . $inisial : '');
-                })
+                $kode = $usage->installation->kode_instalasi ?? '-';
+                $kelas = $usage->installation->package->kelas ?? '';
+                $hurufDepan = $kelas ? substr($kelas, 0, 1) : '';
+
+                return $kode . ($hurufDepan ? '-' . $hurufDepan : '');
+            })
+
                 ->addColumn('aksi', function ($usage) {
                     $edit = '<a href="/usages/' . $usage->id . '/edit" class="btn btn-warning btn-sm mb-1 mb-md-0 me-md-1"><i class="fas fa-pencil-alt"></i></a>&nbsp;';
                     $delete = '<a href="#" data-id="' . $usage->id . '" class="btn btn-danger btn-sm Hapus_pemakaian"><i class="fas fa-trash-alt"></i></a>';
