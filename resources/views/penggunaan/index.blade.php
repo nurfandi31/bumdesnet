@@ -36,11 +36,19 @@
                                     <div class="d-grid">
                                         <label for="bulan">Pilih Bulan Pemakaian</label>
                                         <select class="choices set-table form-control" name="bulan" id="bulan">
-                                            <option value="">Pilih Bulan</option>
-                                            @for ($i = 1; $i <= 12; $i++)
-                                                <option {{ date('m') == $i ? 'selected' : '' }}
-                                                    value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">
-                                                    {{ Tanggal::namaBulan(date('Y') . '-' . str_pad($i, 2, '0', STR_PAD_LEFT) . '-01') }}
+                                            <option value="">-- Pilih Bulan --</option>
+                                            @php
+                                                $tahun = date('Y');
+                                                $bulanSekarang = date('n'); // bulan sekarang, 1 - 12
+                                            @endphp
+                                            @for ($i = 1; $i <= $bulanSekarang; $i++)
+                                                @php
+                                                    $bulanValue = str_pad($i, 2, '0', STR_PAD_LEFT);
+                                                    $tanggalObj = $tahun . '-' . $bulanValue . '-01';
+                                                    $namaBulan = Tanggal::namaBulan($tanggalObj);
+                                                @endphp
+                                                <option {{ date('n') == $i ? 'selected' : '' }} value="{{ $bulanValue }}">
+                                                    {{ $namaBulan }} {{ $tahun }}
                                                 </option>
                                             @endfor
                                         </select>
@@ -111,10 +119,10 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="mb-1 small">
-                                    <strong>Cater</strong>: <span id="NamaCater"></span>
+                                    <strong>Sales</strong> : <span id="NamaCater"></span>
                                 </div>
                                 <div class="small">
-                                    <strong>Maksimal Bayar</strong>: <span id="TanggalCetak"></span>
+                                    <strong>Maksimal Bayar</strong> : <span id="TanggalCetak"></span>
                                 </div>
                             </div>
                         </div>
