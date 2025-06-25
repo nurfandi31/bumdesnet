@@ -53,13 +53,14 @@
                                 <div class="card card-plain">
                                     <div class="card-header rounded-top rounded-bottom">
                                         <h3 class="font-weight-bolder text-center">Log in {{ $business->nama }}</h3>
-                                        <p class="mb-0">Enter your email and password to register</p>
+                                        <p class="mb-0">Log in with your username and password.</p>
+
                                         <div class="card-body">
                                             <form class="login100-form validate-form user" action="{{ route('auth') }}"
                                                 method="POST">
                                                 @csrf
                                                 <div class="input-group input-group-outline mb-3">
-                                                    <label class="form-label">Name</label>
+                                                    <label class="form-label">Username</label>
                                                     <input type="text" id="username" name="username"
                                                         class="form-control">
                                                 </div>

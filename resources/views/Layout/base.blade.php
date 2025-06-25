@@ -224,11 +224,6 @@
         </script> @endif
 
         <script>
-            setTimeout(function() {
-                window.close();
-            }, 2000);
-        </script>
-        <script>
             $(document).on('click', '#logoutButton', function(e) {
                 e.preventDefault();
 
