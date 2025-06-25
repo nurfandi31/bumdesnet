@@ -77,7 +77,8 @@
                                         </div>
                                         <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                             <p class="mb-2 text-sm mx-auto">
-                                                © 2025 PT. Asta Brata Teknologi — 0001
+                                                © 2025 PT. Asta Brata Teknologi -
+                                                V{{ str_pad($business->id, 3, '0', STR_PAD_LEFT) }}
                                             </p>
                                         </div>
                                     </div>
