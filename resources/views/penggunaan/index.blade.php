@@ -226,6 +226,41 @@
 
             table.ajax.url('/usages?cater=' + cater + '&bulan=' + bulan).load();
         })
+        $(document).on('click', '#BtnCetak', function(e) {
+            e.preventDefault()
+
+            if ($('#FormCetakBuktiTagihan').serializeArray().length > 1) {
+                var formTagihan = $('#FormCetakBuktiTagihan');
+
+                var bulan = $('#bulan').val()
+                var caters = $('#caters').val()
+
+                formTagihan.find('form').html('')
+                var row = formTagihan.append(`
+                    <input type="hidden" name="bulan_tagihan" value="${bulan}">
+                    <input type="hidden" name="pemakaian_cater" value="${cater}">
+                `);
+                formTagihan.submit();
+            } else {
+                Swal.fire('Error', "Tidak ada transaksi yang dipilih.", 'error')
+            }
+        })
+        $(document).on('click', '#BtnCetak1', function(e) {
+            e.preventDefault()
+
+            var data = table.data().toArray()
+            var formTagihan = $('#form');
+
+            var bulan = $('#bulan').val()
+            var caters = $('#caters').val()
+
+            formTagihan.find('form').html('')
+            var row = formTagihan.append(`
+                <input type="hidden" name="bulan_tagihan" value="${bulan}">
+                <input type="hidden" name="cater" value="${caters}">
+            `);
+            $('#FormCetakTagihan').submit();
+        })
     </script>
     <script>
         $(document).on('click', '#DetailCetakBuktiTagihan', function() {
