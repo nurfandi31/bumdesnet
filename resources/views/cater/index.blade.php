@@ -83,7 +83,7 @@
                 searchable: false,
                 render: function(data, type, row, meta) {
                     return `
-                    <div class="d-flex flex-wrap gap-1">
+                    <div class="d-flex justify-content-center flex-wrap gap-1">
                         <a href="/caters/${data}/edit" class="btn btn-warning btn-sm">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
@@ -91,6 +91,7 @@
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </div>
+
                 `;
                 }
             }

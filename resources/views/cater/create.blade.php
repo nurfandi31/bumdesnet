@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit" id="SimpanCater" class="btn btn-primary me-1 mb-1">Simpan
-                                            Cater</button>
+                                            Sales</button>
                                         <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                                     </div>
                                 </div>
@@ -119,7 +119,7 @@
                     if (result.success) {
                         Swal.fire({
                             title: result.msg,
-                            text: "Tambahkan Register Cater Baru?",
+                            text: "Tambahkan Register Sales Baru?",
                             icon: "success",
                             showDenyButton: true,
                             confirmButtonText: "Tambahkan",
