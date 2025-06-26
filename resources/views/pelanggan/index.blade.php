@@ -22,14 +22,13 @@
         <section class="section">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-striped" id="table1">
+                    <table class="table table-striped" id="customers">
                         <thead class="thead-light">
                             <tr>
                                 <th>NIK</th>
                                 <th>NAMA</th>
                                 <th>ALAMAT</th>
                                 <th>TELPON</th>
-                                <th>Email</th>
                                 <th style="text-align: center;">AKSI</th>
                             </tr>
                         </thead>
@@ -60,7 +59,7 @@
         </script>
     @endif
     <script>
-        let table = setAjaxDatatable('#cater', '{{ url('caters') }}', [{
+        let table = setAjaxDatatable('#customers', '{{ url('customers') }}', [{
                 data: 'nik',
                 name: 'nik'
             },
@@ -75,10 +74,6 @@
             {
                 data: 'hp',
                 name: 'hp'
-            },
-            {
-                data: 'email',
-                name: 'email'
             },
             {
                 data: 'aksi',

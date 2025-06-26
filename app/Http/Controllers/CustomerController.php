@@ -24,29 +24,23 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $business_id = Session::get('business_id');
-
             return DataTables::eloquent(
                 Customer::select([
                     'id',
                     'nik',
                     'nama',
-                    'alamat',
                     'hp',
-                    'email',
-                ])->where([
-                    'business_id', $business_id,
-                    'Installations'
+                    'alamat',
                 ])
             )
                 ->addColumn('aksi', function ($row) {
                     return $row->id;
-                })
-                ->toJson();
+                })->toJson();
         }
 
-        return view('cater.index', ['title' => 'Data Pelanggan / Calon Pelanggan']);
+        return view('pelanggan.index', ['title' => 'Data Pelanggan']);
     }
+
 
     /**
      * Show the form for creating a new resource.
