@@ -82,14 +82,15 @@
                 searchable: false,
                 render: function(data, type, row, meta) {
                     return `
-                    <div class="d-flex flex-wrap gap-1">
-                        <a href="/customers/${data}/edit" class="btn btn-warning btn-sm">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <a href="#" data-id="${data}" class="btn btn-danger btn-sm Hapus_pelanggan">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </div>
+                <div class="d-flex justify-content-center flex-wrap gap-1">
+                    <a href="/customers/${data}/edit" class="btn btn-warning btn-sm">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <a href="#" data-id="${data}" class="btn btn-danger btn-sm Hapus_pelanggan">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </div>
+
                 `;
                 }
             }
