@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Struk Tagihan Pemakaian Air</title>
+    <title>Struk Tagihan Pemakaian Wifi</title>
     <style>
         body {
             font-size: 10px;
@@ -105,9 +105,9 @@
 
                         </td>
                         <td width="100" align="center">
-                            <div class="fw-bold" style="font-size: 14px;">STRUK TAGIHAN PEMAKAIAN AIR</div>
+                            <div class="fw-bold" style="font-size: 14px;">STRUK TAGIHAN PEMAKAIAN INTERNET (WIFI)</div>
                             <div style="font-size: 11px;">BADAN USAHA MILIK DESA (BUMDes)</div>
-                            <div class="fw-bold">UNIT AIR</div>
+                            {{-- <div class="fw-bold">UNIT AIR</div> --}}
                         </td>
                         <td width="50" align="left">
                             {{-- <img src="../storage/app/public/logo/{{ $gambar }}" width="50" height="50"> --}}
@@ -160,7 +160,7 @@
                         <td width="2%" align="right">:</td>
                         <td width="20%" align="left">Rp. {{ number_format($use->nominal, 2) }}</td>
                         <td width="14%" align="center">&nbsp;</td>
-                        <td width="14%" align="left">
+                        <td width="18%" align="left">
                             {{ strtoupper($bisnis->desa) }}, {{ Tanggal::tglLatin($use->tgl_pemakaian) }}</td>
                     </tr>
                     <tr>
@@ -168,14 +168,14 @@
                         <td width="2%" align="right">:</td>
                         <td width="20%" align="left">Rp. {{ number_format($use->installation->abodemen, 2) }}</td>
                         <td width="14%" align="center">&nbsp;</td>
-                        <td width="14%" align="left">Bendahara</td>
+                        <td width="18%" align="left">Bendahara</td>
                     </tr>
                     <tr>
                         <td width="10%" align="left">Denda</td>
                         <td width="2%" align="right">:</td>
                         <td width="20%" align="left">Rp. 0.00</td>
                         <td width="14%" align="center">&nbsp;</td>
-                        <td width="14%" align="left">ttd,</td>
+                        <td width="18%" align="left">ttd,</td>
                     </tr>
                     <tr>
                         <td width="10%" align="left">Total</td>
@@ -183,12 +183,12 @@
                         <td width="20%" align="left">Rp.
                             {{ number_format($use->nominal + $use->installation->abodemen, 2) }}</td>
                         <td width="14%" align="center">&nbsp;</td>
-                        <td width="14%" align="left"></td>
+                        <td width="18%" align="left"></td>
                     </tr>
                     <tr>
                         <td width="10%" align="left">Terbilang</td>
                         <td width="2%" align="right">:</td>
-                        <td width="14%" class="keterangan fw-medium terbilang">
+                        <td width="40%" class="keterangan fw-medium terbilang">
                             <span>{{ ucwords($keuangan->terbilang($use->nominal + $use->installation->abodemen)) }}
                                 Rupiah</span>
                         </td>

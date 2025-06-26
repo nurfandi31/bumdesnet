@@ -39,7 +39,7 @@ class CaterController extends Controller
                 ->toJson();
         }
 
-        return view('cater.index', ['title' => 'Data Cater']);
+        return view('cater.index', ['title' => 'Data Sales']);
     }
 
     /**
@@ -47,7 +47,7 @@ class CaterController extends Controller
      */
     public function create()
     {
-        $title = 'Register Cater';
+        $title = 'Register Sales';
         return view('cater.create')->with(compact('title'));
     }
 
@@ -93,7 +93,7 @@ class CaterController extends Controller
 
         return response()->json([
             'success' => true,
-            'msg' => 'Daftar  Cater berhasil disimpan',
+            'msg' => 'Daftar  Sales berhasil disimpan',
             'cater' => $create
         ]);
     }
@@ -111,7 +111,7 @@ class CaterController extends Controller
      */
     public function edit(User $cater)
     {
-        $title = 'Edit Cater';
+        $title = 'Edit Sales';
         return view('cater.edit')->with(compact('title', 'cater'));
     }
     /**
@@ -155,7 +155,7 @@ class CaterController extends Controller
             'password' => $password,
         ]);
 
-        return redirect('/caters')->with('jsedit', 'Cater berhasil diperbarui');
+        return redirect('/caters')->with('jsedit', 'Sales berhasil diperbarui');
     }
 
     /**
@@ -164,6 +164,6 @@ class CaterController extends Controller
     public function destroy(User $cater)
     {
         User::where('id', $cater->id)->delete();
-        return redirect('/caters')->with('success', 'Cater berhasil dihapus');
+        return redirect('/caters')->with('success', 'Sales berhasil dihapus');
     }
 }
