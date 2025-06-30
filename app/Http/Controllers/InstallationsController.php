@@ -208,10 +208,14 @@ class InstallationsController extends Controller
                 $query->where('customers.nama', 'LIKE', "%{$params}%")
                     ->orWhere('customers.nik', 'LIKE', "%{$params}%")
                     ->orWhere('installations.kode_instalasi', 'LIKE', "%{$params}%");
-            })->where(function ($query) {
+            })
+            ->where(function ($query) {
                 $query->where('installations.business_id', Session::get('business_id'))
                     ->orWhere('customers.business_id', Session::get('business_id'));
-            })->whereNotIn('installations.status', ['R', 'I'])->get();
+            })
+            ->whereNotIn('installations.status', ['R', 'I'])
+            ->whereHas('usage')
+            ->get();
 
         return response()->json($installations);
     }
@@ -252,6 +256,7 @@ class InstallationsController extends Controller
             ], 'total')
             ->first();
         $pengaturan = Settings::where('business_id', $business_id);
+
         $trx_settings = $pengaturan->first();
         $package = Package::where('business_id', Session::get('business_id'))->get();
 
