@@ -1,8 +1,8 @@
 <div class="col-md-6">
-    <label for="harga">Biaya Berlangganan {{ $package->kelas }}</label>
+    <label for="harga_paket">Biaya Berlangganan {{ $package->kelas }}</label>
     <div class="input-group mb-3">
-        <input type="text" class="form-control nominal" name="harga" id="harga" aria-describedby="basic-addon2"
-            value="{{ number_format($package->harga, 2) }}" readonly>
+        <input type="text" class="form-control nominal" name="harga_paket" id="harga_paket"
+            aria-describedby="basic-addon2" value="{{ number_format($package->harga, 2) }}">
     </div>
 </div>
 <div class="col-md-6">

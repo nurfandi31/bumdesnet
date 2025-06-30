@@ -411,6 +411,7 @@ class InstallationsController extends Controller
             "pasang_baru",
             "abodemen",
             "kode_instalasi",
+            "harga_paket",
             "total",
         ]);
         $rules = [
@@ -420,6 +421,7 @@ class InstallationsController extends Controller
             'order' => 'required',
             'desa' => 'required',
             'jalan' => 'required',
+            'harga_paket' => 'required',
             'rw' => 'required',
             'rt' => 'required',
             'koordinate' => 'required',
@@ -439,6 +441,10 @@ class InstallationsController extends Controller
         $data['abodemen'] = str_replace('.00', '', $data['abodemen']);
         $data['abodemen'] = floatval($data['abodemen']);
 
+        $data['harga_paket'] = str_replace(',', '', $data['harga_paket']);
+        $data['harga_paket'] = str_replace('.00', '', $data['harga_paket']);
+        $data['harga_paket'] = floatval($data['harga_paket']);
+
         $data['total'] = str_replace(',', '', $data['total']);
         $data['total'] = str_replace('.00', '', $data['total']);
         $data['total'] = floatval($data['total']);
@@ -446,6 +452,7 @@ class InstallationsController extends Controller
         $pasangbaru        = $data['pasang_baru'];
         $abodemen          = $data['abodemen'];
         $biaya_instalasi   = $data['total'];
+        $harga_paket       = $data['harga_paket'];
 
         $biaya_instal = $pasangbaru - $biaya_instalasi;
 
@@ -469,6 +476,7 @@ class InstallationsController extends Controller
             'koordinate' => $request->koordinate,
             'package_id' => $request->package_id,
             'abodemen' => $abodemen,
+            'harga_paket' => $harga_paket,
             'biaya_instalasi' => $pasangbaru,
             'status' => $status,
         ]);

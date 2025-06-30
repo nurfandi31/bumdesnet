@@ -59,12 +59,12 @@ class UsageController extends Controller
             // Session::put('usages', $usages);
             return DataTables::eloquent($usages)
                 ->addColumn('kode_instalasi_dengan_inisial', function ($usage) {
-                $kode = $usage->installation->kode_instalasi ?? '-';
-                $kelas = $usage->installation->package->kelas ?? '';
-                $hurufDepan = $kelas ? substr($kelas, 0, 1) : '';
+                    $kode = $usage->installation->kode_instalasi ?? '-';
+                    $kelas = $usage->installation->package->kelas ?? '';
+                    $hurufDepan = $kelas ? substr($kelas, 0, 1) : '';
 
-                return $kode . ($hurufDepan ? '-' . $hurufDepan : '');
-            })
+                    return $kode . ($hurufDepan ? '-' . $hurufDepan : '');
+                })
 
                 ->addColumn('aksi', function ($usage) {
                     $edit = '<a href="/usages/' . $usage->id . '/edit" class="btn btn-warning btn-sm mb-1 mb-md-0 me-md-1"><i class="fas fa-pencil-alt"></i></a>&nbsp;';
@@ -144,7 +144,7 @@ class UsageController extends Controller
             $jumlah_hari_pemakaian = date_diff(date_create($tanggal_akhir), date_create($tanggal_awal))->days;
             $jumlah_hari_bulan_ini = date('t');
             $jumlah_rasio = round($jumlah_hari_pemakaian / $jumlah_hari_bulan_ini, 2);
-            $harga = $instal->package->harga;
+            $harga = $instal->harga_paket;
             $new_usage = Usage::create([
                 'business_id'    => Session::get('business_id'),
                 'id_instalasi'   => $instal->id,
@@ -188,7 +188,7 @@ class UsageController extends Controller
             'cetak' => view('penggunaan.partials.DetailTagihan', ['usages' => $usages])->render()
         ];
     }
- public function cetak_tagihan(Request $request)
+    public function cetak_tagihan(Request $request)
     {
         $thn = $request->input('tahun');
         $bln = $request->input('bulan');
