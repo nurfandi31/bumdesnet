@@ -21,11 +21,12 @@
         <section class="section">
             <div class="card">
                 <div class="card-body">
-                    <div class="col-12 d-flex justify-content-end pb-3">
-                        <button type="button" class="btn btn-primary block btn-create">
+                    <div class="col-12 d-flex justify-content-end pb-2">
+                        <button type="button" class="btn btn-primary btn-create me-2" style="width: 160px;">
                             Tambah Paket Baru
                         </button>
                     </div>
+
                     <div class="table-responsive responsive p-2 ">
                         <table class="table table-striped" id="packages">
                             <thead class="thead-light">
