@@ -21,6 +21,7 @@
                                         {{ $installations->village->nama ?? '-' }}</span>
                                     <span class="badge bg-danger">Dusun.
                                         {{ $installations->village->dusun ?? '-' }}</span>
+                                    <span class="badge bg-danger">Rw. {{ $installations->rw ?? '00' }}</span>
                                     <span class="badge bg-danger">Rt. {{ $installations->rt ?? '00' }}</span>
                                 </div>
                             </div>
