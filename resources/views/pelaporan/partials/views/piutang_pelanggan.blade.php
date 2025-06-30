@@ -37,13 +37,12 @@
                 <th width="4%" class="t l b" rowspan="2">No</th>
                 <th width="21%" class="t l b" rowspan="2">Nama</th>
                 <th width="15%" class="t l b" rowspan="2">No. Induk</th>
-                <th width="30%" class="t l b" colspan="3">Tunggakan</th>
+                <th width="30%" class="t l b" colspan="2">Tunggakan</th>
                 <th width="10%" class="t l b" rowspan="2">Jumlah Tunggakan</th>
                 <th width="10%" class="t l b" rowspan="2">Dibayar</th>
                 <th width="10%" class="t l b r" rowspan="2">Kategori</th>
             </tr>
             <tr style="background: rgb(230, 230, 230); font-weight: bold;">
-                <th width="10%" class="t l b">s/d 3 Bulan Lalu</th>
                 <th width="10%" class="t l b">Bulan Lalu</th>
                 <th width="10%" class="t l b">Bulan Ini</th>
             </tr>
@@ -153,9 +152,9 @@
                     <td class="t l b" align="center">{{ $nomor++ }}</td>
                     <td class="t l b">{{ $ins->customer->nama }}</td>
                     <td class="t l b">{{ $ins->kode_instalasi }}</td>
-                    <td class="t l b" align="right">
+                    {{-- <td class="t l b" align="right">
                         {{ number_format($sampai_bulan_lalu, 2) }}
-                    </td>
+                    </td> --}}
                     <td class="t l b" align="right">
                         {{ number_format($bulan_lalu, 2) }}
                     </td>
@@ -175,9 +174,9 @@
             @endforeach
             <tr class="bold">
                 <td class="t l b" colspan="3" align="right">Jumlah</td>
-                <td class="t l b" align="right">
+                {{-- <td class="t l b" align="right">
                     {{ number_format($jumlah_menunggak_sampai_bulan_lalu, 2) }}
-                </td>
+                </td> --}}
                 <td class="t l b" align="right">
                     {{ number_format($jumlah_menunggak_bulan_lalu, 2) }}
                 </td>
