@@ -35,12 +35,11 @@
 @foreach ($usages as $usage)
     @php
         $denda = 0;
-        if (date('Y-m-d') >= $usage->tgl_akhir) {
+        if (date('Y-m') > date('Y-m', strtotime($usage->tgl_akhir))) {
             $denda = $installations->package->denda;
         }
         $abodemen = $installations->package->abodemen;
         $total = $usage->nominal + $denda + $abodemen;
-
     @endphp
     <div class="basic-choices position-relative">
         <div class="row">
