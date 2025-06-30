@@ -66,8 +66,9 @@ Route::get('/link', function () {
 Route::middleware(['auth', 'auth.token'])->group(function () {
     // Dashboard
     Route::get('/', [DashboardController::class, 'index']);
-    Route::get('/dashboard/installations', [DashboardController::class, 'installations']);
-    Route::get('/dashboard/usages', [DashboardController::class, 'usages']);
+    Route::get('/dashboard/permohonan', [DashboardController::class, 'permohonan']);
+    Route::get('/dashboard/pasang', [DashboardController::class, 'pasang']);
+    Route::get('/dashboard/PemakaianAktif', [DashboardController::class, 'Pemakaian']);
     Route::get('/dashboard/tagihan', [DashboardController::class, 'tagihan']);
     Route::get('/dashboard/tunggakan', [DashboardController::class, 'tunggakan']);
     Route::get('/dashboard/sps/{id}', [DashboardController::class, 'sps']);

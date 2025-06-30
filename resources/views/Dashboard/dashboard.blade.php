@@ -25,7 +25,6 @@
             }
         }
     </style>
-
     <br>
     <div class="row">
         <div class="col-12 col-lg-12">
@@ -35,25 +34,20 @@
                         <div class="card-body px-4 py-4-5">
                             <div class="row align-items-center">
                                 <div class="col-12 d-flex align-items-center">
-                                    <!-- Ikon -->
                                     <div class="stats-icon bg-success text-white me-3">
                                         <i class="iconly-boldProfile"></i>
-                                        <!-- fs-3 = lebih besar -->
                                     </div>
-                                    <!-- Teks di samping ikon -->
                                     <div>
-                                        <h6 class="text-muted font-semibold mb-1">Instalasi</h6>
+                                        <h6 class="text-muted font-semibold mb-1">Pendaftaran</h6>
                                         <h6 class="font-extrabold mb-0 text-success" id="InstallationCount">
-                                            {{ $Installation }}</h6>
+                                            {{ $Permohonan }}</h6>
                                     </div>
                                 </div>
-                                <!-- Garis pemisah -->
                                 <div class="col-12">
                                     <hr>
                                 </div>
-                                <!-- Link Lihat Detail -->
                                 <div class="col-12" align="right">
-                                    <a href="#"id="BtnModalInstalasi" class="text-primary"><b>Lihat Detail ></b></a>
+                                    <a href="#"id="BtnModalPermohonan" class="text-primary"><b>Lihat Detail ></b></a>
                                 </div>
                             </div>
                         </div>
@@ -64,24 +58,20 @@
                         <div class="card-body px-4 py-4-5">
                             <div class="row align-items-center">
                                 <div class="col-12 d-flex align-items-center">
-                                    <!-- Ikon -->
                                     <div class="stats-icon bg-info me-3">
                                         <i class="iconly-boldAdd-User"></i>
                                     </div>
-                                    <!-- Teks di samping ikon -->
                                     <div>
-                                        <h6 class="text-muted font-semibold mb-1">Pemakaian</h6>
+                                        <h6 class="text-muted font-semibold mb-1">Terpasang</h6>
                                         <h6 class="font-extrabold mb-0 text-info" id="UsageCount">
-                                            {{ $UsageCount }}</h6>
+                                            {{ $Pasang }}</h6>
                                     </div>
                                 </div>
-                                <!-- Garis pemisah -->
                                 <div class="col-12">
                                     <hr>
                                 </div>
-                                <!-- Link Lihat Detail -->
                                 <div class="col-12" align="right">
-                                    <a href="#" id="BtnModalPemakaian" class="text-primary"><b>Lihat Detail ></b></a>
+                                    <a href="#" id="BtnModalPasang" class="text-primary"><b>Lihat Detail ></b></a>
                                 </div>
                             </div>
                         </div>
@@ -92,24 +82,20 @@
                         <div class="card-body px-4 py-4-5">
                             <div class="row align-items-center">
                                 <div class="col-12 d-flex align-items-center">
-                                    <!-- Ikon -->
                                     <div class="stats-icon bg-warning me-3">
                                         <i class="iconly-boldShow"></i>
                                     </div>
-                                    <!-- Teks di samping ikon -->
                                     <div>
-                                        <h6 class="text-muted font-semibold mb-1">Tunggakan</h6>
+                                        <h6 class="text-muted font-semibold mb-1">Pemakaian Aktif</h6>
                                         <h6 class="font-extrabold mb-0 text-warning" id="TunggakanCount">
-                                            {{ $Tunggakan }}</h6>
+                                            {{ $Aktif }}</h6>
                                     </div>
                                 </div>
-                                <!-- Garis pemisah -->
                                 <div class="col-12">
                                     <hr>
                                 </div>
-                                <!-- Link Lihat Detail -->
                                 <div class="col-12" align="right">
-                                    <a href="#" id="BtnModalTunggakan" class="text-primary"><b>Lihat
+                                    <a href="#" id="BtnModalPemakaianAktif" class="text-primary"><b>Lihat
                                             Detail ></b></a>
                                 </div>
                             </div>
@@ -121,22 +107,18 @@
                         <div class="card-body px-4 py-4-5">
                             <div class="row align-items-center">
                                 <div class="col-12 d-flex align-items-center">
-                                    <!-- Ikon -->
                                     <div class="stats-icon bg-danger me-3">
                                         <i class="iconly-boldBookmark"></i>
                                     </div>
-                                    <!-- Teks di samping ikon -->
                                     <div>
                                         <h6 class="text-muted font-semibold mb-1">Tagihan</h6>
                                         <h6 class="font-extrabold mb-0 text-danger" id="TagihanCount">
                                             {{ $Tagihan }}</h6>
                                     </div>
                                 </div>
-                                <!-- Garis pemisah -->
                                 <div class="col-12">
                                     <hr>
                                 </div>
-                                <!-- Link Lihat Detail -->
                                 <div class="col-12" align="right">
                                     <a href="#" id="BtnModalTagihan" class="text-primary"><b>Lihat Detail ></b></a>
                                 </div>
@@ -181,115 +163,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-fullscreen" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalInstalasiLabel">Daftar Instalasi</h5>
-                    <button type="button" class="close btn-modal-close" aria-label="Tutup">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="col-md-12">
-                        <div class="card pe-3">
-                            <div class="card-body p-2 pb-3 pt-2 ">
-                                <ul class="nav nav-tabs row pe-2 ps-2" id="myTab" role="tablist">
-                                    <div class="col-12 col-md-4 p-0">
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link active text-center" id="Permohonan-tab"
-                                                data-bs-toggle="tab" href="#Permohonan" role="tab"
-                                                aria-controls="Permohonan" aria-selected="true"><b>Permohonan</b></a>
-                                        </li>
-                                    </div>
-                                    <div class="col-12 col-md-4 p-0">
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link text-center" id="Pasang-tab" data-bs-toggle="tab"
-                                                href="#Pasang" role="tab" aria-controls="Pasang"
-                                                aria-selected="false"><b>Pasang</b></a>
-                                        </li>
-                                    </div>
-                                    <div class="col-12 col-md-4 p-0">
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link text-center" id="Aktif-tab" data-bs-toggle="tab"
-                                                href="#Aktif" role="tab" aria-controls="Aktif"
-                                                aria-selected="false"><b>Aktif</b></a>
-                                        </li>
-                                    </div>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="Permohonan" role="tabpanel"
-                                aria-labelledby="Permohonan-tab">
-                                <div class="card pe-3">
-                                    <div class="table-responsive pe-3 mb-3 p-3">
-                                        <table class="table table-flush">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th>No.Induk</th>
-                                                    <th>Customer</th>
-                                                    <th>Alamat</th>
-                                                    <th>Paket</th>
-                                                    <th>Tanggal Order</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="TablePermohonan"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="Pasang" role="tabpanel" aria-labelledby="Pasang-tab">
-                                <div class="card pe-3">
-                                    <div class="table-responsive pe-3 mb-3 p-3">
-                                        <table class="table table-flush">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th>No.Induk</th>
-                                                    <th>Customer</th>
-                                                    <th>Alamat</th>
-                                                    <th>Paket</th>
-                                                    <th>Tanggal Order</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="TablePasang"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="Aktif" role="tabpanel" aria-labelledby="Aktif-tab">
-                                <div class="card pe-3">
-                                    <div class="table-responsive pe-3 mb-3 p-3">
-                                        <table class="table table-flush">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th>No.Induk</th>
-                                                    <th>Customer</th>
-                                                    <th>Alamat</th>
-                                                    <th>Paket</th>
-                                                    <th>Tanggal Order</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="TableAktif"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-modal-close">
-                        Tutup
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="ModalPemakaian" tabindex="-1" role="dialog" aria-labelledby="ModalPemakaianLabel"
-        aria-modal="false">
-        <div class="modal-dialog modal-dialog-scrollable modal-fullscreen" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalPemakaianLabel">Daftar Pemakaian</h5>
+                    <h5 class="modal-title" id="ModalInstalasiLabel">Daftar Pendaftaran</h5>
                     <button type="button" class="close btn-modal-close" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -302,11 +176,13 @@
                                     <tr>
                                         <th>No.Induk</th>
                                         <th>Customer</th>
+                                        <th>Sales</th>
                                         <th>Paket</th>
-                                        <th>Pemakaian</th>
+                                        <th>Tgl Order</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tbody id="TablePemakaian"></tbody>
+                                <tbody id="TablePermohonan"></tbody>
                             </table>
                         </div>
                     </div>
@@ -318,12 +194,12 @@
         </div>
     </div>
 
-    <div class="modal fade" id="ModalTunggakan" tabindex="-1" role="dialog" aria-labelledby="ModalPemakaianLabel"
+    <div class="modal fade" id="ModalPasang" tabindex="-1" role="dialog" aria-labelledby="ModalPasangLabel"
         aria-modal="false">
         <div class="modal-dialog modal-dialog-scrollable modal-fullscreen" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalTunggakanLabel">Daftar Tunggakan</h5>
+                    <h5 class="modal-title" id="ModalPasangLabel">Daftar Terpasang</h5>
                     <button type="button" class="close btn-modal-close" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -336,13 +212,47 @@
                                     <tr>
                                         <th>No.Induk</th>
                                         <th>Customer</th>
-                                        <th>Alamat</th>
                                         <th>Paket</th>
-                                        <th>Jumlah Tunggakan</th>
-                                        <th style="text-align: center">Cetak</th>
+                                        <th>Tgl Order</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tbody id="TableTunggakan"></tbody>
+                                <tbody id="TablePasang"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-modal-close">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalAktif" tabindex="-1" role="dialog" aria-labelledby="ModalAktifLabel"
+        aria-modal="false">
+        <div class="modal-dialog modal-dialog-scrollable modal-fullscreen" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalAktifLabel">Daftar Pemakaian Aktif</h5>
+                    <button type="button" class="close btn-modal-close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-flush">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>No.Induk</th>
+                                        <th>Customer</th>
+                                        <th>Paket</th>
+                                        <th>Tgl Order</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TablePemakaianAktif"></tbody>
                             </table>
                         </div>
                     </div>
@@ -496,9 +406,9 @@
     </script>
 
     <script>
-        async function dataInstallations() {
+        async function dataPermohonan() {
             var result = await $.ajax({
-                'url': '/dashboard/installations',
+                'url': '/dashboard/permohonan',
                 'type': 'GET',
                 'dataType': 'json',
                 'success': function(result) {
@@ -509,9 +419,9 @@
             return result;
         }
 
-        async function dataUsages() {
+        async function dataPasang() {
             var result = await $.ajax({
-                'url': '/dashboard/usages',
+                'url': '/dashboard/pasang',
                 'type': 'GET',
                 'dataType': 'json',
                 'success': function(result) {
@@ -522,9 +432,9 @@
             return result;
         }
 
-        async function dataTunggakan() {
+        async function dataPemakaianAktif() {
             var result = await $.ajax({
-                'url': '/dashboard/tunggakan',
+                'url': '/dashboard/PemakaianAktif',
                 'type': 'GET',
                 'dataType': 'json',
                 'success': function(result) {
@@ -548,74 +458,26 @@
             return result;
         }
 
-        $(document).on('click', '#BtnModalInstalasi', async function(e) {
+        $(document).on('click', '#BtnModalPermohonan', async function(e) {
             e.preventDefault();
-            var result = await dataInstallations();
-
-            var Permohonan = result.Permohonan;
-            var Pasang = result.Pasang;
-            var Aktif = result.Aktif;
-
-            $('#TablePermohonan').html('');
-            Permohonan.forEach((item, index) => {
-                $('#TablePermohonan').append(`
-                    <tr>
-                        <td>${item.kode_instalasi} ${item.package.kelas.charAt(0)}</td>
-                        <td>${item.customer.nama}</td>
-                        <td>${item.customer.alamat}</td>
-                        <td>${item.package.kelas}</td>
-                        <td>${item.order}</td>
-                    </tr>
-                `)
-            })
-
-            $('#TablePasang').html('');
-            Pasang.forEach((item, index) => {
-                $('#TablePasang').append(`
-                    <tr>
-                        <td>${item.kode_instalasi} ${item.package.kelas.charAt(0)}</td>
-                        <td>${item.customer.nama}</td>
-                        <td>${item.customer.alamat}</td>
-                        <td>${item.package.kelas}</td>
-                        <td>${item.order}</td>
-                    </tr>
-                `)
-            })
-
-            $('#TableAktif').html('');
-            Aktif.forEach((item, index) => {
-                $('#TableAktif').append(`
-                    <tr>
-                        <td>${item.kode_instalasi} ${item.package.kelas.charAt(0)}</td>
-                        <td>${item.customer.nama}</td>
-                        <td>${item.customer.alamat}</td>
-                        <td>${item.package.kelas}</td>
-                        <td>${item.aktif}</td>
-                    </tr>
-                `)
-            })
-
-            $('#ModalInstalasi').modal('toggle');
-        });
-
-        $(document).on('click', '#BtnModalPemakaian', async function(e) {
-            e.preventDefault();
-            var result = await dataUsages();
-            var Pemakaian = result.Usages;
+            var result = await dataPermohonan();
+            var Instalasi = result.permohonan;
 
             var data = 0;
             var empty = 0;
-            $('#TablePemakaian').html('');
-            Pemakaian.forEach((item, index) => {
-                if (item.one_usage == null) {
+            $('#TablePermohonan').html('');
+            Instalasi.forEach((item, index) => {
+                if (item == null) {
                     empty += 1;
                 } else {
-                    $('#TablePemakaian').append(`
+                    $('#TablePermohonan').append(`
                         <tr>
-                            <td>${item.kode_instalasi} ${item.package.kelas.charAt(0)}</td>
+                            <td>${item.kode_instalasi}</td>
                             <td>${item.customer.nama}</td>
+                            <td>${item.users.nama}</td>
                             <td>${item.package.kelas}</td>
-                            <td>${item.one_usage.akhir}</td>
+                            <td>${item.order}</td>
+                            <td><span class="badge bg-success">R</span></td>
                         </tr>
                     `)
                 }
@@ -624,81 +486,91 @@
             })
 
             if (data - empty == 0) {
-                $('#TablePemakaian').append(`
+                $('#TablePermohonan').append(`
                         <tr>
-                            <td align="center" colspan="4">Tidak ada data pemakaian</td>
+                            <td align="center" colspan="4">Tidak ada data Pendaftaran</td>
                         </tr>
                     `)
             }
 
-            $('#ModalPemakaian').modal('toggle');
+            $('#ModalInstalasi').modal('toggle');
         });
-        $(document).on('click', '#BtnModalTunggakan', async function(e) {
+
+        $(document).on('click', '#BtnModalPasang', async function(e) {
             e.preventDefault();
-            var result = await dataTunggakan();
-            var tunggakan = result.tunggakan;
-            console.log(tunggakan);
+            var result = await dataPasang();
+            var Pasang = result.Pasang;
 
             var data = 0;
             var empty = 0;
-            $('#TableTunggakan').html('');
-
-            tunggakan.forEach((item, index) => {
-                // Tentukan tombol mana yang ditampilkan
-                let stButton = '';
-                let spButton = '';
-                let spsButton = '';
-
-                if (item.jumlah_tunggakan == 1) {
-                    stButton = `
-                        <a target="_blank"
-                            href="/dashboard/Cetaktunggakan1/${item.id}"
-                            class="btn btn-warning btn-sm" data-id="">
-                            st
-                        </a>`;
-                } else if (item.jumlah_tunggakan == 2) {
-                    spButton = `
-                        <a target="_blank"
-                            href="/dashboard/Cetaktunggakan2/${item.id}"
-                            class="btn btn-danger btn-sm" data-id="">
-                            sp
-                        </a>`;
-                } else if (item.jumlah_tunggakan > 2) {
-                    spsButton = `
-                        <a target="_blank"
-                            href="/dashboard/sps/${item.id}"
-                            class="btn btn-primary btn-sm" data-id="">
-                            sps
-                        </a>`;
+            $('#TablePasang').html('');
+            Pasang.forEach((item, index) => {
+                if (item == null) {
+                    empty += 1;
+                } else {
+                    $('#TablePasang').append(`
+                        <tr>
+                            <td>${item.kode_instalasi}</td>
+                            <td>${item.customer.nama}</td>
+                            <td>${item.users.nama}</td>
+                            <td>${item.package.kelas}</td>
+                            <td>${item.order}</td>
+                            <td><span class="badge bg-success">I</span></td>
+                        </tr>
+                    `)
                 }
 
-                $('#TableTunggakan').append(`
-                    <tr>
-                        <td>${item.kode_instalasi} ${item.package.kelas.charAt(0)}</td>
-                        <td>${item.customer.nama} ( ${item.status_tunggakan})</td>
-                        <td>${item.alamat}</td>
-                        <td>${item.package.kelas}</td>
-                        <td>${item.jumlah_tunggakan} Bulan</td>
-                        <td class="text-center">
-                            ${stButton}
-                            ${spButton}
-                            ${spsButton}
-                        </td>
-                    </tr>
-                `);
-
-                data += 1;
-            });
+                data += 1
+            })
 
             if (data - empty == 0) {
-                $('#TableTunggakan').append(`
-                    <tr>
-                        <td align="center" colspan="4">Tidak ada data pemakaian</td>
-                    </tr>
-                `);
+                $('#TablePasang').append(`
+                        <tr>
+                            <td align="center" colspan="4">Tidak ada data Pendaftaran</td>
+                        </tr>
+                    `)
             }
 
-            $('#ModalTunggakan').modal('toggle');
+            $('#ModalPasang').modal('toggle');
+        });
+
+        $(document).on('click', '#BtnModalPemakaianAktif', async function(e) {
+            e.preventDefault();
+            var result = await dataPemakaianAktif();
+            var pemakaian = result.pemakaian;
+            console.log(pemakaian);
+
+            var data = 0;
+            var empty = 0;
+            $('#TablePemakaianAktif').html('');
+            pemakaian.forEach((item, index) => {
+                if (item == null) {
+                    empty += 1;
+                } else {
+                    $('#TablePemakaianAktif').append(`
+                        <tr>
+                            <td>${item.kode_instalasi}</td>
+                            <td>${item.customer.nama}</td>
+                            <td>${item.users.nama}</td>
+                            <td>${item.package.kelas}</td>
+                            <td>${item.order}</td>
+                            <td><span class="badge bg-success">A</span></td>
+                        </tr>
+                    `)
+                }
+
+                data += 1
+            })
+
+            if (data - empty == 0) {
+                $('#TablePemakaianAktif').append(`
+                        <tr>
+                            <td align="center" colspan="4">Tidak ada data Pendaftaran</td>
+                        </tr>
+                    `)
+            }
+
+            $('#ModalAktif').modal('toggle');
         });
 
         $(document).on('click', '#BtnModalTagihan', async function(e) {
@@ -740,12 +612,11 @@
                 <td>${item.jumlah}</td>
                 <td>${harga}</td>
             </tr>
-        `);
+         `);
             });
 
             $('#ModalTagihan').modal('toggle');
         });
-
 
         $(document).on('click', '#SendWhatsappMessage', function(e) {
             e.preventDefault()

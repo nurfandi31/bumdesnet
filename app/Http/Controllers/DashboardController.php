@@ -21,34 +21,27 @@ class DashboardController extends Controller
     {
         $keuangan = new Keuangan;
 
-        $installations = Installations::selectRaw("
-                SUM(CASE WHEN status = 'R' THEN 1 ELSE 0 END) AS permohonan,
-                SUM(CASE WHEN status = 'I' THEN 1 ELSE 0 END) AS pasang,
-                SUM(CASE WHEN status = 'A' THEN 1 ELSE 0 END) AS aktif
-            ")
-            ->where('business_id', Session::get('business_id'))
-            ->first();
+        $Permohonan = Installations::where('business_id', Session::get('business_id'))
+            ->where('status', 'R')
+            ->count();
+        $Pasang = Installations::where('business_id', Session::get('business_id'))
+            ->where('status', 'I')
+            ->count();
+        $Aktif = Installations::where('business_id', Session::get('business_id'))
+            ->where('status', 'A')
+            ->count();
 
-        $Installation = $installations->permohonan + $installations->pasang + $installations->aktif;
-            $Usages = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')->with([
+        $Usages = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')->with([
             'customer',
             'package',
             'oneUsage' => function ($query) {
                 $query->where('tgl_akhir', '<=', date('Y-m-d'));
             }
         ])->get();
-        $Tagihan = Usage::where('business_id', Session::get('business_id'))->where([
-            ['status', 'UNPAID'],
-            ['tgl_akhir', '<', date('Y-m-d')]
-        ])->count();
 
-        $Tunggakan = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')
-            ->whereHas('usage', function (Builder  $query) {
-                $query->where([
-                    ['status', 'UNPAID'],
-                    ['tgl_akhir', '<=', date('Y-m-d')]
-                ]);
-            }, '>=', '1')->count();
+        $Tagihan = Usage::where('business_id', Session::get('business_id'))->where([
+            ['status', 'UNPAID']
+        ])->count();
 
         $UsageCount = 0;
         foreach ($Usages as $usage) {
@@ -80,7 +73,7 @@ class DashboardController extends Controller
         $title = 'Dashboard';
         $api = env('APP_API', 'http://localhost:8080');
         $business = Business::where('id', Session::get('business_id'))->first();
-        return view('Dashboard.dashboard')->with(compact('Installation', 'SaldoPendapatanBulanini', 'SaldoBebanBulanini', 'SaldoSurplusBulanini', 'Tunggakan', 'UsageCount', 'Tagihan', 'title', 'charts', 'pendapatan', 'beban', 'surplus', 'pros_pendapatan', 'pros_beban', 'pros_surplus', 'business', 'api'));
+        return view('Dashboard.dashboard')->with(compact('SaldoPendapatanBulanini', 'SaldoBebanBulanini', 'SaldoSurplusBulanini', 'Aktif', 'Permohonan', 'Pasang', 'Tagihan', 'title', 'charts', 'pendapatan', 'beban', 'surplus', 'pros_pendapatan', 'pros_beban', 'pros_surplus', 'business', 'api'));
     }
 
 
@@ -158,40 +151,43 @@ class DashboardController extends Controller
         ];
     }
 
-    public function installations()
+    public function permohonan()
     {
-        $Permohonan = Installations::where('business_id', Session::get('business_id'))->where('status', '0')->orwhere('status', 'R')->with([
+        $pendaftaran = Installations::where('business_id', Session::get('business_id'))->where('status', 'R')->with([
             'customer',
-            'package'
-        ])->get();
-        $Pasang = Installations::where('business_id', Session::get('business_id'))->where('status', 'I')->with([
-            'customer',
-            'package'
-        ])->get();
-        $Aktif = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')->with([
-            'customer',
-            'package'
+            'package',
+            'village',
+            'users',
         ])->get();
 
         return response()->json([
-            'Permohonan' => $Permohonan,
-            'Pasang' => $Pasang,
-            'Aktif' => $Aktif
+            'permohonan' => $pendaftaran
         ]);
     }
+    public function pasang()
+    {
+        $pasang = Installations::where('business_id', Session::get('business_id'))->where('status', 'I')->with([
+            'customer',
+            'package',
+            'village',
+            'users',
+        ])->get();
 
-    public function usages()
+        return response()->json([
+            'Pasang' => $pasang
+        ]);
+    }
+    public function Pemakaian()
     {
         $Usages = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')->with([
             'customer',
             'package',
-            'oneUsage' => function ($query) {
-                $query->where('tgl_akhir', '<=', date('Y-m-d'));
-            }
+            'village',
+            'users',
         ])->get();
 
         return response()->json([
-            'Usages' => $Usages
+            'pemakaian' => $Usages
         ]);
     }
 
@@ -222,32 +218,30 @@ class DashboardController extends Controller
         ]);
     }
 
- public function tagihan()
-{
-    $tgl_akhir = request()->get('tgl_akhir') ?: date('Y-m-d');
+    public function tagihan()
+    {
+        $tgl_akhir = request()->get('tgl_akhir') ?: date('Y-m-d');
 
-    $Tagihan = Usage::where('business_id', Session::get('business_id'))
-        ->where([
-            ['status', 'UNPAID'],
-            ['tgl_akhir', '<', $tgl_akhir]
-        ])
-        ->with([
-            'installation',
-            'installation.customer',
-            'installation.customer.village',
-            'installation.package'
-        ])
-        ->get();
+        $Tagihan = Usage::where('business_id', Session::get('business_id'))
+            ->where([
+                ['status', 'UNPAID'],
+                ['tgl_akhir', '<', $tgl_akhir]
+            ])
+            ->with([
+                'installation',
+                'installation.customer',
+                'installation.customer.village',
+                'installation.package'
+            ])
+            ->get();
 
-    $setting = Settings::where('business_id', Session::get('business_id'))->first();
+        $setting = Settings::where('business_id', Session::get('business_id'))->first();
 
-    return response()->json([
-        'Tagihan' => $Tagihan,
-        'setting' => $setting,
-    ]);
-}
-
-
+        return response()->json([
+            'Tagihan' => $Tagihan,
+            'setting' => $setting,
+        ]);
+    }
     public function sps($id)
     {
         $keuangan = new Keuangan;
