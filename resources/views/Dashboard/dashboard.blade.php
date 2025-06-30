@@ -32,7 +32,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card">
                         <div class="card-body px-4 py-4-5">
-                            <div class="row align-items-center">
+                            <div class="row align-items-center" id="BtnModalPermohonan">
                                 <div class="col-12 d-flex align-items-center">
                                     <div class="stats-icon bg-success text-white me-3">
                                         <i class="iconly-boldProfile"></i>
@@ -46,9 +46,6 @@
                                 <div class="col-12">
                                     <hr>
                                 </div>
-                                <div class="col-12" align="right">
-                                    <a href="#"id="BtnModalPermohonan" class="text-primary"><b>Lihat Detail ></b></a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -56,7 +53,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card">
                         <div class="card-body px-4 py-4-5">
-                            <div class="row align-items-center">
+                            <div class="row align-items-center"id="BtnModalPasang">
                                 <div class="col-12 d-flex align-items-center">
                                     <div class="stats-icon bg-info me-3">
                                         <i class="iconly-boldAdd-User"></i>
@@ -70,9 +67,6 @@
                                 <div class="col-12">
                                     <hr>
                                 </div>
-                                <div class="col-12" align="right">
-                                    <a href="#" id="BtnModalPasang" class="text-primary"><b>Lihat Detail ></b></a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -80,7 +74,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card">
                         <div class="card-body px-4 py-4-5">
-                            <div class="row align-items-center">
+                            <div class="row align-items-center"id="BtnModalPemakaianAktif">
                                 <div class="col-12 d-flex align-items-center">
                                     <div class="stats-icon bg-warning me-3">
                                         <i class="iconly-boldShow"></i>
@@ -94,10 +88,6 @@
                                 <div class="col-12">
                                     <hr>
                                 </div>
-                                <div class="col-12" align="right">
-                                    <a href="#" id="BtnModalPemakaianAktif" class="text-primary"><b>Lihat
-                                            Detail ></b></a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -105,7 +95,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card">
                         <div class="card-body px-4 py-4-5">
-                            <div class="row align-items-center">
+                            <div class="row align-items-center"id="BtnModalTagihan">
                                 <div class="col-12 d-flex align-items-center">
                                     <div class="stats-icon bg-danger me-3">
                                         <i class="iconly-boldBookmark"></i>
@@ -118,9 +108,6 @@
                                 </div>
                                 <div class="col-12">
                                     <hr>
-                                </div>
-                                <div class="col-12" align="right">
-                                    <a href="#" id="BtnModalTagihan" class="text-primary"><b>Lihat Detail ></b></a>
                                 </div>
                             </div>
                         </div>
