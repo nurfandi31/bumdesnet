@@ -21,14 +21,15 @@ class VillageController extends Controller
     {
         if ($request->ajax()) {
             return DataTables::eloquent(
-                Village::select([
-                    'id',
-                    'kode',
-                    'nama',
-                    'dusun',
-                    'alamat',
-                    'hp'
-                ])
+                Village::where('kategori', 1)
+                    ->select([
+                        'id',
+                        'kode',
+                        'nama',
+                        'dusun',
+                        'alamat',
+                        'hp'
+                    ])
             )
                 ->addColumn('aksi', function ($row) {
                     return $row->id;
