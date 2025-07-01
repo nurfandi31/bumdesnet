@@ -199,6 +199,7 @@
                                     <tr>
                                         <th>No.Induk</th>
                                         <th>Customer</th>
+                                        <th>Sales</th>
                                         <th>Paket</th>
                                         <th>Tgl Order</th>
                                         <th>Status</th>
@@ -234,6 +235,7 @@
                                     <tr>
                                         <th>No.Induk</th>
                                         <th>Customer</th>
+                                        <th>Sales</th>
                                         <th>Paket</th>
                                         <th>Tgl Order</th>
                                         <th>Status</th>
@@ -475,7 +477,7 @@
             if (data - empty == 0) {
                 $('#TablePermohonan').append(`
                         <tr>
-                            <td align="center" colspan="4">Tidak ada data Pendaftaran</td>
+                            <td align="center" colspan="6">Tidak ada data Pendaftaran</td>
                         </tr>
                     `)
             }
@@ -501,7 +503,7 @@
                             <td>${item.customer.nama}</td>
                             <td>${item.users.nama}</td>
                             <td>${item.package.kelas}</td>
-                            <td>${item.order}</td>
+                            <td>${item.pasang}</td>
                             <td><span class="badge bg-success">I</span></td>
                         </tr>
                     `)
@@ -513,7 +515,7 @@
             if (data - empty == 0) {
                 $('#TablePasang').append(`
                         <tr>
-                            <td align="center" colspan="4">Tidak ada data Pendaftaran</td>
+                            <td align="center" colspan="6">Tidak ada data Pendaftaran</td>
                         </tr>
                     `)
             }
@@ -540,7 +542,7 @@
                             <td>${item.customer.nama}</td>
                             <td>${item.users.nama}</td>
                             <td>${item.package.kelas}</td>
-                            <td>${item.order}</td>
+                            <td>${item.aktif}</td>
                             <td><span class="badge bg-success">A</span></td>
                         </tr>
                     `)
@@ -552,7 +554,7 @@
             if (data - empty == 0) {
                 $('#TablePemakaianAktif').append(`
                         <tr>
-                            <td align="center" colspan="4">Tidak ada data Pendaftaran</td>
+                            <td align="center" colspan="6">Tidak ada data Pendaftaran</td>
                         </tr>
                     `)
             }
