@@ -253,12 +253,7 @@ class InstallationsController extends Controller
                         ]);
                     }
                 },
-            ], 'total')
-            ->first();
-        $pengaturan = Settings::where('business_id', $business_id);
-
-        $trx_settings = $pengaturan->first();
-        $package = Package::where('business_id', Session::get('business_id'))->get();
+            ], 'total')->first();
 
         $usages = Usage::where('business_id', Session::get('business_id'))->where([
             ['id_instalasi', $installations->id],
@@ -268,42 +263,13 @@ class InstallationsController extends Controller
         $jumlah_trx = $installations->transaction_sum_total;
         $biaya_instal = $installations->biaya_instalasi;
 
-        $tagihan1 = Account::where('business_id', Session::get('business_id'))->where([
-            ['kode_akun', '1.1.01.01'],
-            ['business_id', Session::get('business_id')]
-        ])->first();
-        $tagihan2 = Account::where('business_id', Session::get('business_id'))->where([
-            ['kode_akun', '4.2.01.04'],
-            ['business_id', Session::get('business_id')]
-        ])->first();
-
         $qr = QrCode::generate($installations->id);
-
         return response()->json([
             'success' => true,
-            'view' => view('transaksi.partials.usage')->with(compact('qr', 'installations',  'usages', 'trx_settings', 'package'))->render(),
-            'rek_debit' => $tagihan1,
-            'rek_kredit' => $tagihan2,
+            'view' => view('transaksi.partials.usage')->with(compact('qr', 'installations',  'usages'))->render(),
+            'rek_debit' => $rekening_debit,
+            'rek_kredit' => $rekening_kredit,
         ]);
-        if ($jumlah_trx == $biaya_instal) {
-        } else {
-
-            $pasang1 = Account::where('business_id', Session::get('business_id'))->where([
-                ['kode_akun', '1.1.01.01'],
-                ['business_id', Session::get('business_id')]
-            ])->first();
-            $pasang2 = Account::where('business_id', Session::get('business_id'))->where([
-                ['kode_akun', '5.1.01.04'],
-                ['business_id', Session::get('business_id')]
-            ])->first();
-
-            return response()->json([
-                'success' => false,
-                'view' => view('transaksi.partials.installations')->with(compact('qr', 'installations', 'usages', 'trx_settings', 'package'))->render(),
-                'rek_debit' => $pasang1,
-                'rek_kredit' => $pasang2,
-            ]);
-        }
     }
 
     /**
