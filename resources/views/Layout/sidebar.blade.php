@@ -27,11 +27,13 @@
                     </div>
 
                     <!-- Nama Usaha -->
-                    <div class="text-break">
-                        {{ Session::get('nama_usaha') }}
-                    </div>
-                    <div class="text-break">
-                        {{ Session::get('describe') }}
+                    <div class="d-flex flex-column">
+                        <div class="text-break">
+                            {{ Session::get('nama_usaha') }}
+                        </div>
+                        <div class="text-break">
+                            {{ Session::get('describe') }}
+                        </div>
                     </div>
                 </div>
 
