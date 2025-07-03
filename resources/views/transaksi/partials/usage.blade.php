@@ -39,8 +39,8 @@
         if (date('Y-m') > date('Y-m', strtotime($usage->tgl_akhir))) {
             $denda = $installations->package->denda;
         }
-        $abodemen = $installations->package->abodemen;
-        $total = $usage->nominal + $denda + $abodemen;
+
+        $total = $usage->nominal + ($usage->nominal * 11) / 100;
     @endphp
     <div class="basic-choices position-relative">
         <div class="row">
