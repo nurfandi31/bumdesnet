@@ -40,18 +40,19 @@ class DashboardController extends Controller
                 $query->where('tgl_akhir', '<=', date('Y-m-d'));
             }
         ])->get();
-
-    $tgl_kondisi = date('Y-m-d');
+$tgl_kondisi = request()->get('tgl_akhir') ?? date('Y-m-d');
 
 $Tagihan = Installations::where('business_id', Session::get('business_id'))
     ->whereIn('status', ['A', 'B', 'C'])
-    ->whereHas('usage', function ($query) use ($tgl_kondisi) {
-        $query->where('status', 'UNPAID')
-              ->where('tgl_akhir', '<=', $tgl_kondisi);
-    })
-    ->count();
+    ->with([
+        'usage' => function ($query) use ($tgl_kondisi) {
+            $query->where('tgl_akhir', '<=', $tgl_kondisi)
+                  ->where('status', 'UNPAID');
+        }
+    ])
+    ->get();
 
-
+$JumlahTagihan = $Tagihan->count(); // tampilkan semua, meskipun usage-nya kosong
 
 
         $UsageCount = 0;
@@ -84,7 +85,7 @@ $Tagihan = Installations::where('business_id', Session::get('business_id'))
         $title = 'Dashboard';
         $api = env('APP_API', 'http://localhost:8080');
         $business = Business::where('id', Session::get('business_id'))->first();
-        return view('Dashboard.dashboard')->with(compact('SaldoPendapatanBulanini', 'SaldoBebanBulanini', 'SaldoSurplusBulanini', 'Aktif', 'Permohonan', 'Pasang', 'Tagihan', 'title', 'charts', 'pendapatan', 'beban', 'surplus', 'pros_pendapatan', 'pros_beban', 'pros_surplus', 'business', 'api'));
+        return view('Dashboard.dashboard')->with(compact('JumlahTagihan','SaldoPendapatanBulanini', 'SaldoBebanBulanini', 'SaldoSurplusBulanini', 'Aktif', 'Permohonan', 'Pasang', 'title', 'charts', 'pendapatan', 'beban', 'surplus', 'pros_pendapatan', 'pros_beban', 'pros_surplus', 'business', 'api'));
     }
 
 
@@ -253,7 +254,7 @@ $Tagihan = Installations::where('business_id', Session::get('business_id'))
             'setting' => $setting,
         ]);
     }
-  public function tagihan_dashboard()
+ public function tagihan_dashboard()
 {
     $tgl_kondisi = request('tgl_akhir') ?? date('Y-m-d');
 
@@ -262,7 +263,7 @@ $Tagihan = Installations::where('business_id', Session::get('business_id'))
         ->first();
 
     $Tagihan = Installations::where('business_id', Session::get('business_id'))
-        ->where('status', ['A','B','C'])
+        ->whereIn('status', ['A', 'B', 'C']) // ✅ gunakan whereIn agar aman
         ->with([
             'customer',
             'village',
@@ -278,6 +279,7 @@ $Tagihan = Installations::where('business_id', Session::get('business_id'))
             },
         ])
         ->get();
+
     return view('Dashboard.partials.tagihan', [
         'title' => 'Cetak Daftar Tagihan',
         'tgl_kondisi' => $tgl_kondisi,
@@ -285,6 +287,7 @@ $Tagihan = Installations::where('business_id', Session::get('business_id'))
         'Tagihan' => $Tagihan,
     ]);
 }
+
 
   public function sps($id)
     {
@@ -356,8 +359,8 @@ public function CetakTagihan(Request $request)
         ->first();
 
     $data['Tagihan'] = Installations::where('business_id', Session::get('business_id'))
-        ->whereIn('id', $data['id']) // ✅ hanya ambil instalasi yang diceklis
-        ->where('status', ['A','B','C'])
+        ->whereIn('id', $data['id']) // ✅ hanya data yang diceklist
+        ->whereIn('status', ['A', 'B', 'C']) // ✅ diperbaiki
         ->with([
             'customer',
             'village',
@@ -365,8 +368,8 @@ public function CetakTagihan(Request $request)
             'settings',
             'usage' => function ($query) use ($data) {
                 $query->where('tgl_akhir', '<=', $data['tgl_kondisi'])
-                    ->where('status', 'UNPAID')
-                    ->orderBy('tgl_akhir');
+                      ->where('status', 'UNPAID')
+                      ->orderBy('tgl_akhir');
             },
             'usage.transaction' => function ($query) use ($data) {
                 $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
@@ -378,6 +381,7 @@ public function CetakTagihan(Request $request)
 
     return view('Dashboard.partials.cetak_tagihan', $data);
 }
+
 
     public function Cetaktunggakan1($id)
     {

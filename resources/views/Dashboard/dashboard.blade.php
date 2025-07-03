@@ -53,7 +53,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card">
                         <div class="card-body px-4 py-4-5">
-                            <div class="row align-items-center"id="BtnModalPasang">
+                            <div class="row align-items-center" id="BtnModalPasang">
                                 <div class="col-12 d-flex align-items-center">
                                     <div class="stats-icon bg-info me-3">
                                         <i class="iconly-boldAdd-User"></i>
@@ -74,7 +74,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card">
                         <div class="card-body px-4 py-4-5">
-                            <div class="row align-items-center"id="BtnModalPemakaianAktif">
+                            <div class="row align-items-center" id="BtnModalPemakaianAktif">
                                 <div class="col-12 d-flex align-items-center">
                                     <div class="stats-icon bg-warning me-3">
                                         <i class="iconly-boldShow"></i>
@@ -95,7 +95,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card">
                         <div class="card-body px-4 py-4-5">
-                            <div class="row align-items-center"id="BtnModalTagihan">
+                            <div class="row align-items-center" id="BtnModalTagihan">
                                 <div class="col-12 d-flex align-items-center">
                                     <div class="stats-icon bg-danger me-3">
                                         <i class="iconly-boldBookmark"></i>
@@ -103,7 +103,7 @@
                                     <div>
                                         <h6 class="text-muted font-semibold mb-1">Tagihan</h6>
                                         <h6 class="font-extrabold mb-0 text-danger" id="TagihanCount">
-                                            {{ $Tagihan }}</h6>
+                                            {{ $JumlahTagihan }}</h6>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -304,10 +304,21 @@
                 labels: ['Pendapatan', 'Beban', 'Surplus'],
                 datasets: [{
                     label: 'Saldo Bulan Ini',
-                    data: [
-                        {{ $SaldoPendapatanBulanini }},
-                        {{ $SaldoBebanBulanini }},
-                        {{ $SaldoSurplusBulanini }}
+                    data: [{
+                            {
+                                $SaldoPendapatanBulanini
+                            }
+                        },
+                        {
+                            {
+                                $SaldoBebanBulanini
+                            }
+                        },
+                        {
+                            {
+                                $SaldoSurplusBulanini
+                            }
+                        }
                     ],
                     backgroundColor: [
                         'green',

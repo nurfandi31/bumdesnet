@@ -18,6 +18,11 @@
     <input type="hidden" name="tgl_akhir" value="{{ request('tgl_akhir') ?? date('Y-m-d') }}">
 
     <div class="card shadow-sm border-0">
+        {{-- Tambahkan header judul di sini --}}
+        <div class="card-header bg-white border-bottom">
+            <h5 class="mb-0 fw-bold text-dark">Tagihan</h5>
+        </div>
+
         <div class="card-body">
             <div class="table-responsive">
                 <table id="datatable-tagihan" class="table table-bordered table-hover table-striped align-middle">
@@ -103,6 +108,8 @@
                 </table>
             </div>
         </div>
+
+        {{-- Tetap di dalam .card --}}
         <div class="card-footer d-flex justify-content-end gap-2">
             <button type="submit" class="btn btn-sm btn-dark">
                 <i class="fas fa-print me-1"></i> Cetak Daftar Tagihan
@@ -110,10 +117,10 @@
             <button type="button" class="btn btn-sm btn-danger" onclick="history.back();">
                 Tutup
             </button>
-
         </div>
-    </div>
+    </div> <!-- tutup card -->
 </form>
+
 
 
 
