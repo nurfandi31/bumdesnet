@@ -145,22 +145,22 @@ class UsageController extends Controller
             $jumlah_hari_bulan_ini = date('t');
             $jumlah_rasio = round(($jumlah_hari_pemakaian + 1) / $jumlah_hari_bulan_ini, 2);
             $harga = $instal->harga_paket;
-            $new_usage = Usage::create([
-                'business_id'    => Session::get('business_id'),
-                'id_instalasi'   => $instal->id,
-                'kode_instalasi' => $instal->kode_instalasi,
-                'tgl_pemakaian'  => $tanggal_awal,
-                'tgl_akhir'      => $tanggal_akhir,
-                'awal'           => date('d', strtotime($tanggal_awal)),
-                'akhir'          => date('d', strtotime($tanggal_akhir)),
-                'jumlah'         => $jumlah_rasio,
-                'cater'          => $instal->cater_id,
-                'nominal'        => $jumlah_rasio * $harga,
-                'customer'       => $instal->customer_id,
-                'created_at'     => now(),
-            ]);
+            // $new_usage = Usage::create([
+            //     'business_id'    => Session::get('business_id'),
+            //     'id_instalasi'   => $instal->id,
+            //     'kode_instalasi' => $instal->kode_instalasi,
+            //     'tgl_pemakaian'  => $tanggal_awal,
+            //     'tgl_akhir'      => $tanggal_akhir,
+            //     'awal'           => date('d', strtotime($tanggal_awal)),
+            //     'akhir'          => date('d', strtotime($tanggal_akhir)),
+            //     'jumlah'         => $jumlah_rasio,
+            //     'cater'          => $instal->cater_id,
+            //     'nominal'        => $jumlah_rasio * $harga,
+            //     'customer'       => $instal->customer_id,
+            //     'created_at'     => now(),
+            // ]);
 
-            $usages[] = $new_usage;
+            // $usages[] = $new_usage;
         }
         echo '<script>window.close()</script>';
         exit;
