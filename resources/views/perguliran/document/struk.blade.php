@@ -161,9 +161,9 @@
                     <div class="signature">
                         <table class="no-border" width="100%">
                             <tr>
-                                <td width="50%">{{ strtoupper($bisnis->desa) }},
+                                <td width="50%">{{ ucwords($bisnis->desa) }},
                                     {{ Tanggal::tglLatin($use->tgl_pemakaian) }}</td>
-                                <td width="50%" align="right">{{ strtoupper($jabatan->nama) }}</td>
+                                <td width="50%" align="right">{{ ucwords($jabatan->nama) }}</td>
                             </tr>
                             <tr>
                                 <td></td>
