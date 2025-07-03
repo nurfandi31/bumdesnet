@@ -125,7 +125,7 @@
                                                                     name="abodemen"
                                                                     id="abodemen-bulanan-{{ $usage->id }}"
                                                                     placeholder="0.00"
-                                                                    value="{{ number_format($installations->package->abodemen, 2) }}"readonly>
+                                                                    value="{{ number_format(($usage->nominal * 11) / 100, 2) }}"readonly>
                                                             </div>
                                                             <div class="col-md-4 mb-2">
                                                                 <label for="denda">Denda</label>
