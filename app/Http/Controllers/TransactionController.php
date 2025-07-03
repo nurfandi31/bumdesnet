@@ -835,7 +835,7 @@ class TransactionController extends Controller
                 ['business_id', Session::get('business_id')]
             ])->first();
             $rekening_kredit = Account::where([
-                ['kode_akun', '4.1.01.03'],
+                ['kode_akun', '4.1.01.01'],
                 ['business_id', Session::get('business_id')]
             ])->first();
 
@@ -1209,26 +1209,21 @@ class TransactionController extends Controller
 
         $tgl_transaksi = Tanggal::tglNasional($request->tgl_transaksi);
         $accounts = Account::where('business_id', Session::get('business_id'))
-            ->whereIn('kode_akun', ['1.1.01.01', '1.1.03.01', '2.1.02.02', '4.1.01.02', '4.1.01.03', '4.1.01.04', '5.1.02.04'])
+            ->whereIn('kode_akun', ['1.1.01.01', '1.1.03.01', '4.1.01.02', '4.1.01.01'])
             ->get()
             ->keyBy('kode_akun');
 
         $kode_kas = $accounts['1.1.01.01'] ?: null;
         $kode_piutang = $accounts['1.1.03.01'] ?: null;
         $kode_abodemen = $accounts['4.1.01.02'] ?: null;
-        $kode_pemakaian = $accounts['4.1.01.03'] ?: null;
-        $kode_denda = $accounts['4.1.01.04'] ?: null;
-
-        $utang_komisi = $accounts['2.1.02.02'] ?: null;
-        $beban_komisi = $accounts['5.1.02.04'] ?: null;
+        $kode_pemakaian = $accounts['4.1.01.01'] ?: null;
 
         $transaksi_piutang = Transaction::where('business_id', Session::get('business_id'))
             ->where('tgl_transaksi', '<=', $tgl_transaksi)
             ->where('usage_id', $data['id_usage'])->where('installation_id', $data['id_instal'])
-            ->where('rekening_debit', $kode_piutang->id)->where(function ($query) use ($kode_abodemen, $kode_pemakaian, $kode_denda) {
+            ->where('rekening_debit', $kode_piutang->id)->where(function ($query) use ($kode_abodemen, $kode_pemakaian) {
                 $query->where('rekening_kredit', $kode_abodemen->id)
-                    ->orWhere('rekening_kredit', $kode_pemakaian->id)
-                    ->orWhere('rekening_kredit', $kode_denda->id);
+                    ->orWhere('rekening_kredit', $kode_pemakaian->id);
             })->get();
         $saldo_piutang = $transaksi_piutang->sum('total'); // 120.000
 
@@ -1240,8 +1235,7 @@ class TransactionController extends Controller
 
         $rek_saldo_pemakaian = $riwayat_transaksi->where('rekening_kredit', $kode_pemakaian->id)->sum('total');
         $rek_saldo_abodemen = $riwayat_transaksi->where('rekening_kredit', $kode_abodemen->id)->sum('total');
-        $rek_saldo_denda = $riwayat_transaksi->where('rekening_kredit', $kode_denda->id)->sum('total');
-        $saldo_kas = $rek_saldo_pemakaian + $rek_saldo_abodemen + $rek_saldo_denda;
+        $saldo_kas = $rek_saldo_pemakaian + $rek_saldo_abodemen;
 
         $sumTransakksi = 0;
         $rek_saldo_pemakaian = 0;
@@ -1263,7 +1257,6 @@ class TransactionController extends Controller
         if ($saldo_piutang <= 0) {
             $rek_pemakaian = $kode_pemakaian->id;
             $rek_abodemen = $kode_abodemen->id;
-            $rek_denda = $kode_denda->id;
         }
 
         $trx_id = 'TB-' . substr(password_hash($usage->id, PASSWORD_DEFAULT), 7, 6);
@@ -1302,42 +1295,6 @@ class TransactionController extends Controller
             ];
 
             $sumTransakksi += $data['tagihan'];
-        }
-        if ($data['denda'] != 0) {
-            $insert[] = [
-                'business_id' => Session::get('business_id'),
-                'rekening_debit' => $kode_kas->id,
-                'rekening_kredit' => $rek_denda,
-                'tgl_transaksi' => $tgl_transaksi,
-                'total' => $data['denda'],
-                'installation_id' => $request->id_instal,
-                'transaction_id' => $trx_id,
-                'usage_id' => $request->id_usage,
-                'user_id' => auth()->user()->id,
-                'relasi' => $usage->customers->nama,
-                'keterangan' => 'Pendapatan Denda pemakaian atas nama ' . $usage->customers->nama . ' (' . $usage->kode_instalasi . ')',
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-
-            $sumTransakksi += $data['denda'];
-        }
-
-        $komisiId = str_replace('TB', 'BK', $trx_id);
-        if (count($usage->usage) >= 3) {
-            $insert[] = [
-                'business_id' => Session::get('business_id'),
-                'rekening_debit' => $beban_komisi->id,
-                'rekening_kredit' => $utang_komisi->id,
-                'tgl_transaksi' => $tgl_transaksi,
-                'total' => $sumTransakksi * 0.1,
-                'installation_id' => $request->id_instal,
-                'transaction_id' => $komisiId,
-                'usage_id' => $request->id_usage,
-                'user_id' => auth()->user()->id,
-                'relasi' => '-',
-                'keterangan' => 'Utang Komisi 10% instalasi ' . $usage->installation->kode_instalasi,
-                'created_at' => date('Y-m-d H:i:s')
-            ];
         }
 
         Transaction::insert($insert);
