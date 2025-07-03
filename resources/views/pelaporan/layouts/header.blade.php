@@ -24,7 +24,7 @@
                 <td align="center">
                     <div><b>{{ strtoupper($nama) }}</b></div>
                     <div>
-                        <b>{{ strtoupper($alamat) }}</b>
+                        <b>{{ strtoupper(Session::get('describe')) }}</b>
                     </div>
                     <div style="font-size: 10px; color: grey;">
                         <i>{{ $nomor_usaha }}</i>
