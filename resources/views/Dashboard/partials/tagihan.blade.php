@@ -13,6 +13,10 @@
         margin: auto;
     }
 </style>
+
+
+
+
 <form action="/dashboard/CetakTagihan" method="post" id="FormCetakBuktiTagihan" target="_blank">
     @csrf
     <input type="hidden" name="tgl_akhir" value="{{ request('tgl_akhir') ?? date('Y-m-d') }}">
@@ -136,7 +140,7 @@
             paging: true,
             lengthChange: true,
             searching: true,
-            ordering: true,
+            ordering: false, // ✅ Nonaktifkan sorting
             info: true,
             responsive: true,
             autoWidth: false,
@@ -145,35 +149,73 @@
             }
         });
 
-        // Centang semua saat halaman dibuka
-        table.$('input[name="id[]"]').prop('checked', true);
-        $('#checked_all').prop('checked', true);
+        // ✅ Simpan semua ID yang dicentang secara global
+        const selectedCheckboxes = new Set();
 
-        // Toggle semua saat klik master checkbox
-        $('#checked_all').on('change', function() {
-            const isChecked = this.checked;
-            table.$('input[name="id[]"]').prop('checked', isChecked);
-        });
-
-        // Tangani submit form
-        $('#FormCetakBuktiTagihan').on('submit', function(e) {
-            // Hapus semua input hidden sebelumnya yang ditambahkan JS
-            $(this).find('input[type="hidden"][data-generated="1"]').remove();
-
-            // Loop semua checkbox di seluruh halaman (termasuk yg tidak kelihatan karena paging)
-            table.$('input[type="checkbox"][name="id[]"]').each(function() {
-                if (this.checked) {
-                    // Tambahkan hidden input baru (bukan mengganti name jadi id_hidden ya)
-                    $('<input>')
-                        .attr({
-                            type: 'hidden',
-                            name: 'id[]',
-                            value: this.value,
-                            'data-generated': '1'
-                        })
-                        .appendTo('#FormCetakBuktiTagihan');
+        // Fungsi centang semua (di seluruh halaman)
+        function setAllCheckboxes(status) {
+            table.$('input[name="id[]"]').each(function() {
+                this.checked = status;
+                if (status) {
+                    selectedCheckboxes.add(this.value);
+                } else {
+                    selectedCheckboxes.delete(this.value);
                 }
             });
+        }
+
+        // Centang semua saat load
+        $('#checked_all').prop('checked', true);
+        setAllCheckboxes(true);
+
+        // Saat checkbox individu diklik
+        $('#datatable-tagihan').on('change', 'input[name="id[]"]', function() {
+            if (this.checked) {
+                selectedCheckboxes.add(this.value);
+            } else {
+                selectedCheckboxes.delete(this.value);
+            }
+        });
+
+        // Master checkbox kontrol
+        $('#checked_all').on('change', function() {
+            const isChecked = this.checked;
+            setAllCheckboxes(isChecked);
+        });
+
+        // Saat DataTable redraw (misalnya pindah halaman)
+        table.on('draw', function() {
+            // Terapkan status centang sesuai data di Set
+            table.$('input[name="id[]"]').each(function() {
+                this.checked = selectedCheckboxes.has(this.value);
+            });
+
+            // Sinkronkan status master checkbox
+            $('#checked_all').prop('checked', table.$('input[name="id[]"]').length === table.$(
+                'input[name="id[]"]:checked').length);
+        });
+
+        // Saat form dikirim
+        $('#FormCetakBuktiTagihan').on('submit', function(e) {
+            $(this).find('input[data-generated="1"]').remove();
+
+            if (selectedCheckboxes.size === 0) {
+                alert("Silakan pilih minimal satu tagihan.");
+                e.preventDefault();
+                return false;
+            }
+
+            // Tambahkan input hidden ke form
+            for (const val of selectedCheckboxes) {
+                $('<input>')
+                    .attr({
+                        type: 'hidden',
+                        name: 'id[]',
+                        value: val,
+                        'data-generated': '1'
+                    })
+                    .appendTo('#FormCetakBuktiTagihan');
+            }
         });
     });
 </script>
