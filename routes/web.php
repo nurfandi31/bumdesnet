@@ -74,7 +74,8 @@ Route::middleware(['auth', 'auth.token'])->group(function () {
     Route::get('/dashboard/sps/{id}', [DashboardController::class, 'sps']);
     Route::get('/dashboard/Cetaktunggakan2/{id}', [DashboardController::class, 'Cetaktunggakan2']);
     Route::get('/dashboard/Cetaktunggakan1/{id}', [DashboardController::class, 'Cetaktunggakan1']);
-
+    Route::post('/dashboard/CetakTagihan', [DashboardController::class, 'CetakTagihan']);
+    Route::get('/dashboard/tagihan_dashboard', [DashboardController::class, 'tagihan_dashboard']);              
     Route::get('/dataset/{time}', [SystemController::class, 'dataset']);
 
     Route::get('/pengaturan/coa', [SopController::class, 'coa']);

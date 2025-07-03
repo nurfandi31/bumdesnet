@@ -31,7 +31,7 @@ class CustomerController extends Controller
                     'nama',
                     'hp',
                     'alamat',
-                ])
+                ])->where('business_id', Session::get('business_id'))
             )
                 ->addColumn('aksi', function ($row) {
                     return $row->id;
