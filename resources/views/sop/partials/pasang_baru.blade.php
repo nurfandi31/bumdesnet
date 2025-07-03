@@ -23,8 +23,7 @@
                         <div class="col-md-6 custom-checkbox">
                             <input type="radio" class="custom-control-input" id="swit_tombol_2" name="swit_tombol"
                                 value="2"
-                                {{ isset($tampil_settings) && $tampil_settings->swit_tombol == 2 ? 'checked' : '' }}
-                                disabled>
+                                {{ isset($tampil_settings) && $tampil_settings->swit_tombol == 2 ? 'checked' : '' }}>
                             <label class="custom-control-label" for="swit_tombol_2">B. tidak Wajib Lunas</label>
                         </div>
 
