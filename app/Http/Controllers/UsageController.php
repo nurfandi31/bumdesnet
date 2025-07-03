@@ -118,7 +118,7 @@ class UsageController extends Controller
 
     public function generatePemakaian()
     {
-        $instalasi = Installations::where('business_id', Session::get('business_id'))->where('status', 'A')->with([
+        $instalasi = Installations::where('business_id', Session::get('business_id'))->where('status', ['A', 'B', 'C'])->with([
             'oneUsage',
             'package',
             'settings'
