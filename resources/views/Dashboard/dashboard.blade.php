@@ -562,49 +562,52 @@
             $('#ModalAktif').modal('toggle');
         });
 
-        $(document).on('click', '#BtnModalTagihan', async function(e) {
+        // $(document).on('click', '#BtnModalTagihan', async function(e) {
+        //     e.preventDefault();
+
+        //     var result = await dataTagihan();
+        //     var Tagihan = result.Tagihan;
+        //     var setting = result.setting;
+        //     // var block = result.block; 
+
+        //     $('#TableTagihan').html('');
+        //     Tagihan.forEach((item, index) => {
+        //         var paket = JSON.parse(item.installation.package.harga);
+
+        //         // Ambil angka dari kelas, contoh: "Mbps [ 30 ]" → 30
+        //         var kelasStr = item.installation.package.kelas;
+        //         var match = kelasStr.match(/\[\s*(\d+)\s*\]/);
+        //         var kelas = match ? match[1] : null;
+        //         var harga = kelas && paket[kelas] ? paket[kelas] : 0;
+
+        //         var pesan_tagihan = ReplaceText(setting.pesan_tagihan, {
+        //             'customer': item.installation.customer.nama,
+        //             'kode_instalasi': item.installation.kode_instalasi,
+        //             'jatuh_tempo': formatDate(item.tgl_akhir),
+        //             'jumlah_tagihan': harga,
+        //             'user_login': '{{ Auth::user()->nama }}',
+        //             'telpon': '{{ Auth::user()->telpon }}'
+        //         });
+
+        //         $('#TableTagihan').append(`
+    //     <tr>
+    //         <td>
+    //             <input type="hidden" class="pesan" name="pesan_tagihan[]" value="${item.installation.customer.hp}||${pesan_tagihan}">
+    //             ${item.installation.kode_instalasi}
+    //         </td>
+    //         <td>${item.installation.customer.nama}</td>
+    //         <td>${item.tgl_akhir}</td>
+    //         <td>${item.jumlah}</td>
+    //         <td>${harga}</td>
+    //     </tr>
+    //  `);
+        //     });
+
+        //     $('#ModalTagihan').modal('toggle');
+        // });
+        $(document).on('click', '#BtnModalTagihan', function(e) {
             e.preventDefault();
-
-            var result = await dataTagihan();
-            var Tagihan = result.Tagihan;
-            var setting = result.setting;
-            // var block = result.block; 
-
-            $('#TableTagihan').html('');
-            Tagihan.forEach((item, index) => {
-                var paket = JSON.parse(item.installation.package.harga);
-
-                // Ambil angka dari kelas, contoh: "Mbps [ 30 ]" → 30
-                var kelasStr = item.installation.package.kelas;
-                var match = kelasStr.match(/\[\s*(\d+)\s*\]/);
-                var kelas = match ? match[1] : null;
-                var harga = kelas && paket[kelas] ? paket[kelas] : 0;
-
-                var pesan_tagihan = ReplaceText(setting.pesan_tagihan, {
-                    'customer': item.installation.customer.nama,
-                    'desa': item.installation.customer.village.nama,
-                    'kode_instalasi': item.installation.kode_instalasi,
-                    'jatuh_tempo': formatDate(item.tgl_akhir),
-                    'jumlah_tagihan': harga,
-                    'user_login': '{{ Auth::user()->nama }}',
-                    'telpon': '{{ Auth::user()->telpon }}'
-                });
-
-                $('#TableTagihan').append(`
-            <tr>
-                <td>
-                    <input type="hidden" class="pesan" name="pesan_tagihan[]" value="${item.installation.customer.hp}||${pesan_tagihan}">
-                    ${item.installation.kode_instalasi}
-                </td>
-                <td>${item.installation.customer.nama}</td>
-                <td>${item.tgl_akhir}</td>
-                <td>${item.jumlah}</td>
-                <td>${harga}</td>
-            </tr>
-         `);
-            });
-
-            $('#ModalTagihan').modal('toggle');
+            window.location.href = "{{ url('/dashboard/tagihan_dashboard') }}";
         });
 
         $(document).on('click', '#SendWhatsappMessage', function(e) {

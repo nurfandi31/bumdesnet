@@ -14,6 +14,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Builder;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+
 
 class DashboardController extends Controller
 {
@@ -39,9 +41,18 @@ class DashboardController extends Controller
             }
         ])->get();
 
-        $Tagihan = Usage::where('business_id', Session::get('business_id'))->where([
-            ['status', 'UNPAID']
-        ])->count();
+    $tgl_kondisi = date('Y-m-d');
+
+$Tagihan = Installations::where('business_id', Session::get('business_id'))
+    ->whereIn('status', ['A', 'B', 'C'])
+    ->whereHas('usage', function ($query) use ($tgl_kondisi) {
+        $query->where('status', 'UNPAID')
+              ->where('tgl_akhir', '<=', $tgl_kondisi);
+    })
+    ->count();
+
+
+
 
         $UsageCount = 0;
         foreach ($Usages as $usage) {
@@ -242,7 +253,40 @@ class DashboardController extends Controller
             'setting' => $setting,
         ]);
     }
-    public function sps($id)
+  public function tagihan_dashboard()
+{
+    $tgl_kondisi = request('tgl_akhir') ?? date('Y-m-d');
+
+    $akun_piutang = Account::where('business_id', Session::get('business_id'))
+        ->where('kode_akun', '1.1.03.01')
+        ->first();
+
+    $Tagihan = Installations::where('business_id', Session::get('business_id'))
+        ->where('status', ['A','B','C'])
+        ->with([
+            'customer',
+            'village',
+            'package',
+            'settings',
+            'usage' => function ($query) use ($tgl_kondisi) {
+                $query->where('tgl_akhir', '<=', $tgl_kondisi)
+                      ->where('status', 'UNPAID')
+                      ->orderBy('tgl_akhir');
+            },
+            'usage.transaction' => function ($query) use ($tgl_kondisi) {
+                $query->where('tgl_transaksi', '<=', $tgl_kondisi);
+            },
+        ])
+        ->get();
+    return view('Dashboard.partials.tagihan', [
+        'title' => 'Cetak Daftar Tagihan',
+        'tgl_kondisi' => $tgl_kondisi,
+        'akun_piutang' => $akun_piutang,
+        'Tagihan' => $Tagihan,
+    ]);
+}
+
+  public function sps($id)
     {
         $keuangan = new Keuangan;
 
@@ -301,6 +345,39 @@ class DashboardController extends Controller
 
         return view('Dashboard.partials.sps', $data);
     }
+public function CetakTagihan(Request $request)
+{
+    $data['id'] = $request->input('id'); // array dari checkbox
+
+    $data['tgl_kondisi'] = $request->get('tgl_akhir') ?: date('Y-m-d');
+
+    $data['akun_piutang'] = Account::where('business_id', Session::get('business_id'))
+        ->where('kode_akun', '1.1.03.01')
+        ->first();
+
+    $data['Tagihan'] = Installations::where('business_id', Session::get('business_id'))
+        ->whereIn('id', $data['id']) // ✅ hanya ambil instalasi yang diceklis
+        ->where('status', ['A','B','C'])
+        ->with([
+            'customer',
+            'village',
+            'package',
+            'settings',
+            'usage' => function ($query) use ($data) {
+                $query->where('tgl_akhir', '<=', $data['tgl_kondisi'])
+                    ->where('status', 'UNPAID')
+                    ->orderBy('tgl_akhir');
+            },
+            'usage.transaction' => function ($query) use ($data) {
+                $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
+            },
+        ])
+        ->get();
+
+    $data['title'] = 'Cetak Tagihan';
+
+    return view('Dashboard.partials.cetak_tagihan', $data);
+}
 
     public function Cetaktunggakan1($id)
     {
