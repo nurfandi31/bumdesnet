@@ -143,7 +143,7 @@ class UsageController extends Controller
             $tanggal_akhir = date('Y-m-t');
             $jumlah_hari_pemakaian = date_diff(date_create($tanggal_akhir), date_create($tanggal_awal))->days;
             $jumlah_hari_bulan_ini = date('t');
-            $jumlah_rasio = round($jumlah_hari_pemakaian / $jumlah_hari_bulan_ini, 2);
+            $jumlah_rasio = round(($jumlah_hari_pemakaian + 1) / $jumlah_hari_bulan_ini, 2);
             $harga = $instal->harga_paket;
             $new_usage = Usage::create([
                 'business_id'    => Session::get('business_id'),
@@ -236,9 +236,9 @@ class UsageController extends Controller
 
         // Sort
         $data['usages'] = $usages->sortBy([
-            fn ($a, $b) => strcmp($a->installation->village->dusun, $b->installation->village->dusun),
-            fn ($a, $b) => $a->installation->rt <=> $b->installation->rt,
-            fn ($a, $b) => strcmp($a->tgl_akhir, $b->tgl_akhir),
+            fn($a, $b) => strcmp($a->installation->village->dusun, $b->installation->village->dusun),
+            fn($a, $b) => $a->installation->rt <=> $b->installation->rt,
+            fn($a, $b) => strcmp($a->tgl_akhir, $b->tgl_akhir),
         ]);
 
         // Ambil nama cater dari relasi Usage → usersCater (jika ada)
