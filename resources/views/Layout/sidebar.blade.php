@@ -27,8 +27,11 @@
                     </div>
 
                     <!-- Nama Usaha -->
-                    <div class="text-break" style="line-height: 1.2; font-size: 14px;">
+                    <div class="text-break">
                         {{ Session::get('nama_usaha') }}
+                    </div>
+                    <div class="text-break">
+                        {{ Session::get('describe') }}
                     </div>
                 </div>
 
