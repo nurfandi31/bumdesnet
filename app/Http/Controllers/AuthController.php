@@ -95,6 +95,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             session([
                 'nama_usaha' => $business->nama,
+                'describe' => $business->describe,
                 'nama' => $user->nama,
                 'jabatan' => $user->jabatan,
                 'userlogo' => $user->foto,
