@@ -28,9 +28,7 @@
 
                     <!-- Nama Usaha -->
                     <div class="text-break" style="line-height: 1.2; font-size: 14px;">
-                        Bumdes.NET Maju Jaya<br>Indonesia
-                        <!-- atau pakai ini kalau ingin dinamis -->
-                        <!-- {{ Session::get('nama_usaha') }} -->
+                        {{ Session::get('nama_usaha') }}
                     </div>
                 </div>
 
