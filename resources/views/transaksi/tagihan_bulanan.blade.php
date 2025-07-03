@@ -29,7 +29,7 @@
                                             placeholder="Usages (Kode Installasi / Nama Custommers)">
                                     </div>
                                 </div>
-                                {{-- <div class="col-12 col-md-3 order-md-1 order-last">
+                                <div class="col-12 col-md-3 order-md-1 order-last">
                                     <div class="form-group mb-0 pt-2 pt-md-0">
                                         <a href="#"
                                             class="btn btn-warning w-100 d-flex justify-content-center align-items-center"
@@ -37,7 +37,7 @@
                                             <span class="text-white fw-bold">Detail Transaksi</span>
                                         </a>
                                     </div>
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                     </div>
