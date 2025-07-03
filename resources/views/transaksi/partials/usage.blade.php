@@ -120,7 +120,7 @@
                                                                     readonly>
                                                             </div>
                                                             <div class="col-md-4 mb-2">
-                                                                <label for="abodemen">Pendapatan Lain</label>
+                                                                <label for="abodemen">PPN</label>
                                                                 <input type="text" class="form-control abodemen"
                                                                     name="abodemen"
                                                                     id="abodemen-bulanan-{{ $usage->id }}"
