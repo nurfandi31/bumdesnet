@@ -31,7 +31,7 @@
                         <div class="text-break">
                             {{ Session::get('nama_usaha') }}
                         </div>
-                        <div class="text-break">
+                        <div class="text-break" style="font-weight: 300">
                             {{ Session::get('describe') }}
                         </div>
                     </div>
