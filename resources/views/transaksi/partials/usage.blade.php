@@ -1,5 +1,6 @@
 @php
     use App\Utils\Tanggal;
+    use Carbon\Carbon;
 @endphp
 <div class="basic-choices position-relative">
     <div class="row">
@@ -36,7 +37,17 @@
 @foreach ($usages as $usage)
     @php
         $denda = 0;
-        if (date('Y-m') > date('Y-m', strtotime($usage->tgl_akhir))) {
+
+        $tglAkhir = Carbon::parse($usage->tgl_akhir); // misal 2025-01-01
+        $tglBulandepan = $tglAkhir->copy()->addMonth(); // misal 2025-02-01
+        $tglToleransi = $installations->settings->tanggal_toleransi; // misal 11
+        $tglBatasBayar = $tglBulandepan
+            ->copy()
+            ->startOfMonth()
+            ->addDays($tglToleransi - 1);
+        $tglHariIni = Carbon::today();
+
+        if ($tglHariIni->gt($tglBatasBayar)) {
             $denda = $installations->package->denda;
         }
 

@@ -1319,14 +1319,27 @@ class TransactionController extends Controller
         $trx_settings = Settings::where('business_id', Session::get('business_id'))->first();
         $trx = Transaction::where('transaction_id', $id)->with([
             'Installations.customer',
-            'Usages'
+            'Installations.package',
+            'Usages',
+            'transaction',
+            'User'
         ])->first();
-        $user = User::where('business_id', Session::get('business_id'))->where('id', $trx->user_id)->first();
+        $user = ($trx->User) ? $trx->User : null;
         $kode_akun = Account::where('business_id', Session::get('business_id'))->where('id', $trx)->value('kode_akun');
+
+        $accounts = Account::where('business_id', Session::get('business_id'))
+            ->whereIn('kode_akun', ['1.1.03.01', '4.1.01.02', '4.1.01.01', '4.1.01.04'])
+            ->get()
+            ->keyBy('kode_akun');
+
+        $kode_piutang = $accounts['1.1.03.01'] ?: null;
+        $kode_abodemen = $accounts['4.1.01.02'] ?: null;
+        $kode_pemakaian = $accounts['4.1.01.01'] ?: null;
+        $kode_denda = $accounts['4.1.01.04'] ?: null;
 
         $jenis = 'Pembayaran Bulanan';
         $dari = ucwords($trx->Installations->customer->nama);
-        $oleh = ucwords(auth()->user()->nama);
+        $oleh = ucwords(($user) ? $user->nama : '');
 
         $logo = $bisnis->logo;
         if (empty($logo)) {
@@ -1335,7 +1348,7 @@ class TransactionController extends Controller
             $gambar = '/storage/logo/' . $logo;
         }
 
-        return view('transaksi.dokumen.struk_tagihan')->with(compact('trx', 'trx_settings', 'keuangan', 'dari', 'oleh', 'jenis', 'bisnis', 'gambar'));
+        return view('transaksi.dokumen.struk_tagihan')->with(compact('trx', 'trx_settings', 'keuangan', 'dari', 'oleh', 'jenis', 'bisnis', 'gambar', 'kode_piutang', 'kode_abodemen', 'kode_pemakaian', 'kode_denda'));
     }
 
     /**

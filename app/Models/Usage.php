@@ -20,7 +20,7 @@ class Usage extends Model
     {
         return $this->belongsTo(Package::class, 'package_id', 'id');
     }
- public function village()
+    public function village()
     {
         return $this->belongsTo(Village::class, 'desa');
     }
@@ -28,7 +28,7 @@ class Usage extends Model
     {
         return $this->belongsTo(Customer::class, 'customer', 'id');
     }
-    
+
     public function usersCater()
     {
         return $this->belongsTo(user::class, 'cater', 'id');
@@ -42,5 +42,9 @@ class Usage extends Model
     public function usage()
     {
         return $this->hasMany(Usage::class, 'id_instalasi', 'id');
+    }
+    public function settings()
+    {
+        return $this->hasOne(Settings::class, 'business_id', 'business_id');
     }
 }
