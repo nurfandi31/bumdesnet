@@ -48,7 +48,7 @@
         .container {
             width: 9cm;
             height: 540px;
-            border: 1px solid rgb(154, 154, 154);
+            border: 1px solid rgb(255, 255, 255);
             box-sizing: border-box;
         }
 
