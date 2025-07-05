@@ -2,12 +2,6 @@
     use App\Utils\Tanggal;
     $totalAbodemen = 0;
     $totalTagihan = 0;
-    $totalDenda = 0;
-@endphp
-@php
-    $totalAbodemen = 0;
-    $totalTagihan = 0;
-    $totalDenda = 0;
 @endphp
 
 @foreach ($trx->transaction as $transaksi)
@@ -22,16 +16,12 @@
         if ($transaksi->rekening_kredit == $kode_pemakaian->id) {
             $totalTagihan += $total;
         }
-
-        if ($transaksi->rekening_kredit == $kode_denda->id) {
-            $totalDenda += $total;
-        }
     @endphp
 @endforeach
-
 @php
-    $total = $totalAbodemen + $totalTagihan + $totalDenda;
+    $total = $totalAbodemen + $totalTagihan;
 @endphp
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,15 +39,15 @@
             margin: 0;
             padding: 0;
             font-size: 10px;
-            font-family: Arial, sans-serif;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
             position: absolute;
-            top: 15px;
-            left: 10px;
+            top: 20px;
+            left: 20px;
         }
 
         .container {
-            width: 10cm;
-            height: 14cm;
+            width: 9cm;
+            height: 540px;
             border: 1px solid rgb(154, 154, 154);
             box-sizing: border-box;
         }
@@ -259,7 +249,6 @@
                     </div>
                 </div>
                 <div class="footer">
-                    Terima kasih atas pembayaran Anda.
                 </div>
             </div>
         </div>
