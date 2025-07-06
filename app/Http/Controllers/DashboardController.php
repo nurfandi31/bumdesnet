@@ -263,7 +263,7 @@ $JumlahTagihan = $Tagihan->count(); // tampilkan semua, meskipun usage-nya koson
         ->first();
 
     $Tagihan = Installations::where('business_id', Session::get('business_id'))
-        ->whereIn('status', ['A', 'B', 'C']) // ✅ gunakan whereIn agar aman
+        ->whereIn('status', ['A', 'B', 'C'])
         ->with([
             'customer',
             'village',
