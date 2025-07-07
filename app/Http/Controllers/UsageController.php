@@ -116,56 +116,63 @@ class UsageController extends Controller
         //create
     }
 
+
     public function generatePemakaian()
     {
-        $instalasi = Installations::where('business_id', Session::get('business_id'))->where('status', ['A', 'B', 'C'])->with([
-            'oneUsage',
-            'package',
-            'settings'
-        ])->get();
+        $instalasiList = Installations::where('business_id', Session::get('business_id'))
+            ->whereIn('status', ['A', 'B', 'C'])
+            ->with([
+                'oneUsage',
+                'package',
+                'settings',
+                'usage'
+            ])->get();
 
-        $harga = 0;
-        $usages = [];
-        foreach ($instalasi as $instal) {
+        foreach ($instalasiList as $instal) {
+            $masihAdaUnpaid = $instal->usage->contains(fn ($u) => $u->status === 'UNPAID');
+            if ($masihAdaUnpaid) {
+                continue;
+            }
+
             $usage_berjalan = $instal->oneUsage;
-
-            $tanggal_awal = date('Y-m-d');
             if ($usage_berjalan) {
-                $tanggal_awal = date('Y-m') . '-01';
-
-                $bulan_pemakaian = date('Y-m', strtotime($usage_berjalan->tgl_pemakaian));
-                if ($bulan_pemakaian == date('Y-m')) {
-                    $usage[] = $usage_berjalan;
+                $bulan_lalu = Carbon::parse($usage_berjalan->tgl_pemakaian)->format('Y-m');
+                $bulan_ini = Carbon::now()->format('Y-m');
+                if ($bulan_lalu === $bulan_ini) {
                     continue;
                 }
             }
+            $tanggal_awal = $usage_berjalan ? Carbon::now()->startOfMonth() : Carbon::now();
+            $tanggal_akhir = Carbon::now()->endOfMonth();
 
-            $tanggal_akhir = date('Y-m-t');
-            $jumlah_hari_pemakaian = date_diff(date_create($tanggal_akhir), date_create($tanggal_awal))->days;
-            $jumlah_hari_bulan_ini = date('t');
-            $jumlah_rasio = round(($jumlah_hari_pemakaian + 1) / $jumlah_hari_bulan_ini, 2);
-            $harga = $instal->harga_paket;
-            // $new_usage = Usage::create([
-            //     'business_id'    => Session::get('business_id'),
-            //     'id_instalasi'   => $instal->id,
-            //     'kode_instalasi' => $instal->kode_instalasi,
-            //     'tgl_pemakaian'  => $tanggal_awal,
-            //     'tgl_akhir'      => $tanggal_akhir,
-            //     'awal'           => date('d', strtotime($tanggal_awal)),
-            //     'akhir'          => date('d', strtotime($tanggal_akhir)),
-            //     'jumlah'         => $jumlah_rasio,
-            //     'cater'          => $instal->cater_id,
-            //     'nominal'        => $jumlah_rasio * $harga,
-            //     'customer'       => $instal->customer_id,
-            //     'created_at'     => now(),
-            // ]);
+            $selisih_hari = $tanggal_awal->diffInDays($tanggal_akhir) + 1;
+            $jumlah_hari_bulan_ini = $tanggal_awal->daysInMonth;
+            $jumlah_rasio = round($selisih_hari / $jumlah_hari_bulan_ini, 2);
 
-            // $usages[] = $new_usage;
+            $harga = $instal->harga_paket ?? ($instal->package->harga ?? 0);
+            if ($harga <= 0) {
+                continue;
+            }
+
+            Usage::create([
+                'business_id'    => Session::get('business_id'),
+                'id_instalasi'   => $instal->id,
+                'kode_instalasi' => $instal->kode_instalasi,
+                'tgl_pemakaian'  => $tanggal_awal->format('Y-m-d'),
+                'tgl_akhir'      => $tanggal_akhir->format('Y-m-d'),
+                'awal'           => $tanggal_awal->format('d'),
+                'akhir'          => $tanggal_akhir->format('d'),
+                'jumlah'         => $jumlah_rasio,
+                'cater'          => $instal->cater_id,
+                'nominal'        => round($jumlah_rasio * $harga),
+                'customer'       => $instal->customer_id,
+                'created_at'     => now(),
+            ]);
         }
+
         echo '<script>window.close()</script>';
         exit;
     }
-
     public function store(Request $request)
     {
         //simpan data
@@ -236,9 +243,9 @@ class UsageController extends Controller
 
         // Sort
         $data['usages'] = $usages->sortBy([
-            fn($a, $b) => strcmp($a->installation->village->dusun, $b->installation->village->dusun),
-            fn($a, $b) => $a->installation->rt <=> $b->installation->rt,
-            fn($a, $b) => strcmp($a->tgl_akhir, $b->tgl_akhir),
+            fn ($a, $b) => strcmp($a->installation->village->dusun, $b->installation->village->dusun),
+            fn ($a, $b) => $a->installation->rt <=> $b->installation->rt,
+            fn ($a, $b) => strcmp($a->tgl_akhir, $b->tgl_akhir),
         ]);
 
         // Ambil nama cater dari relasi Usage → usersCater (jika ada)

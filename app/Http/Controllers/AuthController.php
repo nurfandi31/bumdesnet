@@ -100,6 +100,7 @@ class AuthController extends Controller
                 'jabatan' => $user->jabatan,
                 'userlogo' => $user->foto,
                 'userID' => $user->id,
+                'toleransi' => $pengaturan->tanggal_toleransi,
                 'logo' => $business->logo,
                 'business_id' => $business->id,
                 'is_auth' => true,

@@ -196,33 +196,55 @@
         </script>
         @if (Session::get('success'))
         <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Login Berhasil',
-                text: @json(Session::get('success')),
-            }).then((result) => {
-                const today = new Date();
-                const date = today.getDate();
-
-                const win1 = window.open('', '_blank', 'width=500,height=500,top=100,left=100');
-                win1.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /generate pemakaian...</h6>');
-
-                let win2 = null;
-                if (date === 27) {
-                    win2 = window.open('', '_blank', 'width=500,height=500,top=150,left=150');
-                    win2.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /dataset tunggakan...</h6>');
+            document.addEventListener('DOMContentLoaded', function () {
+                const now = new Date();
+                const date = now.getDate();
+                const lastDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+                const toleransi = {{ Session::get('toleransi', 11) }};
+                const successMessage = @json(Session::get('success'));
+        
+                const isToleransiDay = date === toleransi;
+                const isLastDay = date === lastDate;
+        
+                if (isToleransiDay || isLastDay) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Berhasil',
+                        text: successMessage,
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        if (isLastDay) {
+                            const win1 = window.open('', '_blank', 'width=500,height=500,top=100,left=100');
+                            if (win1) {
+                                win1.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /generate pemakaian...</h6>');
+                                setTimeout(() => win1.location.href = '/generatepemakaian', 1000);
+                            }
+                        }
+        
+                        if (isToleransiDay) {
+                            const win2 = window.open('', '_blank', 'width=500,height=500,top=150,left=150');
+                            if (win2) {
+                                win2.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /dataset tunggakan...</h6>');
+                                setTimeout(() => win2.location.href = '/dataset/{{ time() }}', 1000);
+                            }
+                        }
+                    });
+                } else {
+                    const toastMixin = Swal.mixin({
+                        toast: true,
+                        icon: 'success',
+                        position: 'top-right',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+        
+                    toastMixin.fire({
+                        title: successMessage
+                    });
                 }
-
-                setTimeout(() => {
-                    win1.location.href = '/generatepemakaian';
-
-                    if (date === 27 && win2) {
-                        win2.location.href = '/dataset/{{ time() }}';
-                    }
-                }, 1000);
             });
         </script> @endif
-
         <script>
             $(document).on('click', '#logoutButton', function(e) {
                 e.preventDefault();

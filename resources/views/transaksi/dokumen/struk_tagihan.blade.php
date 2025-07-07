@@ -108,11 +108,10 @@
         }
 
         .section-header {
-            background-color: #bcbec0;
+            background-color: #e0e2e4;
             color: black;
-            font-weight: bold;
             padding: 4px 6px;
-            font-size: 10px;
+            font-size: 12px;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
@@ -143,19 +142,20 @@
                 </div>
             </div>
             <div>
-                <div style="font-size: 18px" class="bold">DESMANET</div>
-                <div class="bold">{{ strtoupper($bisnis->nama) }}</div>
-                <br>
-                <div class="content">
-                    <div><strong>Powered by</strong></div>
-                    <div>PT.INDO TELEMEDIA SOLUSI</div>
-                </div>
-                <br>
-                <div class="content" style="margin-top: 5px; display: flex; justify-content: space-between;">
-                    <div>
+
+                <div class="content"
+                    style="margin-top: 1px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="max-width: 60%;">
+
+                        <div style="font-size: 18px" class="bold">DESMANET</div>
+                        <div class="bold">{{ strtoupper($bisnis->nama) }}</div>
+                        <div class="content">
+                            <div><strong>Powered by</strong></div>
+                            <div>PT.INDO TELEMEDIA SOLUSI</div>
+                        </div>
                         <div><strong>Address:
                             </strong></div>
-                        <div>{{ $bisnis->alamat }}</div><br>
+                        <div>{{ $bisnis->alamat }}</div>
                         <div><strong>Phone:
                             </strong></div>
                         <div>{{ $bisnis->telpon }}</div>
@@ -168,7 +168,7 @@
                 </div>
                 <div class="border"></div>
                 <div class="content" style="margin-top: 5px; display: flex; justify-content: space-between;">
-                    <div style="max-width: 60%;">
+                    <div style="max-width: 80%;">
                         <div style="font-size: 16px">Bill To:</div><br>
                         <div>
                             {{ $trx->usages->kode_instalasi }}<br>
@@ -180,9 +180,8 @@
                         </div>
                     </div>
                     <div style="text-align: right;">
-                        <div>Total (Rp)<br> <strong style="font-size: 16px">{{ number_format($total, 2) }}</strong>
+                        <div>Total (Rp)<br> <strong style="font-size: 16px">{{ number_format($total) }}</strong>
                         </div>
-                        <br>
                         <div>status<br><strong style="font-size: 16px"> {{ $trx->Usages->status }}</strong></div>
                     </div>
                 </div><br>
@@ -206,20 +205,16 @@
                 </div>
                 <div class="content"
                     style="margin-top: 1px; display: flex; justify-content: space-between; align-items: center;">
-                    <div style="max-width: 60%;">
+                    <div style="max-width: 80%;">
                         <div>
-                            Internet: <strong
-                                style="font-size: 14px">{{ $trx->Installations->package->kelas }}</strong>
+                            Internet: <strong>{{ $trx->Installations->package->kelas }}, Rp.
+                                {{ number_format($trx->Installations->package->harga) }} / month
+                            </strong>
                         </div>
                         <div>
-                            Subscribe Period: <strong
-                                style="font-size: 14px">{{ Tanggal::bulan($trx->Usages->tgl_akhir) }}
+                            Subscribe Period: <strong>{{ Tanggal::bulan($trx->Usages->tgl_akhir) }}
                                 {{ Tanggal::namaBulan($trx->Usages->tgl_akhir) }}</strong>
                         </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <strong
-                            style="font-size: 14px;">{{ number_format($trx->Installations->package->harga, 2) }}</strong>
                     </div>
                 </div>
                 <div class="border"></div>
@@ -231,19 +226,19 @@
                         <table>
                             <tr>
                                 <td>Sub Total</td>
-                                <td class="text-right">{{ number_format($totalTagihan, 2) }}</td>
+                                <td class="text-right">{{ number_format($totalTagihan) }}</td>
                             </tr>
                             <tr>
                                 <td>PPN 11%</td>
-                                <td class="text-right">{{ number_format(($totalTagihan * 11) / 100, 2) }}</td>
+                                <td class="text-right">{{ number_format(($totalTagihan * 11) / 100) }}</td>
                             </tr>
                             <tr>
                                 <td>Diskon</td>
                                 <td class="text-right">0</td>
                             </tr>
                             <tr>
-                                <td class="bold">Total</td>
-                                <td class="text-right bold">{{ number_format($total, 0) }}</td>
+                                <td><strong>Total</strong></td>
+                                <td><strong>{{ number_format($total) }}</strong></td>
                             </tr>
                         </table>
                     </div>
