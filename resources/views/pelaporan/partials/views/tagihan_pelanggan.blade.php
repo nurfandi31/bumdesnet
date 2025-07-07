@@ -157,7 +157,15 @@
                     <td class="t l b" align="right">
                         {{ number_format($bayar, 2) }}
                     </td>
-                    <td class="t l b r" align="center">{{ $status }}</td>
+                    @php
+                        //    Menampilkan bulan terakhir yang belum dibayar (tunggakan terakhir)
+                        //    $last = $ins->usage->where('status', 'UNPAID')->sortByDesc('tgl_akhir')->first(); .
+                        $last = $ins->usage->sortByDesc('tgl_akhir')->first();
+                    @endphp
+                    <td style="border: 1px solid black;" align="center">
+                        {{ \Carbon\Carbon::parse($last->tgl_akhir)->locale('id')->translatedFormat('F Y') }}
+                    </td>
+
                 </tr>
 
                 @php

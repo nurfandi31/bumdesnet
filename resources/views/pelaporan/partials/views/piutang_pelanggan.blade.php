@@ -36,11 +36,10 @@
                 <th width="15%" class="t l b" rowspan="2">No. Induk</th>
                 <th width="30%" class="t l b" colspan="2">Tunggakan</th>
                 <th width="10%" class="t l b" rowspan="2">Jumlah Tunggakan</th>
-                <th width="10%" class="t l b" rowspan="2">Dibayar</th>
-                <th width="10%" class="t l b r" rowspan="2">Kategori</th>
+                <th width="10%" class="t l b r" rowspan="2">keterangan</th>
             </tr>
             <tr style="background: rgb(230, 230, 230); font-weight: bold;">
-                <th width="10%" class="t l b">Bulan Lalu</th>
+                <th width="10%" class="t l b">Sd.Bulan Lalu</th>
                 <th width="10%" class="t l b">Bulan Ini</th>
             </tr>
         </thead>
@@ -48,7 +47,7 @@
         <tbody>
             @if ($filterInstalasi->isEmpty())
                 <tr>
-                    <td colspan="8" align="center">Tidak ada data</td>
+                    <td colspan="7" align="center">Tidak ada data</td>
                 </tr>
             @else
                 @php
@@ -77,7 +76,7 @@
                         @endif
 
                         <tr class="bold">
-                            <td class="t l b r" colspan="9" height="25">
+                            <td class="t l b r" colspan="7" height="25">
                                 Desa {{ $ins->village->nama }} Dusun {{ $ins->village->dusun }}
                             </td>
                         </tr>
@@ -103,6 +102,7 @@
                         $bulan_lalu = 0;
                         $bulan_ini = 0;
                         $jumlah_menunggak = 0;
+                        $sd_bulan_lalu = 0;
 
                         foreach ($ins->usage as $usage) {
                             foreach ($usage->transaction as $trx) {
@@ -124,24 +124,13 @@
                                     $bayar += $trx->total;
                                 }
                             }
-
-                            $jumlah_menunggak += 1;
                         }
 
                         $tunggakan = $sampai_bulan_lalu + $bulan_lalu + $bulan_ini;
-                        $status = 'Lancar';
-                        if ($jumlah_menunggak > 0) {
-                            $status = 'Menunggak';
-                        }
-                        if ($jumlah_menunggak > 1) {
-                            $status = 'SP';
-                        }
-                        if ($jumlah_menunggak > 2) {
-                            $status = 'SPS';
-                        }
+                        $sd_bulan_lalu = $sampai_bulan_lalu + $bulan_lalu;
 
                         $jumlah_menunggak_sampai_bulan_lalu += $sampai_bulan_lalu;
-                        $jumlah_menunggak_bulan_lalu += $bulan_lalu;
+                        $jumlah_menunggak_bulan_lalu += $sd_bulan_lalu;
                         $jumlah_menunggak_bulan_ini += $bulan_ini;
                         $jumlah_tunggakan += $tunggakan;
                         $jumlah_bayar += $bayar;
@@ -152,7 +141,7 @@
                         <td class="t l b">{{ $ins->customer->nama }}</td>
                         <td class="t l b">{{ $ins->kode_instalasi }}</td>
                         <td class="t l b" align="right">
-                            {{ number_format($bulan_lalu, 2) }}
+                            {{ number_format($sd_bulan_lalu, 2) }}
                         </td>
                         <td class="t l b" align="right">
                             {{ number_format($bulan_ini, 2) }}
@@ -160,15 +149,19 @@
                         <td class="t l b" align="right">
                             {{ number_format($tunggakan, 2) }}
                         </td>
-                        <td class="t l b" align="right">
-                            {{ number_format($bayar, 2) }}
+
+                        @php
+                            //    Menampilkan bulan terakhir yang belum dibayar (tunggakan terakhir)
+                            //    $last = $ins->usage->where('status', 'UNPAID')->sortByDesc('tgl_akhir')->first(); .
+                            $last = $ins->usage->sortByDesc('tgl_akhir')->first();
+                        @endphp
+                        <td class="t l b" align="center">
+                            {{ \Carbon\Carbon::parse($last->tgl_akhir)->locale('id')->translatedFormat('F Y') }}
                         </td>
-                        <td class="t l b r" align="center">
-                            {{ $status }}
-                        </td>
+
+
                     </tr>
                 @endforeach
-
                 <tr class="bold">
                     <td class="t l b" colspan="3" align="right">Jumlah</td>
                     <td class="t l b" align="right">
@@ -179,9 +172,6 @@
                     </td>
                     <td class="t l b" align="right">
                         {{ number_format($jumlah_tunggakan, 2) }}
-                    </td>
-                    <td class="t l b" align="right">
-                        {{ number_format($jumlah_bayar, 2) }}
                     </td>
                     <td class="t l b r"></td>
                 </tr>
