@@ -56,7 +56,6 @@ class UsageController extends Controller
                 'usersCater',
                 'installation.package'
             ])->orderBy('created_at', 'DESC');
-            // Session::put('usages', $usages);
             return DataTables::eloquent($usages)
                 ->addColumn('kode_instalasi_dengan_inisial', function ($usage) {
                     $kode = $usage->installation->kode_instalasi ?? '-';
@@ -88,24 +87,17 @@ class UsageController extends Controller
                 ->rawColumns(['aksi'])
                 ->make(true);
         }
-        // Ambil data cater (jabatan 5) untuk dropdown / hidden input
         $caters = User::where([
             ['business_id', Session::get('business_id')],
             ['jabatan', '5']
         ])->get();
-
-        $user = auth()->user(); // atau Session::get('user') kalau pakai session manual
-
-        // Kirim cater_id default untuk user jabatan 5 supaya otomatis filter
+        $user = auth()->user();
         $cater_id = ($user->jabatan == 5) ? $user->id : '';
 
         $title = 'Data Pemakaian';
         return view('penggunaan.index')->with(compact('title', 'caters', 'user', 'cater_id'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function barcode(Usage $usage)
     {
         $title = '';
@@ -115,7 +107,6 @@ class UsageController extends Controller
     {
         //create
     }
-
 
     public function generatePemakaian()
     {
@@ -177,11 +168,6 @@ class UsageController extends Controller
     {
         //simpan data
     }
-
-    /**
-     * Display the specified resource.
-     */
-
     public function detailTagihan()
     {
         $keuangan = new Keuangan;
@@ -220,7 +206,6 @@ class UsageController extends Controller
 
         $data['bisnis'] = Business::where('id', Session::get('business_id'))->first();
 
-        // Ambil data usage sesuai filter
         $usagesQuery = Usage::where([
             ['business_id', Session::get('business_id')],
             ['tgl_pemakaian', 'LIKE', date('Y') . '-' . $request->bulan_tagihan . '%']
@@ -241,14 +226,12 @@ class UsageController extends Controller
             'installation.package'
         ])->get();
 
-        // Sort
         $data['usages'] = $usages->sortBy([
             fn ($a, $b) => strcmp($a->installation->village->dusun, $b->installation->village->dusun),
             fn ($a, $b) => $a->installation->rt <=> $b->installation->rt,
             fn ($a, $b) => strcmp($a->tgl_akhir, $b->tgl_akhir),
         ]);
 
-        // Ambil nama cater dari relasi Usage → usersCater (jika ada)
         $data['pemakaian_cater'] = $usages->first()?->usersCater?->nama ?? '-';
 
         $data['title'] = 'Cetak Daftar Tagihan';
@@ -293,9 +276,6 @@ class UsageController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Usage $usage)
     {
         $usages = Usage::where('business_id', Session::get('business_id'))->with([
@@ -306,9 +286,6 @@ class UsageController extends Controller
         return view('penggunaan.edit')->with(compact('title', 'usage', 'usages'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Usage $usage)
     {
         $data = $request->only([
@@ -329,7 +306,6 @@ class UsageController extends Controller
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
-        // Mengubah format tanggal dari d/m/Y ke Y-m-d
         $tgl_akhir = \DateTime::createFromFormat('d/m/Y', $request->tgl_akhir)->format('Y-m-d');
 
         $usage->update([
@@ -343,10 +319,6 @@ class UsageController extends Controller
         return redirect('/usages')->with('berhasil', 'Usage berhasil diperbarui!');
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Usage $usage)
     {
         $usage->delete();
