@@ -199,7 +199,7 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const now = new Date();
                 const date = now.getDate();
-                const lastDate = 7;
+                const lastDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
                 const toleransi = {{ Session::get('toleransi', 11) }};
                 const successMessage = @json(Session::get('success'));
         
