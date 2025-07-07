@@ -105,7 +105,7 @@
                         $sd_bulan_lalu = 0;
 
                         foreach ($ins->usage as $usage) {
-                            foreach ($usage->transaction as $trx) {
+                            foreach ($ins->transaction as $trx) {
                                 $bulan_tagihan = date('Y-m', strtotime($usage->tgl_akhir)) . '-01';
                                 $bulan_kondisi = date('Y-m', strtotime($tgl_kondisi)) . '-01';
                                 $bulan_kondisi_lalu =

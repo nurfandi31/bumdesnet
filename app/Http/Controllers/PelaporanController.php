@@ -1019,7 +1019,6 @@ class PelaporanController extends Controller
             $caters->where('id', $data['cater_id']);
         }
         $data['caters'] = $caters->get();
-
         $data['title'] = 'Daftar Piutang Pelanggan';
         $view = view('pelaporan.partials.views.piutang_pelanggan', $data)->render();
         $pdf = PDF::loadHTML($view)->setOptions([
