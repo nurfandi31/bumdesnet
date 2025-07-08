@@ -41,7 +41,7 @@
                 <th width="10%" class="t l b" rowspan="2">Tgl Aktif</th>
                 <th width="30%" class="t l b" colspan="3">Tagihan</th>
                 <th width="10%" class="t l b" rowspan="2">Dibayar</th>
-                <th width="10%" class="t l b r" rowspan="2">Status</th>
+                <th width="10%" class="t l b r" rowspan="2">Keterangan</th>
             </tr>
             <tr>
                 <th width="10%" class="t l b">s/d Bulan Lalu</th>
