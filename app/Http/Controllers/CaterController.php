@@ -39,7 +39,7 @@ class CaterController extends Controller
                 ->toJson();
         }
 
-        return view('cater.index', ['title' => 'Data Sales']);
+        return view('cater.index', ['title' => 'Data Marketing']);
     }
 
     /**
