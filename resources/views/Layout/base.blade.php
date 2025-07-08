@@ -131,10 +131,9 @@
         @include('Layout.sidebar')
         <div id="main" class="pb-2">
             <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
+                @include('Layout.navbar')
             </header>
+            
             <div class="page-content">
                 @yield('content')
             </div>
@@ -252,8 +251,15 @@
                 e.preventDefault();
 
                 Swal.fire({
-                    title: "Konfirmasi Logout",
-                    icon: 'info',
+                    html: `
+                        <div style="text-align: center;">
+                            <h2 style="margin: 0; font-weight: bold; font-size: 26px; color: #2c3e50;">Konfirmasi Logout</h2>
+                            <p style="margin-top: 8px; font-size: 16px; color: #7f8c8d;">
+                                Apakah Anda yakin ingin keluar dari aplikasi?
+                            </p>
+                        </div>
+                    `,
+                    icon: 'question',
                     showDenyButton: true,
                     confirmButtonText: "Logout",
                     denyButtonText: "Batal",
@@ -262,8 +268,9 @@
                         $('#logoutForm').submit();
                     }
                 });
-            })
+            });
         </script>
+        
         <script>
             //property lainya
             function open_window(link) {

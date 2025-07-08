@@ -17,16 +17,19 @@
 <div id="sidebar">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header position-relative p-2 pb-0 pt-3 pe-2 ps-2">
-            <div class="d-flex justify-content-between align-items-start flex-wrap">
-                <!-- Logo + Nama Usaha -->
+            <button
+                class="sidebar-hide btn btn-outline-primary btn-sm rounded-circle position-absolute top-0 end-0 m-2 d-xl-none"
+                title="Tutup Menu">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+            <div class="d-flex justify-content-between align-items-start flex-wrap d-xl-none">
                 <div class="d-flex align-items-center flex-grow-1 me-2" style="min-width: 0;">
-                    <!-- Gambar Logo -->
                     <div style="width: 50px; height: 50px; margin-right: 15px; flex-shrink: 0;">
                         <img src="{{ $logo }}" alt="User Avatar"
                             style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #b8b8b8;">
                     </div>
 
-                    <!-- Nama Usaha -->
                     <div class="d-flex flex-column">
                         <div class="text-break">
                             {{ Session::get('nama_usaha') }}
@@ -36,17 +39,9 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Sidebar Close Button -->
-                <div class="sidebar-toggler x d-xl-none mt-2 mt-md-0">
-                    <a href="#" class="sidebar-hide">
-                        <i class="bi bi-text-indent-left fs-5"></i>
-                    </a>
-                </div>
             </div>
         </div>
-
-        <hr class="m-10 mt-2">
+        <hr class="m-10 mt-2 d-xl-none">
         <div style="position: relative; padding: 0px; text-align: center;">
             <a href="/profil" style="text-decoration: none; color: inherit;">
                 <div style="width: 80px; height: 80px; margin: 0 auto;">
@@ -122,13 +117,6 @@
                         @endif
                     </li>
                 @endforeach
-                <hr>
-                <li class="sidebar-item  ">
-                    <a href="#" id="logoutButton" class='sidebar-link'>
-                        <i class="bi bi-cloud-arrow-up-fill"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
