@@ -20,7 +20,7 @@
 
     @media (min-width: 1200px) {
         #floatingButtons.fixed {
-            left: 320px;
+            left: 290px;
             right: 20px;
         }
     }
