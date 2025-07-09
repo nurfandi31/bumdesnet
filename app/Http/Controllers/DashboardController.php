@@ -40,19 +40,23 @@ class DashboardController extends Controller
                 $query->where('tgl_akhir', '<=', date('Y-m-d'));
             }
         ])->get();
-$tgl_kondisi = request()->get('tgl_akhir') ?? date('Y-m-d');
+      $tgl_kondisi = request()->get('tgl_akhir') ?? date('Y-m-d');
 
-$Tagihan = Installations::where('business_id', Session::get('business_id'))
-    ->whereIn('status', ['A', 'B', 'C'])
-    ->with([
-        'usage' => function ($query) use ($tgl_kondisi) {
-            $query->where('tgl_akhir', '<=', $tgl_kondisi)
-                  ->where('status', 'UNPAID');
-        }
-    ])
-    ->get();
+        $Tagihan = Installations::where('business_id', Session::get('business_id'))
+            ->whereIn('status', ['A', 'B', 'C'])
+            ->whereHas('usage', function ($query) use ($tgl_kondisi) {
+                $query->where('tgl_akhir', '<=', $tgl_kondisi)
+                    ->where('status', 'UNPAID');
+            })
+            ->with([
+                'usage' => function ($query) use ($tgl_kondisi) {
+                    $query->where('tgl_akhir', '<=', $tgl_kondisi)
+                        ->where('status', 'UNPAID');
+                }
+            ])
+            ->get();
 
-$JumlahTagihan = $Tagihan->count(); // tampilkan semua, meskipun usage-nya kosong
+        $JumlahTagihan = $Tagihan->count();
 
 
         $UsageCount = 0;
@@ -264,6 +268,10 @@ $JumlahTagihan = $Tagihan->count(); // tampilkan semua, meskipun usage-nya koson
 
     $Tagihan = Installations::where('business_id', Session::get('business_id'))
         ->whereIn('status', ['A', 'B', 'C'])
+        ->whereHas('usage', function ($query) use ($tgl_kondisi) {
+            $query->where('tgl_akhir', '<=', $tgl_kondisi)
+                ->where('status', 'UNPAID');
+        })
         ->with([
             'customer',
             'village',
@@ -271,8 +279,9 @@ $JumlahTagihan = $Tagihan->count(); // tampilkan semua, meskipun usage-nya koson
             'settings',
             'usage' => function ($query) use ($tgl_kondisi) {
                 $query->where('tgl_akhir', '<=', $tgl_kondisi)
-                      ->where('status', 'UNPAID')
-                      ->orderBy('tgl_akhir');
+                    ->where('status', 'UNPAID')
+                    ->orderBy('tgl_akhir')
+                    ->orderBy('id');
             },
             'usage.transaction' => function ($query) use ($tgl_kondisi) {
                 $query->where('tgl_transaksi', '<=', $tgl_kondisi);
@@ -280,13 +289,16 @@ $JumlahTagihan = $Tagihan->count(); // tampilkan semua, meskipun usage-nya koson
         ])
         ->get();
 
-    return view('Dashboard.partials.tagihan', [
-        'title' => 'Cetak Daftar Tagihan',
-        'tgl_kondisi' => $tgl_kondisi,
-        'akun_piutang' => $akun_piutang,
-        'Tagihan' => $Tagihan,
-    ]);
+
+        return view('Dashboard.partials.tagihan', [
+            'title' => 'Cetak Daftar Tagihan',
+            'tgl_kondisi' => $tgl_kondisi,
+            'akun_piutang' => $akun_piutang,
+            'Tagihan' => $Tagihan,
+        ]);
 }
+
+
 
 
   public function sps($id)
