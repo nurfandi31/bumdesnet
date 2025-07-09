@@ -40,85 +40,75 @@
         margin-inline: 0.5rem;
     }
 
-    .modal-dialog {
-        max-width: 800px;
-    }
-
-    @media (max-width: 768px) {
-        .modal-dialog {
-            max-width: 95%;
-        }
-    }
-
     ul.text-muted li {
         margin-bottom: 12px;
     }
 </style>
-@php
-    $logo = Session::get('logo');
-    if ($logo == 'no_image.png') {
-        $logo = '/assets/img/' . $logo;
-    } else {
-        $logo = '/storage/logo/' . $logo;
-    }
 
-    $userlogo = Session::get('userlogo');
-    if ($userlogo == 'no_image.png') {
-        $userlogo = '/assets/img/' . $userlogo;
-    } else {
-        $userlogo = '/storage/profil/' . $userlogo;
-    }
+@php
+    $logo =
+        Session::get('logo') === 'no_image.png' ? '/assets/img/no_image.png' : '/storage/logo/' . Session::get('logo');
+
+    $userlogo =
+        Session::get('userlogo') === 'no_image.png'
+            ? '/assets/img/no_image.png'
+            : '/storage/profil/' . Session::get('userlogo');
 @endphp
+
 <div id="floatingButtons" class="transition-all">
     <section class="basic-choices position-relative">
-        <div class="row">
-            <div class="col-12 position-relative">
-                <div class="card mb-0 border-0 shadow-none">
-                    <div class="card-content">
-                        <div class="card-body pb-3 pt-3 ps-3 pe-3">
-                            <div class="row align-items-center d-flex justify-content-between">
-                                <div class="col-auto">
-                                    <button
-                                        class="burger-btn d-block d-xl-none btn btn-outline-primary btn-sm rounded-circle"
-                                        title="Menu">
-                                        <i class="bi bi-list"></i>
-                                    </button>
-
-                                    <div
-                                        class="d-flex justify-content-between align-items-start flex-wrap d-none d-xl-inline">
-                                        <div class="d-flex align-items-center flex-grow-1 me-2" style="min-width: 0;">
-                                            <div style="width: 40px; height: 40px; margin-right: 15px; flex-shrink: 0;">
-                                                <img src="{{ $logo }}" alt="User Avatar"
-                                                    style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #b8b8b8;">
-                                            </div>
-
-                                            <div class="d-flex flex-column bold">
-                                                <div class="text-break text-bold">
-                                                    <b style="font-size: 16px">{{ Session::get('nama_usaha') }},
-                                                        {{ Session::get('describe') }}</b>
-                                                </div>
-                                            </div>
+        <div class="card mb-0 border-0 shadow-none">
+            <div class="card-body pb-3 pt-3 ps-3 pe-3">
+                <div class="row align-items-center">
+                    <div class="col-12 d-flex flex-wrap flex-md-nowrap justify-content-between align-items-center gap-2">
+                        <div class="col-auto">
+                            <button class="burger-btn d-block btn btn-outline-primary btn-sm rounded-circle"
+                                title="Menu">
+                                <i class="bi bi-list"></i>
+                            </button>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-end flex-wrap gap-3 ms-auto">
+                            <div class="d-flex align-items-center gap-3">
+                                <a href="#" title="Panduan Aplikasi" class="text-warning">
+                                    <i class="fas fa-lightbulb fa-lg"></i>
+                                </a>
+                                <a href="/pengaturan/coa" title="Chart Of Account (CoA)" class="text-danger">
+                                    <i class="fas fa-file-invoice-dollar fa-lg"></i>
+                                </a>
+                                <a href="/packages" title="Paket Mbps" class="text-success">
+                                    <i class="fas fa-wifi fa-lg"></i>
+                                </a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#Ts/Invoice"
+                                    title="TS dan Invoice" class="text-secondary">
+                                    <i class="fas fa-comment-dots fa-lg"></i>
+                                </a>
+                            </div>
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown">
+                                    <div class="d-flex align-items-center">
+                                        <div class="text-end me-3 d-none d-sm-block">
+                                            <h6 class="mb-0 text-gray-600">{{ Session::get('nama') }}</h6>
+                                            <p class="mb-0 text-sm text-gray-600">{{ Session::get('jabatan') }}</p>
+                                        </div>
+                                        <div class="avatar avatar-md">
+                                            <img src="{{ $userlogo }}" alt="User Avatar">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col d-flex justify-content-end btn-group-responsive">
-                                    <button onclick="location.href='/profil'"
-                                        class="btn btn-outline-primary btn-sm rounded-circle" title="Profil">
-                                        <i class="bi bi-person-circle"></i>
-                                    </button>
-                                    <button class="btn btn-outline-warning btn-sm rounded-circle"
-                                        title="Panduan Aplikasi">
-                                        <i class="bi bi-info-circle"></i>
-                                    </button>
-                                    <button data-bs-toggle="modal" data-bs-target="#Ts/Invoice"
-                                        class="btn btn-outline-info btn-sm rounded-circle" title="Ts dan Invoice">
-                                        <i class="bi bi-envelope"></i>
-                                    </button>
-                                    <button id="logoutButton" class="btn btn-outline-danger btn-sm rounded-circle"
-                                        title="Logout">
-                                        <i class="bi bi-box-arrow-right"></i>
-                                    </button>
-                                </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" style="min-width: 11rem;">
+                                    <li>
+                                        <h6 class="dropdown-header">Manage Your Account</h6>
+                                    </li>
+                                    <li><a class="dropdown-item" href="/profil"><i class="bi bi-person me-2"></i> My
+                                            Profile</a></li>
+                                    <li><a class="dropdown-item" href="/pengaturan"><i class="bi bi-gear me-2"></i>
+                                            Settings</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" id="logoutButton"><i
+                                                class="bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -127,8 +117,9 @@
         </div>
     </section>
 </div>
+
 <div class="modal fade" id="Ts/Invoice" tabindex="-1" aria-labelledby="Ts/InvoiceLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width: 800px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="Ts/InvoiceLabel">Ts dan Invoice</h5>
@@ -143,19 +134,13 @@
                         <h3 class="fw-bold text-center mb-2" style="font-size: 28px;">TECHNICAL SUPPORT</h3>
                         <h4 class="fw-bold text-center mb-4" style="font-size: 22px;">0882-0066-44656</h4>
                         <ul class="text-muted" style="font-size: 14px;">
-                            <li>
-                                Jika terdapat kendala teknis, silahkan menghubungi Technical Support kami melalui
-                                WhatsApps ke nomor diatas.
-                                Dimohon menggunakan bahasa yang mudah dipahami dan tidak menyulitkan.
-                            </li>
-                            <li>
-                                Regristasikan terlebih dahulu Nomor Bapak/Ibu dengan cara ketik :<br>
-                                <strong> {{ Session::get('nama_usaha') }}</strong>
-                            </li>
-                            <li>
-                                Jika permasalahan berkaitan dengan transaksi, sertakan No.Induk Pelanggan Transaksi yang
-                                dimaksud.
-                            </li>
+                            <li>Jika terdapat kendala teknis, silahkan menghubungi Technical Support kami melalui
+                                WhatsApps ke nomor diatas. Dimohon menggunakan bahasa yang mudah dipahami dan tidak
+                                menyulitkan.</li>
+                            <li>Regristasikan terlebih dahulu Nomor Bapak/Ibu dengan cara ketik
+                                :<br><strong>{{ Session::get('nama_usaha') }}</strong></li>
+                            <li>Jika permasalahan berkaitan dengan transaksi, sertakan No.Induk Pelanggan Transaksi yang
+                                dimaksud.</li>
                         </ul>
                         <p class="text-end fw-bold mt-4">Team Technical Support</p>
                     </div>
@@ -167,14 +152,11 @@
         </div>
     </div>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <script>
-    document.addEventListener('scroll', function() {
-        const el = document.getElementById('floatingButtons');
-        if (window.scrollY > 10) {
-            el.classList.add('fixed');
-        } else {
-            el.classList.remove('fixed');
-        }
+    document.addEventListener('scroll', () => {
+        document.getElementById('floatingButtons').classList.toggle('fixed', window.scrollY > 10);
     });
 </script>
-<br>

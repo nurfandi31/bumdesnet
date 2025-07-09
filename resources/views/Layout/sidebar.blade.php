@@ -16,44 +16,27 @@
 
 <div id="sidebar">
     <div class="sidebar-wrapper active">
-        <div class="sidebar-header position-relative p-2 pb-0 pt-3 pe-2 ps-2">
+        <br>
+        <div style="position: relative; padding: 0px; text-align: center;">
             <button
                 class="sidebar-hide btn btn-outline-primary btn-sm rounded-circle position-absolute top-0 end-0 m-2 d-xl-none"
                 title="Tutup Menu">
                 <i class="bi bi-x-lg"></i>
             </button>
-
-            <div class="d-flex justify-content-between align-items-start flex-wrap d-xl-none">
-                <div class="d-flex align-items-center flex-grow-1 me-2" style="min-width: 0;">
-                    <div style="width: 50px; height: 50px; margin-right: 15px; flex-shrink: 0;">
-                        <img src="{{ $logo }}" alt="User Avatar"
-                            style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #b8b8b8;">
-                    </div>
-
-                    <div class="d-flex flex-column">
-                        <div class="text-break">
-                            {{ Session::get('nama_usaha') }}
-                        </div>
-                        <div class="text-break" style="font-weight: 300">
-                            {{ Session::get('describe') }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr class="m-10 mt-2 d-xl-none">
-        <div style="position: relative; padding: 0px; text-align: center;">
             <a href="/profil" style="text-decoration: none; color: inherit;">
                 <div style="width: 80px; height: 80px; margin: 0 auto;">
-                    <img src="{{ $userlogo }}" alt="User Avatar"
+                    <img src="{{ $logo }}" alt="User Avatar"
                         style="width: 110%; height: 110%; border-radius: 50%; object-fit: cover; border: 3px solid #b8b8b8;">
                 </div><br>
-                <div style="margin-top: 0px; font-size: 16px;">
-                    <div class="page-heading">
-                        <b>{{ Session::get('nama') }}</b>
-                        <hr>
+                <div class="d-flex flex-column">
+                    <div class="text-break">
+                        <b style="font-size: 18px;">{{ Session::get('nama_usaha') }}</b>
+                    </div>
+                    <div class="text-break" style="font-size: 14px;">
+                        {{ Session::get('describe') }}
                     </div>
                 </div>
+                <hr>
             </a>
         </div>
         <div class="sidebar-menu">

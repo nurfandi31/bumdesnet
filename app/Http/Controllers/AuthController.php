@@ -66,13 +66,12 @@ class AuthController extends Controller
 
         if (Auth::attempt($data)) {
 
-            $user = User::where('username', $data['username'])->first();
+            $user = User::where('username', $data['username'])->with('position')->first();
             $business = Business::where('id', $user->business_id)->first();
             $pengaturan = Settings::where('business_id', $business->id)->first();
             $installations = Installations::where('business_id', $business->id)->where('status', 'A')->get();
             $usages = Usage::whereIn('id_instalasi', $installations->pluck('id'))->where('status', 'LIKE', 'UNPAID')->get()->groupBy('id_instalasi');
 
-            //proses login
             $auth_token = md5(strtolower($data['username'] . '|' . $data['password']));
             User::where('id', $user->id)->update([
                 'auth_token' => $auth_token,
@@ -91,13 +90,12 @@ class AuthController extends Controller
                 ])
                 ->get();
 
-
             $request->session()->regenerate();
             session([
                 'nama_usaha' => $business->nama,
                 'describe' => $business->describe,
                 'nama' => $user->nama,
-                'jabatan' => $user->jabatan,
+                'jabatan' => $user->position->nama_jabatan,
                 'userlogo' => $user->foto,
                 'userID' => $user->id,
                 'toleransi' => $pengaturan->tanggal_toleransi,
