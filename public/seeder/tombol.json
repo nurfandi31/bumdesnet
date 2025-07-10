@@ -1,0 +1,410 @@
+[
+  {
+    "id": 1,
+    "menu_id": 1,
+    "title": "daftar penguna",
+    "icon": "fas fa-angle-right mr-1"
+  },
+  {
+    "id": 2,
+    "menu_id": 1,
+    "title": "daftar instalasi",
+    "icon": "fas fa-angle-right mr-1"
+  },
+  {
+    "id": 3,
+    "menu_id": 1,
+    "title": "daftar Tagihan",
+    "icon": "fas fa-angle-right mr-1"
+  },
+  {
+    "id": 5,
+    "menu_id": 3,
+    "title": "Wellcome",
+    "icon": "fas fa-home"
+  },
+  {
+    "id": 6,
+    "menu_id": 3,
+    "title": "Identitas Lembaga",
+    "icon": "fas fa-cog"
+  },
+  {
+    "id": 7,
+    "menu_id": 3,
+    "title": "Pasang Baru",
+    "icon": "fas fa-server"
+  },
+  {
+    "id": 8,
+    "menu_id": 3,
+    "title": "Sistem Tagihan",
+    "icon": "fas fa-file-alt"
+  },
+  {
+    "id": 9,
+    "menu_id": 3,
+    "title": "Whatsapp",
+    "icon": "fas fa-comment"
+  },
+  {
+    "id": 10,
+    "menu_id": 4,
+    "title": "Tambah Paket",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 11,
+    "menu_id": 4,
+    "title": "kembali",
+    "icon": "bi bi-sign-turn-slight-left-fill"
+  },
+  {
+    "id": 12,
+    "menu_id": 4,
+    "title": "block",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 13,
+    "menu_id": 4,
+    "title": "Simpan Harga",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 14,
+    "menu_id": 4,
+    "title": "close",
+    "icon": "bi bi-sign-turn-slight-left-fill"
+  },
+  {
+    "id": 15,
+    "menu_id": 4,
+    "title": "tambah block",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 16,
+    "menu_id": 4,
+    "title": "Simpan Perubahan",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 17,
+    "menu_id": 4,
+    "title": "Hapus",
+    "icon": "fas fa-trash-alt"
+  },
+  {
+    "id": 18,
+    "menu_id": 4,
+    "title": "Edit",
+    "icon": "fas fa-pencil-alt"
+  },
+  {
+    "id": 19,
+    "menu_id": 4,
+    "title": "Simpan Edit  Harga",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 23,
+    "menu_id": 8,
+    "title": "Simpan pelanggan",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 24,
+    "menu_id": 10,
+    "title": "Edit ",
+    "icon": "btn btn-warning btn-sm"
+  },
+  {
+    "id": 25,
+    "menu_id": 10,
+    "title": "Hapus",
+    "icon": "btn btn-danger btn-sm"
+  },
+  {
+    "id": 26,
+    "menu_id": 10,
+    "title": "Kembali",
+    "icon": "bi bi-sign-turn-slight-left-fill"
+  },
+  {
+    "id": 27,
+    "menu_id": 10,
+    "title": "Simpan Pelanggan",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 29,
+    "menu_id": 11,
+    "title": "Edit",
+    "icon": "btn btn-warning btn-sm"
+  },
+  {
+    "id": 30,
+    "menu_id": 11,
+    "title": "Hapus",
+    "icon": "btn-sm btn-danger"
+  },
+  {
+    "id": 31,
+    "menu_id": 11,
+    "title": "Kembali",
+    "icon": "bi bi-sign-turn-slight-left-fill"
+  },
+  {
+    "id": 32,
+    "menu_id": 11,
+    "title": "Simpan Cater",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 33,
+    "menu_id": 12,
+    "title": "Edit",
+    "icon": "btn btn-warning btn-sm"
+  },
+  {
+    "id": 34,
+    "menu_id": 12,
+    "title": "Hapus",
+    "icon": "btn btn-danger btn-sm"
+  },
+  {
+    "id": 35,
+    "menu_id": 12,
+    "title": "Kembali",
+    "icon": "bi bi-sign-turn-slight-left-fill"
+  },
+  {
+    "id": 36,
+    "menu_id": 12,
+    "title": "Simpan Perubahan",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 37,
+    "menu_id": 12,
+    "title": "Simpan Desa Baru",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 38,
+    "menu_id": 14,
+    "title": "Register Desa",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 39,
+    "menu_id": 14,
+    "title": "Daftar & Simpan",
+    "icon": "btn btn-dark"
+  },
+  {
+    "id": 40,
+    "menu_id": 15,
+    "title": "Permohonan (R)",
+    "icon": "nav-link"
+  },
+  {
+    "id": 41,
+    "menu_id": 15,
+    "title": "Pasang (P)",
+    "icon": "nav-link"
+  },
+  {
+    "id": 42,
+    "menu_id": 15,
+    "title": "Aktif (A)",
+    "icon": "nav-link"
+  },
+  {
+    "id": 43,
+    "menu_id": 15,
+    "title": "Blokir (B)",
+    "icon": "nav-link"
+  },
+  {
+    "id": 44,
+    "menu_id": 15,
+    "title": "Cabut (C)",
+    "icon": "nav-link"
+  },
+  {
+    "id": 45,
+    "menu_id": 15,
+    "title": "Detail (P)",
+    "icon": "btn btn-info btn-sm"
+  },
+  {
+    "id": 46,
+    "menu_id": 15,
+    "title": "Edit",
+    "icon": "btn btn-warning btn-sm"
+  },
+  {
+    "id": 47,
+    "menu_id": 15,
+    "title": "Hapus",
+    "icon": "btn btn-danger btn-sm"
+  },
+  {
+    "id": 48,
+    "menu_id": 15,
+    "title": "Detail (I)",
+    "icon": "btn btn-info btn-sm"
+  },
+  {
+    "id": 49,
+    "menu_id": 15,
+    "title": "Detail (A)",
+    "icon": "btn btn-info btn-sm"
+  },
+  {
+    "id": 50,
+    "menu_id": 15,
+    "title": "Detail (B)",
+    "icon": "btn btn-info btn-sm"
+  },
+  {
+    "id": 51,
+    "menu_id": 15,
+    "title": "Detail (C)",
+    "icon": "btn btn-info btn-sm"
+  },
+  {
+    "id": 52,
+    "menu_id": 15,
+    "title": "Kembali",
+    "icon": "bi bi-sign-turn-slight-left-fill"
+  },
+  {
+    "id": 53,
+    "menu_id": 15,
+    "title": "Pemasangan Selesai",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 54,
+    "menu_id": 15,
+    "title": "Aktifkan Sekarang",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 55,
+    "menu_id": 15,
+    "title": "Kembali ke Aktif",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 56,
+    "menu_id": 15,
+    "title": "Cabut Sekarang",
+    "icon": "bi bi-sign-intersection-fill"
+  },
+  {
+    "id": 57,
+    "menu_id": 16,
+    "title": "Input Data Pemakaian",
+    "icon": "btn btn-primary"
+  },
+  {
+    "id": 58,
+    "menu_id": 16,
+    "title": "Kembali",
+    "icon": "bi bi-sign-turn-slight-left-fill\n"
+  },
+  {
+    "id": 59,
+    "menu_id": 17,
+    "title": "Cetak Tagihan",
+    "icon": "btn btn-primary"
+  },
+  {
+    "id": 60,
+    "menu_id": 17,
+    "title": "Simpan Pemakaian",
+    "icon": "btn btn-secondary"
+  },
+  {
+    "id": 61,
+    "menu_id": 18,
+    "title": "Simpan Transaksi",
+    "icon": "btn btn-secondary"
+  },
+  {
+    "id": 62,
+    "menu_id": 18,
+    "title": "Detail Transaksi",
+    "icon": "btn btn-success"
+  },
+  {
+    "id": 63,
+    "menu_id": 19,
+    "title": "Detail",
+    "icon": "btn btn-success"
+  },
+  {
+    "id": 64,
+    "menu_id": 19,
+    "title": "Simpan Pembayaran",
+    "icon": "btn btn-secondary"
+  },
+  {
+    "id": 65,
+    "menu_id": 20,
+    "title": "Detail Transaksi",
+    "icon": "btn btn-success"
+  },
+  {
+    "id": 66,
+    "menu_id": 20,
+    "title": "Simpan Pembayaran",
+    "icon": "btn btn-secondary"
+  },
+  {
+    "id": 67,
+    "menu_id": 20,
+    "title": "Cek pemakaian",
+    "icon": "btn btn-danger"
+  },
+  {
+    "id": 68,
+    "menu_id": 20,
+    "title": "info tagihan",
+    "icon": "btn btn-warning"
+  },
+  {
+    "id": 69,
+    "menu_id": 20,
+    "title": "Simpan Pembayaran",
+    "icon": "btn btn-secondary"
+  },
+  {
+    "id": 70,
+    "menu_id": 22,
+    "title": "Simpan Saldo",
+    "icon": "btn btn-danger"
+  },
+  {
+    "id": 71,
+    "menu_id": 22,
+    "title": "Excel",
+    "icon": "btn btn-success"
+  },
+  {
+    "id": 72,
+    "menu_id": 22,
+    "title": "Priview",
+    "icon": "btn btn-secondary"
+  },
+  {
+    "id": 73,
+    "menu_id": 9,
+    "title": "simpan cater",
+    "icon": "bi bi-sign-intersection-fill"
+  }
+]

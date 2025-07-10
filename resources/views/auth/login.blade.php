@@ -56,7 +56,7 @@
                                         <p class="mb-0">Log in with your username and password.</p>
 
                                         <div class="card-body">
-                                            <form class="login100-form validate-form user" action="{{ route('auth') }}"
+                                            <form class="login100-form validate-form user" action="/auth"
                                                 method="POST">
                                                 @csrf
                                                 <div class="input-group input-group-outline mb-3">

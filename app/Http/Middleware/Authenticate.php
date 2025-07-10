@@ -4,14 +4,29 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Authenticate extends Middleware
 {
-    /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     */
-    protected function redirectTo(Request $request): ?string
+    protected function authenticate($request, array $guards)
     {
-        return $request->expectsJson() ? null : route('auth');
+        if (Auth::guard('web')->check()) {
+            Auth::shouldUse('web');
+            return;
+        }
+
+        if (Auth::guard('admin')->check()) {
+            Auth::shouldUse('admin');
+            return;
+        }
+
+        $this->unauthenticated($request, ['web', 'admin']);
+    }
+
+    protected function redirectTo($request)
+    {
+        if (! $request->expectsJson()) {
+            return '/auth';
+        }
     }
 }

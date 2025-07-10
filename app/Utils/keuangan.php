@@ -2,17 +2,17 @@
 
 namespace App\Utils;
 
-use App\Models\Account;
-use App\Models\AkunLevel2;
-use App\Models\Amount;
-use App\Models\Business;
-use App\Models\Installations;
-use App\Models\Kecamatan;
-use App\Models\PinjamanKelompok;
-use App\Models\Rekening;
-use App\Models\Saldo;
-use App\Models\Transaction;
-use App\Models\Transaksi;
+use App\Models\Tenant\Account;
+use App\Models\Tenant\AkunLevel2;
+use App\Models\Tenant\Amount;
+use App\Models\Tenant\Business;
+use App\Models\Tenant\Installations;
+use App\Models\Tenant\Kecamatan;
+use App\Models\Tenant\PinjamanKelompok;
+use App\Models\Tenant\Rekening;
+use App\Models\Tenant\Saldo;
+use App\Models\Tenant\Transaction;
+use App\Models\Tenant\Transaksi;
 use DB;
 
 use Illuminate\Support\Facades\Session;
