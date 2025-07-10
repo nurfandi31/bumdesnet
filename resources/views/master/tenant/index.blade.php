@@ -63,7 +63,7 @@
                     </button>
                     <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Reset dan Tutup</span>
+                        <span class="d-none d-sm-block">Tutup</span>
                     </button>
                     <button type="button" class="btn btn-primary ms-1" id="btn-save-tenant">
                         <i class="bx bx-check d-block d-sm-none"></i>
@@ -153,20 +153,32 @@
         $(document).on('click', '#btn-delete-tenant', function(e) {
             e.preventDefault()
 
-            var form = $('#form-delete-tenant')
-            $.ajax({
-                url: form.attr('action'),
-                method: 'POST',
-                data: form.serialize(),
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire('Berhasil', response.msg, 'success').then((res) => {
-                            $('#modal-edit-tenant').modal('hide')
-                            table.ajax.reload()
-                        })
-                    }
+            Swal.fire({
+                title: "Hapus Tenant",
+                text: "Tenant akan dihapus secara permanen dari aplikasi tidak bisa dikembalikan!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Hapus",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#form-delete-tenant')
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: 'POST',
+                        data: form.serialize(),
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire('Berhasil', response.msg, 'success').then((res) => {
+                                    $('#modal-edit-tenant').modal('hide')
+                                    table.ajax.reload()
+                                })
+                            }
+                        }
+                    })
                 }
-            })
+            });
         })
 
         $(document).on('click', '#btn-add-domain', function(e) {
