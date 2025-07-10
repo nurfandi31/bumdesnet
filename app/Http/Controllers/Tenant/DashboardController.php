@@ -40,14 +40,14 @@ class DashboardController extends Controller
                 $query->where('tgl_akhir', '<=', date('Y-m-d'));
             }
         ])->get();
-      $tgl_kondisi = request()->get('tgl_akhir') ?? date('Y-m-d');
+        $tgl_kondisi = request()->get('tgl_akhir') ?? date('Y-m-d');
 
         $Tagihan = Installations::where('business_id', Session::get('business_id'))
             ->whereIn('status', ['A', 'B', 'C'])
             ->whereHas('usage', function ($query) use ($tgl_kondisi) {
                 $query->where('tgl_akhir', '<=', $tgl_kondisi)
                     ->where('status', 'UNPAID');
-            })
+            });
         $tgl_kondisi = request()->get('tgl_akhir') ?? date('Y-m-d');
 
         $Tagihan = Installations::where('business_id', Session::get('business_id'))
@@ -271,28 +271,28 @@ class DashboardController extends Controller
             ->where('kode_akun', '1.1.03.01')
             ->first();
 
-    $Tagihan = Installations::where('business_id', Session::get('business_id'))
-        ->whereIn('status', ['A', 'B', 'C'])
-        ->whereHas('usage', function ($query) use ($tgl_kondisi) {
-            $query->where('tgl_akhir', '<=', $tgl_kondisi)
-                ->where('status', 'UNPAID');
-        })
-        ->with([
-            'customer',
-            'village',
-            'package',
-            'settings',
-            'usage' => function ($query) use ($tgl_kondisi) {
+        $Tagihan = Installations::where('business_id', Session::get('business_id'))
+            ->whereIn('status', ['A', 'B', 'C'])
+            ->whereHas('usage', function ($query) use ($tgl_kondisi) {
                 $query->where('tgl_akhir', '<=', $tgl_kondisi)
-                    ->where('status', 'UNPAID')
-                    ->orderBy('tgl_akhir')
-                    ->orderBy('id');
-            },
-            'usage.transaction' => function ($query) use ($tgl_kondisi) {
-                $query->where('tgl_transaksi', '<=', $tgl_kondisi);
-            },
-        ])
-        ->get();
+                    ->where('status', 'UNPAID');
+            })
+            ->with([
+                'customer',
+                'village',
+                'package',
+                'settings',
+                'usage' => function ($query) use ($tgl_kondisi) {
+                    $query->where('tgl_akhir', '<=', $tgl_kondisi)
+                        ->where('status', 'UNPAID')
+                        ->orderBy('tgl_akhir')
+                        ->orderBy('id');
+                },
+                'usage.transaction' => function ($query) use ($tgl_kondisi) {
+                    $query->where('tgl_transaksi', '<=', $tgl_kondisi);
+                },
+            ])
+            ->get();
 
 
         $Tagihan = Installations::where('business_id', Session::get('business_id'))
@@ -319,15 +319,7 @@ class DashboardController extends Controller
             'akun_piutang' => $akun_piutang,
             'Tagihan' => $Tagihan,
         ]);
-}
-
-
-
-
-  public function sps($id)
     }
-
-
     public function sps($id)
     {
         $keuangan = new Keuangan;
