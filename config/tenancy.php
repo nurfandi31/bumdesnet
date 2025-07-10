@@ -13,10 +13,10 @@ return [
     'domain_model' => Domain::class,
 
     /**
-     * The list of domains hosting your central app.
-     *
-     * Only relevant if you're using the domain or subdomain identification middleware.
-     */
+             * The list of domains hosting your central app.
+             *
+             * Only relevant if you're using the domain or subdomain identification middleware.
+             */
     'central_domains' => [
         '127.0.0.1',
         'localhost',
@@ -103,7 +103,7 @@ return [
         /**
          * Each disk listed in the 'disks' array will be suffixed by the suffix_base, followed by the tenant_id.
          */
-        'suffix_base' => 'tenant',
+        'suffix_base' => 'tenant_',
         'disks' => [
             'local',
             'public',
@@ -117,8 +117,8 @@ return [
          */
         'root_override' => [
             // Disks whose roots should be overridden after storage_path() is suffixed.
-            'local' => '%storage_path%/app/',
-            'public' => '%storage_path%/app/public/',
+            'local' => '%storage_path%/../app/',
+            'public' => '%storage_path%/../app/public/',
         ],
 
         /**

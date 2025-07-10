@@ -3,7 +3,7 @@
         <div class="col-md-12 mt-4" data-animation="true">
             <a class="d-block blur-shadow-image">
                 <img src="{{ asset('storage/logo/' . Session::get('logo')) }}" alt="Logo saat ini"
-                    class="img-fluid shadow border-radius-lg mt-3" id="previewLogo"
+                    class="img-fluid shadow border-radius-lg mt-3 previewLogo" id=""
                     style="width: 130px; height: auto; margin-left: 20px;">
             </a>
 
