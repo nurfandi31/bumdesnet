@@ -157,21 +157,19 @@
                 </div>
                 <div class="modal-body">
                     <div class="card">
-                        <div class="card-body">
-                            <table class="table table-flush">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>No.Induk</th>
-                                        <th>Customer</th>
-                                        <th>Sales</th>
-                                        <th>Paket</th>
-                                        <th>Tgl Order</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="TablePermohonan"></tbody>
-                            </table>
-                        </div>
+                        <table class="card-body table table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>No.Induk</th>
+                                    <th>Customer</th>
+                                    <th>Marketing</th>
+                                    <th>Paket</th>
+                                    <th>Tgl Order</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TablePermohonan"></tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -193,21 +191,19 @@
                 </div>
                 <div class="modal-body">
                     <div class="card">
-                        <div class="card-body">
-                            <table class="table table-flush">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>No.Induk</th>
-                                        <th>Customer</th>
-                                        <th>Sales</th>
-                                        <th>Paket</th>
-                                        <th>Tgl Order</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="TablePasang"></tbody>
-                            </table>
-                        </div>
+                        <table class="card-body table table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>No.Induk</th>
+                                    <th>Customer</th>
+                                    <th>Marketing</th>
+                                    <th>Paket</th>
+                                    <th>Tgl Order</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TablePasang"></tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -229,21 +225,19 @@
                 </div>
                 <div class="modal-body">
                     <div class="card">
-                        <div class="card-body">
-                            <table class="table table-flush">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>No.Induk</th>
-                                        <th>Customer</th>
-                                        <th>Sales</th>
-                                        <th>Paket</th>
-                                        <th>Tgl Order</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="TablePemakaianAktif"></tbody>
-                            </table>
-                        </div>
+                        <table class="card-body table table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>No.Induk</th>
+                                    <th>Customer</th>
+                                    <th>Marketing</th>
+                                    <th>Paket</th>
+                                    <th>Tgl Order</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TablePemakaianAktif"></tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -276,8 +270,6 @@
                                         <th>Tagihan</th>
                                     </tr>
                                 </thead>
-
-
                             </table>
                         </div>
                     </div>

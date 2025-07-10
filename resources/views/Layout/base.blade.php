@@ -131,13 +131,12 @@
         @include('Layout.sidebar')
         <div id="main" class="pb-2">
             <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
+                @include('Layout.navbar')
             </header>
-            <div class="page-content">
-                @yield('content')
-            </div>
+            
+                <div class="page-content">
+                    @yield('content')
+                </div>
             <br><br>
             @include('Layout.footer')
         </div>
@@ -196,15 +195,16 @@
         </script>
         @if (Session::get('success'))
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const now = new Date();
-                const date = now.getDate();
-                const lastDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-                const toleransi = {{ Session::get('toleransi', 11) }};
-                const successMessage = @json(Session::get('success'));
+            $(document).ready(function () {
+                var now = new Date();
+                var date = now.getDate();
+                var lastDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+                var toleransi = {{ Session::get('toleransi', 11) }};
+                var successMessage = @json(Session::get('success'));
+                var waktu = {{ time() }}; 
         
-                const isToleransiDay = date === toleransi;
-                const isLastDay = date === lastDate;
+                var isToleransiDay = date === toleransi;
+                var isLastDay = date === lastDate;
         
                 if (isToleransiDay || isLastDay) {
                     Swal.fire({
@@ -214,7 +214,7 @@
                         confirmButtonText: 'OK'
                     }).then(() => {
                         if (isLastDay) {
-                            const win1 = window.open('', '_blank', 'width=500,height=500,top=100,left=100');
+                            var win1 = window.open('', '_blank', 'width=500,height=500,top=100,left=100');
                             if (win1) {
                                 win1.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /generate pemakaian...</h6>');
                                 setTimeout(() => win1.location.href = '/generatepemakaian', 1000);
@@ -222,15 +222,15 @@
                         }
         
                         if (isToleransiDay) {
-                            const win2 = window.open('', '_blank', 'width=500,height=500,top=150,left=150');
+                            var win2 = window.open('', '_blank', 'width=500,height=500,top=150,left=150');
                             if (win2) {
                                 win2.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /dataset tunggakan...</h6>');
-                                setTimeout(() => win2.location.href = '/dataset/{{ time() }}', 1000);
+                                setTimeout(() => win2.location.href = '/dataset/' + waktu, 1000);
                             }
                         }
                     });
                 } else {
-                    const toastMixin = Swal.mixin({
+                    var toastMixin = Swal.mixin({
                         toast: true,
                         icon: 'success',
                         position: 'top-right',
@@ -245,13 +245,21 @@
                 }
             });
         </script> @endif
+        
         <script>
             $(document).on('click', '#logoutButton', function(e) {
                 e.preventDefault();
 
                 Swal.fire({
-                    title: "Konfirmasi Logout",
-                    icon: 'info',
+                    html: `
+                        <div style="text-align: center;">
+                            <h2 style="margin: 0; font-weight: bold; font-size: 26px; color: #2c3e50;">Konfirmasi Logout</h2>
+                            <p style="margin-top: 8px; font-size: 16px; color: #7f8c8d;">
+                                Apakah Anda yakin ingin keluar dari aplikasi?
+                            </p>
+                        </div>
+                    `,
+                    icon: 'question',
                     showDenyButton: true,
                     confirmButtonText: "Logout",
                     denyButtonText: "Batal",
@@ -260,8 +268,9 @@
                         $('#logoutForm').submit();
                     }
                 });
-            })
+            });
         </script>
+        
         <script>
             //property lainya
             function open_window(link) {

@@ -18,16 +18,19 @@
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px; font-weight: bold;">
-                    {{ strtoupper('Piutang Pelanggan ' . $cater->nama) }}
+                    {{ strtoupper('Piutang Pelanggan ') }}
                 </div>
                 <div style="font-size: 16px; font-weight: bold;">{{ strtoupper($sub_judul) }}</div>
             </td>
         </tr>
+    </table>
+    <table border="0" width="100%" style="margin-top: 0; font-size: 12px;">
         <tr>
-            <td colspan="3" height="10"></td>
+            <td style="text-align: right; font-weight: bold;">
+                Marketing : {{ $cater->nama ?? '-' }}
+            </td>
         </tr>
     </table>
-
     <table border="1" width="100%">
         <thead>
             <tr style="background-color: rgb(230, 230, 230); font-weight: bold;">

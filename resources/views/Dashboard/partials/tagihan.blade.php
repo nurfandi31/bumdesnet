@@ -40,7 +40,7 @@
                             <th rowspan="2" width="15%">No. Induk</th>
                             <th colspan="2" width="30%">Tagihan</th>
                             <th rowspan="2" width="19%">Jumlah Tagihan</th>
-                            <th rowspan="2" width="10%">Kategori</th>
+                            <th rowspan="2" width="10%">Keterangan</th>
                         </tr>
                         <tr class="text-center align-middle">
                             <th width="15%">Bulan Lalu</th>
@@ -49,6 +49,7 @@
                     </thead>
                     <tbody class="text-center align-middle">
                         @php $no = 1; @endphp
+
                         @foreach ($Tagihan as $ins)
                             @php
                                 $tgl_toleransi = $ins->settings->tanggal_toleransi ?? '01';
@@ -58,12 +59,12 @@
                                 $bayar = 0;
 
                                 foreach ($ins->usage as $usage) {
-                                    foreach ($usage->transaction as $trx) {
-                                        $bulan_tagihan = date('Y-m', strtotime($usage->tgl_akhir)) . '-01';
-                                        $bulan_kondisi = date('Y-m', strtotime($tgl_kondisi)) . '-01';
-                                        $bulan_kondisi_lalu =
-                                            date('Y-m', strtotime('-1 month', strtotime($bulan_kondisi))) . '-01';
+                                    $bulan_tagihan = date('Y-m', strtotime($usage->tgl_akhir)) . '-01';
+                                    $bulan_kondisi = date('Y-m', strtotime($tgl_kondisi)) . '-01';
+                                    $bulan_kondisi_lalu =
+                                        date('Y-m', strtotime('-1 month', strtotime($bulan_kondisi))) . '-01';
 
+                                    foreach ($ins->transaction as $trx) {
                                         if ($trx->rekening_debit == $akun_piutang->id) {
                                             if ($bulan_tagihan < $bulan_kondisi_lalu) {
                                                 // tidak ditampilkan
@@ -92,6 +93,9 @@
                                 if ($jumlah_menunggak > 2) {
                                     $status = 'SPS';
                                 }
+
+                                // Ambil usage terakhir untuk kategori bulan
+                                $last = $ins->usage->sortByDesc('tgl_akhir')->first();
                             @endphp
 
                             <tr>
@@ -105,9 +109,12 @@
                                 <td align="right">{{ number_format($bulan_lalu, 2) }}</td>
                                 <td align="right">{{ number_format($bulan_ini, 2) }}</td>
                                 <td align="right">{{ number_format($tunggakan, 2) }}</td>
-                                <td>{{ $ins->status_tunggakan }}</td>
+                                <td>
+                                    {{ $last ? \Carbon\Carbon::parse($last->tgl_akhir)->locale('id')->translatedFormat('F Y') : '-' }}
+                                </td>
                             </tr>
                         @endforeach
+
                     </tbody>
                 </table>
             </div>

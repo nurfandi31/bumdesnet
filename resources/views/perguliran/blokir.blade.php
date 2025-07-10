@@ -25,7 +25,7 @@
                             <tr>
                                 <th>No.Induk</th>
                                 <th>Pelanggan</th>
-                                <th>Sales</th>
+                                <th>Marketing</th>
                                 <th>alamat</th>
                                 <th>Nomor HP</th>
                                 <th>Paket</th>

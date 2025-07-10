@@ -112,14 +112,13 @@ class UsageController extends Controller
     public function generatePemakaian()
     {
         $instalasiList = Installations::where('business_id', Session::get('business_id'))
-            ->whereIn('status', ['A', 'B', 'C'])
+            ->whereIn('status', ['A'])
             ->with([
                 'oneUsage',
                 'package',
                 'settings',
                 'usage'
             ])->get();
-
         foreach ($instalasiList as $instal) {
             $masihAdaUnpaid = $instal->usage->contains(fn($u) => $u->status === 'UNPAID');
             if ($masihAdaUnpaid) {

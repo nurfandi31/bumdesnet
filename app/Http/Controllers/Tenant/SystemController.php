@@ -9,6 +9,7 @@ use App\Models\Tenant\Settings;
 use App\Models\Tenant\Transaction;
 use App\Models\Tenant\Usage;
 use Illuminate\Http\Request;
+use App\Utils\Tanggal;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
@@ -17,60 +18,66 @@ class SystemController extends Controller
 {
     public function dataset($waktu)
     {
-        $setting = Settings::where('business_id', Session::get('business_id'))->first();
-
-        $date = date('Y-m-d', $waktu);
-        $created_at = now();
         $businessId = Session::get('business_id');
+        $setting = Settings::where('business_id', $businessId)->first();
+        $sekarang = now();
+        $toleransiTanggal = (int) date('d', strtotime($setting->tanggal_toleransi));
+        $tanggalToleransi = $sekarang->copy()->day($toleransiTanggal);
+
         $installations = Installations::where('business_id', $businessId)
-            ->with([
-                'package',
-                'usage' => function ($query) {
-                    $query->where('status', 'UNPAID');
-                }
-            ])->get();
+            ->with(['usage' => fn ($q) => $q->where('status', 'UNPAID')])
+            ->get();
 
-        $menunggak3 = [
-            'update' => [
-                'status_tunggakan' => 'menunggak2',
-                'status' => 'C'
-            ],
-            'id' => []
-        ];
-        $menunggak2 = [
-            'update' => [
-                'status_tunggakan' => 'menunggak1',
-                'status' => 'B'
-            ],
-            'id' => []
-        ];
-        $menunggak1 = [
-            'update' => [
-                'status_tunggakan' => 'lancar',
-                'status' => 'A'
-            ],
-            'id' => []
-        ];
+        $lancar = [];
+        $menunggak1 = [];
+
         foreach ($installations as $installation) {
-            $unpaidCount = count($installation->usage);
-
-            if ($unpaidCount >= 3) {
-                $menunggak3['id'][] = $installation->id;
-            } elseif ($unpaidCount == 2) {
-                $menunggak2['id'][] = $installation->id;
-            } else {
-                $menunggak1['id'][] = $installation->id;
+            $count = $installation->usage->count();
+            if ($count == 1) {
+                $menunggak1[] = $installation->id;
+            } elseif ($count == 0) {
+                $lancar[] = $installation->id;
             }
         }
 
-        Installations::whereIn('id', $menunggak3['id'])->update($menunggak3['update']);
-        Installations::whereIn('id', $menunggak2['id'])->update($menunggak2['update']);
-        Installations::whereIn('id', $menunggak1['id'])->update($menunggak1['update']);
+        if ($menunggak1) {
+            Installations::whereIn('id', $menunggak1)->update([
+                'status_tunggakan' => 'menunggak1',
+                'status' => 'B',
+                'blokir' => date('Y-m-d')
+            ]);
+        }
+
+        if ($lancar) {
+            Installations::whereIn('id', $lancar)->update([
+                'status_tunggakan' => 'lancar',
+                'status' => 'A'
+            ]);
+        }
+
+        if ($sekarang->greaterThan($tanggalToleransi)) {
+            $telatBayarIds = Installations::where('business_id', $businessId)
+                ->where('status', 'A')
+                ->whereHas('usage', function ($q) use ($sekarang) {
+                    $q->where('status', 'UNPAID')
+                        ->whereMonth('created_at', $sekarang->copy()->subMonth()->month)
+                        ->whereYear('created_at', $sekarang->copy()->subMonth()->year);
+                })
+                ->pluck('id')
+                ->toArray();
+
+            if ($telatBayarIds) {
+                Installations::whereIn('id', $telatBayarIds)->update([
+                    'status_tunggakan' => 'menunggak1',
+                    'status' => 'B',
+                    'blokir' => date('Y-m-d')
+                ]);
+            }
+        }
 
         echo '<script>window.close()</script>';
         exit;
     }
-
 
     private function saldo($tahun, $bulan, ...$akun)
     {
