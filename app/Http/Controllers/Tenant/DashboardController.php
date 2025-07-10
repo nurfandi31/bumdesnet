@@ -40,7 +40,6 @@ class DashboardController extends Controller
                 $query->where('tgl_akhir', '<=', date('Y-m-d'));
             }
         ])->get();
-<<<<<<< HEAD:app/Http/Controllers/DashboardController.php
       $tgl_kondisi = request()->get('tgl_akhir') ?? date('Y-m-d');
 
         $Tagihan = Installations::where('business_id', Session::get('business_id'))
@@ -49,12 +48,6 @@ class DashboardController extends Controller
                 $query->where('tgl_akhir', '<=', $tgl_kondisi)
                     ->where('status', 'UNPAID');
             })
-=======
-        $tgl_kondisi = request()->get('tgl_akhir') ?? date('Y-m-d');
-
-        $Tagihan = Installations::where('business_id', Session::get('business_id'))
-            ->whereIn('status', ['A', 'B', 'C'])
->>>>>>> f7431329974dfd0d35c82264f50eef6822973b31:app/Http/Controllers/Tenant/DashboardController.php
             ->with([
                 'usage' => function ($query) use ($tgl_kondisi) {
                     $query->where('tgl_akhir', '<=', $tgl_kondisi)
@@ -63,11 +56,7 @@ class DashboardController extends Controller
             ])
             ->get();
 
-<<<<<<< HEAD:app/Http/Controllers/DashboardController.php
         $JumlahTagihan = $Tagihan->count();
-=======
-        $JumlahTagihan = $Tagihan->count(); // tampilkan semua, meskipun usage-nya kosong
->>>>>>> f7431329974dfd0d35c82264f50eef6822973b31:app/Http/Controllers/Tenant/DashboardController.php
 
 
         $UsageCount = 0;
@@ -277,7 +266,6 @@ class DashboardController extends Controller
             ->where('kode_akun', '1.1.03.01')
             ->first();
 
-<<<<<<< HEAD:app/Http/Controllers/DashboardController.php
     $Tagihan = Installations::where('business_id', Session::get('business_id'))
         ->whereIn('status', ['A', 'B', 'C'])
         ->whereHas('usage', function ($query) use ($tgl_kondisi) {
@@ -302,45 +290,16 @@ class DashboardController extends Controller
         ->get();
 
 
-=======
-        $Tagihan = Installations::where('business_id', Session::get('business_id'))
-            ->whereIn('status', ['A', 'B', 'C'])
-            ->with([
-                'customer',
-                'village',
-                'package',
-                'settings',
-                'usage' => function ($query) use ($tgl_kondisi) {
-                    $query->where('tgl_akhir', '<=', $tgl_kondisi)
-                        ->where('status', 'UNPAID')
-                        ->orderBy('tgl_akhir');
-                },
-                'usage.transaction' => function ($query) use ($tgl_kondisi) {
-                    $query->where('tgl_transaksi', '<=', $tgl_kondisi);
-                },
-            ])
-            ->get();
-
->>>>>>> f7431329974dfd0d35c82264f50eef6822973b31:app/Http/Controllers/Tenant/DashboardController.php
         return view('Dashboard.partials.tagihan', [
             'title' => 'Cetak Daftar Tagihan',
             'tgl_kondisi' => $tgl_kondisi,
             'akun_piutang' => $akun_piutang,
             'Tagihan' => $Tagihan,
         ]);
-<<<<<<< HEAD:app/Http/Controllers/DashboardController.php
-}
-
-
-
-
-  public function sps($id)
-=======
     }
 
 
     public function sps($id)
->>>>>>> f7431329974dfd0d35c82264f50eef6822973b31:app/Http/Controllers/Tenant/DashboardController.php
     {
         $keuangan = new Keuangan;
 
