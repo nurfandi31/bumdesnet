@@ -39,11 +39,6 @@ class AuthController extends Controller
         }
 
         $business = Business::first();
-        $domain = json_decode($business->domain, true);
-        if ($domain[0] != $url && !str_contains($url, 'bumdesnet.test')) {
-            return redirect('https://' . $domain[0]);
-        }
-
         return view('auth.login')->with(compact('business'));
     }
 
