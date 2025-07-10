@@ -2,9 +2,9 @@
 
 namespace App\Utils;
 
-use App\Models\Account;
-use App\Models\Inventaris as ModelsInventaris;
-use App\Models\Rekening;
+use App\Models\Tenant\Account;
+use App\Models\Tenant\Inventaris as ModelsInventaris;
+use App\Models\Tenant\Rekening;
 use DB;
 use Illuminate\Contracts\Session\Session as SessionSession;
 use Session;

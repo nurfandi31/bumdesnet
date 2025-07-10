@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "parent_id": 0,
+    "title": "Dashboard",
+    "icon": "bi bi-grid-1x2-fill",
+    "link": "/",
+    "status": "A"
+  },
+  {
+    "id": 2,
+    "parent_id": 0,
+    "title": "Pengaturan",
+    "icon": "bi bi-hexagon-fill",
+    "link": "#",
+    "status": "A"
+  },
+  {
+    "id": 3,
+    "parent_id": 2,
+    "title": "Personalisassi SOP",
+    "icon": "submenu-link",
+    "link": "/pengaturan",
+    "status": "A"
+  },
+  {
+    "id": 4,
+    "parent_id": 2,
+    "title": "Cart Of Account",
+    "icon": "submenu-link",
+    "link": "/pengaturan/coa",
+    "status": "A"
+  },
+  {
+    "id": 7,
+    "parent_id": 0,
+    "title": "Basis Data",
+    "icon": "bi bi-collection-fill",
+    "link": "#",
+    "status": "A"
+  },
+  {
+    "id": 8,
+    "parent_id": 7,
+    "title": "Desa",
+    "icon": "submenu-link",
+    "link": "#",
+    "status": "A"
+  },
+  {
+    "id": 9,
+    "parent_id": 7,
+    "title": "Sales",
+    "icon": "submenu-link",
+    "link": "#",
+    "status": "A"
+  },
+  {
+    "id": 14,
+    "parent_id": 0,
+    "title": "Register Instalasi",
+    "icon": "bi bi-person-badge-fill",
+    "link": "/installations/create",
+    "status": "A"
+  },
+  {
+    "id": 15,
+    "parent_id": 0,
+    "title": "Status Instalasi",
+    "icon": "bi bi-three-dots",
+    "link": "#",
+    "status": "A"
+  },
+  {
+    "id": 16,
+    "parent_id": 0,
+    "title": "Pemakaian",
+    "icon": "bi bi-pen-fill",
+    "link": "/usages",
+    "status": "N"
+  },
+  {
+    "id": 17,
+    "parent_id": 0,
+    "title": "Transaksi",
+    "icon": "bi bi-stack",
+    "link": "#",
+    "status": "A"
+  },
+  {
+    "id": 18,
+    "parent_id": 17,
+    "title": "Jurnal Umum",
+    "icon": "submenu-link",
+    "link": "/transactions/jurnal_umum",
+    "status": "A"
+  },
+  {
+    "id": 19,
+    "parent_id": 17,
+    "title": "Tagihan Instalasi",
+    "icon": "submenu-link",
+    "link": "/transactions/pelunasan_instalasi",
+    "status": "A"
+  },
+  {
+    "id": 20,
+    "parent_id": 17,
+    "title": "Tagihan Bulanan",
+    "icon": "submenu-link",
+    "link": "/transactions/tagihan_bulanan",
+    "status": "A"
+  },
+  {
+    "id": 24,
+    "parent_id": 0,
+    "title": "Laporan",
+    "icon": "bi bi-journal-check",
+    "link": "/pelaporan",
+    "status": "A"
+  },
+  {
+    "id": 25,
+    "parent_id": 2,
+    "title": "Kelas & Pemakaian",
+    "icon": "submenu-link",
+    "link": "/packages",
+    "status": "A"
+  },
+  {
+    "id": 26,
+    "parent_id": 17,
+    "title": "E-Budgeting",
+    "icon": "submenu-link",
+    "link": "/transactions/ebudgeting",
+    "status": "A"
+  },
+  {
+    "id": 27,
+    "parent_id": 17,
+    "title": "Tutup Buku",
+    "icon": "submenu-link",
+    "link": "/transactions/tutup_buku",
+    "status": "A"
+  },
+  {
+    "id": 28,
+    "parent_id": 7,
+    "title": "Pelanggan",
+    "icon": "submenu-link",
+    "link": "#",
+    "status": "A"
+  },
+  {
+    "id": 29,
+    "parent_id": 8,
+    "title": "Register Desa",
+    "icon": "submenu-link",
+    "link": "/villages/create",
+    "status": "A"
+  },
+  {
+    "id": 30,
+    "parent_id": 8,
+    "title": "Data Desa",
+    "icon": "submenu-link",
+    "link": "/villages",
+    "status": "A"
+  },
+  {
+    "id": 31,
+    "parent_id": 9,
+    "title": "Register Sales",
+    "icon": "submenu-link",
+    "link": "/caters/create",
+    "status": "A"
+  },
+  {
+    "id": 32,
+    "parent_id": 9,
+    "title": "Data Sales",
+    "icon": "submenu-link",
+    "link": "/caters",
+    "status": "A"
+  },
+  {
+    "id": 33,
+    "parent_id": 28,
+    "title": "Register Pelanggan",
+    "icon": "submenu-link",
+    "link": "/customers/create",
+    "status": "A"
+  },
+  {
+    "id": 34,
+    "parent_id": 28,
+    "title": "Data Pelanggan",
+    "icon": "submenu-link",
+    "link": "/customers",
+    "status": "A"
+  },
+  {
+    "id": 35,
+    "parent_id": 15,
+    "title": "Permohonan",
+    "icon": "submenu-link",
+    "link": "/installations/permohonan",
+    "status": "A"
+  },
+  {
+    "id": 36,
+    "parent_id": 15,
+    "title": "Pasang",
+    "icon": "submenu-link",
+    "link": "/installations/pasang",
+    "status": "A"
+  },
+  {
+    "id": 37,
+    "parent_id": 15,
+    "title": "Aktif",
+    "icon": "submenu-link",
+    "link": "/installations/aktif",
+    "status": "A"
+  },
+  {
+    "id": 38,
+    "parent_id": 15,
+    "title": "Blokir",
+    "icon": "submenu-link",
+    "link": "/installations/blokir",
+    "status": "A"
+  },
+  {
+    "id": 39,
+    "parent_id": 15,
+    "title": "Cabut",
+    "icon": "submenu-link",
+    "link": "/installations/cabut",
+    "status": "A"
+  }
+]
