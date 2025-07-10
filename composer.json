@@ -21,6 +21,7 @@
         "silvertipsoftware/wkhtmltoimage-amd64": "0.12.5",
         "silvertipsoftware/wkhtmltopdf-amd64": "0.12.5",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "stancl/tenancy": "^3.9",
         "yajra/laravel-datatables": "^10.1",
         "yajra/laravel-datatables-oracle": "^10.11"
     },
