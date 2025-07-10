@@ -21,7 +21,8 @@ return [
         '127.0.0.1',
         'localhost',
         'bumdesnet.test',
-        'akubumdes.com'
+        'akubumdes.com',
+        'bumdesnet.akubumdes.com'
     ],
 
     /**

@@ -61,12 +61,6 @@ Route::middleware([
     Route::get('/migrasi/custom/{business}', [AuthController::class, 'custom']);
   });
 
-  Route::get('/link', function () {
-    $target = '/home/akubumdes/public_html/bumdesnet/storage/app/public';
-    $shortcut = '/home/akubumdes/public_html/bumdesnet/public/storage';
-    symlink($target, $shortcut);
-  });
-
   Route::middleware(['auth', 'auth.token'])->group(function () {
     // Dashboard
     Route::get('/', [DashboardController::class, 'index']);
