@@ -48,10 +48,9 @@ class CustomerController extends Controller
     public function create()
     {
         $desa = Village::all();
-        $hubungan = Family::orderBy('id', 'ASC')->get();
 
         $title = 'Register Pelanggan / Calon Pelanggan';
-        return view('pelanggan.create')->with(compact('desa', 'hubungan', 'title'));
+        return view('pelanggan.create')->with(compact('desa', 'title'));
     }
 
     /**
@@ -102,7 +101,9 @@ class CustomerController extends Controller
             'pekerjaan' => $request->pekerjaan,
             'hp' => $request->no_telp,
             'email' => $request->email,
+            'foto' => null,
         ]);
+
 
         return response()->json([
             'success' => true,
@@ -124,10 +125,9 @@ class CustomerController extends Controller
     public function edit(Customer $customer)
     {
         $desa = Village::all();
-        $hubungan = Family::orderBy('id', 'ASC')->get();
 
         $title = 'Edit Pelanggan';
-        return view('pelanggan.edit')->with(compact('desa', 'hubungan', 'customer', 'title'));
+        return view('pelanggan.edit')->with(compact('desa', 'customer', 'title'));
     }
 
     /**
