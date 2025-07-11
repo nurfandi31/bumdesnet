@@ -157,6 +157,7 @@ class VillageController extends Controller
         $cekDesa = $queryDesa->where('nama', $region->nama);
         if ($cekDesa->count() <= 0) {
             $Desa = Village::create([
+                'business_id' => Session::get('business_id'), 
                 'kode' => $kode,
                 'nama' => $region->nama,
                 'alamat' => $request->alamat,
@@ -195,6 +196,7 @@ class VillageController extends Controller
             'msg' => 'Desa berhasil ditambahkan!',
         ]);
     }
+
 
     /**
      * Display the specified resource.
