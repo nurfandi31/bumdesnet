@@ -1,13 +1,13 @@
 @php
     $logo = Session::get('logo');
-    if ($logo == 'no_image.png') {
+    if ($logo == 'default.png') {
         $logo = '/assets/img/' . $logo;
     } else {
         $logo = '/storage/logo/' . $logo;
     }
 
     $userlogo = Session::get('userlogo');
-    if ($userlogo == 'no_image.png') {
+    if ($userlogo == 'default.png') {
         $userlogo = '/assets/img/' . $userlogo;
     } else {
         $userlogo = '/storage/profil/' . $userlogo;
@@ -23,9 +23,9 @@
                 title="Tutup Menu">
                 <i class="bi bi-x-lg"></i>
             </button>
-            <a href="/profil" style="text-decoration: none; color: inherit;">
+            <a href="/pengaturan" style="text-decoration: none; color: inherit;">
                 <div style="width: 80px; height: 80px; margin: 0 auto;">
-                    <img src="{{ $logo }}" alt="User Avatar"
+                    <img class="previewLogo" src="{{ $logo }}" alt="User Avatar"
                         style="width: 110%; height: 110%; border-radius: 50%; object-fit: cover; border: 3px solid #b8b8b8;">
                 </div><br>
                 <div class="d-flex flex-column">

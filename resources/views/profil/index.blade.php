@@ -1,7 +1,7 @@
 @extends('Layout.base')
 @php
     $logo = $user->foto;
-    if ($logo == 'no_image.png') {
+    if ($logo == 'default.png') {
         $logo = '/assets/img/' . $logo;
     } else {
         $logo = '/storage/profil/' . $logo;
@@ -33,7 +33,7 @@
                             @csrf
                             <div class="d-flex justify-content-center align-items-center flex-column">
                                 <img src="{{ $logo }}" alt="Users" id="select-image"
-                                    class="rounded-circle p-1 bg-light"
+                                    class="rounded-circle p-1 bg-light select-image"
                                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; cursor: pointer;">
 
                                 <input type="file" name="profil-image" id="profil-image" class="d-none">
@@ -246,11 +246,12 @@
                 contentType: false,
                 processData: false,
                 success: function() {
-                    var output = document.getElementById('select-image');
-                    output.src = URL.createObjectURL(file);
-                    output.onload = function() {
-                        URL.revokeObjectURL(output.src);
+                    var reader = new FileReader();
+                    reader.onload = function() {
+                        $(".select-image").attr("src", reader.result);
                     }
+                    reader.readAsDataURL(file);
+
                     toastMixin.fire({
                         title: "Selamat, Foto Berhasil diperbarui !",
                         icon: 'success',

@@ -47,11 +47,11 @@
 
 @php
     $logo =
-        Session::get('logo') === 'no_image.png' ? '/assets/img/no_image.png' : '/storage/logo/' . Session::get('logo');
+        Session::get('logo') === 'default.png' ? '/assets/img/default.png' : '/storage/logo/' . Session::get('logo');
 
     $userlogo =
-        Session::get('userlogo') === 'no_image.png'
-            ? '/assets/img/no_image.png'
+        Session::get('userlogo') === 'default.png'
+            ? '/assets/img/default.png'
             : '/storage/profil/' . Session::get('userlogo');
 @endphp
 
@@ -91,7 +91,7 @@
                                             <p class="mb-0 text-sm text-gray-600">{{ Session::get('jabatan') }}</p>
                                         </div>
                                         <div class="avatar avatar-md">
-                                            <img src="{{ $userlogo }}" alt="User Avatar">
+                                            <img src="{{ $userlogo }}" alt="User Avatar" class="select-image">
                                         </div>
                                     </div>
                                 </a>

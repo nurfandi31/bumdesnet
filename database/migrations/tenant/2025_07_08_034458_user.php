@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('telpon');
             $table->string('jabatan');
-            $table->string('foto');
+            $table->string('foto')->default('default.png');
             $table->string('username');
             $table->string('password');
             $table->string('remember_token');

@@ -174,7 +174,10 @@
             var logo = $(this).get(0).files[0];
             if (logo) {
                 var form = $('#FormLogo');
-                var formData = new FormData(document.querySelector('#FormLogo'));
+                var formData = new FormData();
+                formData.append('logo_busines', logo);
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('_method', 'PUT');
 
                 $.ajax({
                     type: form.attr('method'),
@@ -188,7 +191,7 @@
                             var reader = new FileReader();
 
                             reader.onload = function() {
-                                $("#previewLogo").attr("src", reader.result);
+                                $(".previewLogo").attr("src", reader.result);
                                 $(".colored-shadow").css('background-image', "url(" + reader
                                     .result + ")");
                             }

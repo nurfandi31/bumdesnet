@@ -36,22 +36,28 @@ class SopController extends Controller
             'logo_busines' => 'required|image|mimes:jpg,png,jpeg|max:4096'
         ]);
 
+        if ($validate->fails()) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Validasi gagal',
+                'errors' => $validate->errors()
+            ]);
+        }
+
         if ($request->file('logo_busines') && $request->file('logo_busines')->isValid()) {
             $extension = $request->file('logo_busines')->getClientOriginalExtension();
             $filename = time() . '_' . $business->id . '_' . date('Ymd') . '.' . $extension;
-            $path = $request->file('logo_busines')->storeAs('logo', $filename, 'public');
+            $path = $request->file('logo_busines')->storeAs('logo', $filename);
 
-            // Hapus logo lama jika ada dan bukan default
             if ($business->logo && $business->logo != 'default.png') {
-                Storage::delete('logo/' . $business->logo);
+                Storage::disk('public')->delete('logo/' . $business->logo);
             }
-
-            // Update database
             $business->update([
-                'logo' => str_replace('logo/', '', $path)
+                'logo' => $filename
             ]);
 
-            Session::put('logo', str_replace('logo/', '', $path));
+            Session::put('logo', $filename);
+
             return response()->json([
                 'success' => true,
                 'msg' => 'Logo berhasil diperbarui.'
