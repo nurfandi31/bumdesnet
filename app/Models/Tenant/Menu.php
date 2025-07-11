@@ -11,6 +11,8 @@ class Menu extends Model
     use HasFactory;
     protected $table = 'menu';
 
+    protected $guarded = [];
+
     public function parent()
     {
         return $this->belongsTo(Menu::class, 'parent_id');

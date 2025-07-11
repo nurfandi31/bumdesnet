@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('menu', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('parent_id');
+            $table->bigInteger('urutan_menu');
             $table->string('title');
             $table->string('icon');
             $table->string('link');
