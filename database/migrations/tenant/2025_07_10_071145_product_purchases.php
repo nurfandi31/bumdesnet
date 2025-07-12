@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_purchase', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('product_id');
-            $table->foreignId('product_variation_id');
+            $table->foreignId('product_variation_id')->nullable();
             $table->foreignId('transaction_id');
             $table->integer('harga_beli');
             $table->integer('jumlah');
