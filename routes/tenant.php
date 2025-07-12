@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Tenant\AccountController;
 use App\Http\Controllers\Tenant\AuthController;
 use App\Http\Controllers\Tenant\BusinessController;
+use App\Http\Controllers\Tenant\CategoryController;
 use App\Http\Controllers\Tenant\CaterController;
 use App\Http\Controllers\Tenant\CustomerController;
 use App\Http\Controllers\Tenant\DashboardController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Tenant\HakAksesController;
 use App\Http\Controllers\Tenant\InstallationsController;
 use App\Http\Controllers\Tenant\PackageController;
 use App\Http\Controllers\Tenant\PelaporanController;
+use App\Http\Controllers\Tenant\ProductController;
 use App\Http\Controllers\Tenant\ProfilController;
 use App\Http\Controllers\Tenant\SopController;
 use App\Http\Controllers\Tenant\SystemController;
@@ -92,6 +94,10 @@ Route::middleware([
 
     // Customers || Pelanggan
     Route::resource('/customers', CustomerController::class);
+
+    // Products
+    Route::resource('/category', CategoryController::class);
+    Route::resource('/products', ProductController::class);
 
     // Installations || Instalasi
     Route::get('/installations/permohonan', [InstallationsController::class, 'permohonan']);

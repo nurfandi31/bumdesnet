@@ -1,0 +1,125 @@
+@extends('Layout.base')
+
+@section('content')
+    <div class="card">
+        <div class="card-body">
+            <form action="/products/{{ $product->id }}" method="post" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="position-relative mb-3">
+                                    <label for="kategori">Kategori</label>
+                                    <select class="choices form-control" name="kategori" id="kategori">
+                                        <option value="">---</option>
+                                        @foreach ($categories as $category)
+                                            <option {{ $category->id == $product->category_id ? 'selected' : '' }}
+                                                value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nama_produk">Nama Produk</label>
+                                    <input type="text" id="nama_produk" class="form-control" name="nama_produk"
+                                        placeholder="Nama Produk" autocomplete="off" value="{{ $product->name }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="harga_beli">Harga Beli</label>
+                                    <input type="text" id="harga_beli" class="form-control input-number"
+                                        name="harga_beli" placeholder="Harga Beli" autocomplete="off"
+                                        value="{{ number_format($product->harga_beli) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="harga_jual">Harga Jual</label>
+                                    <input type="text" id="harga_jual" class="form-control input-number"
+                                        name="harga_jual" placeholder="Harga Jual" autocomplete="off"
+                                        value="{{ number_format($product->harga_jual) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <label for="gambar">Gambar</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" id="gambar" name="gambar">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex flex-column">
+                        <div class="form-group flex-grow-1 d-flex flex-column h-100">
+                            <label for="deskripsi">Deskripsi</label>
+                            <textarea name="deskripsi" id="deskripsi" class="form-control flex-grow-1">{{ $product->deskripsi }}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table" id="daftar-varian">
+                            <thead>
+                                <tr>
+                                    <th>Nama Varian</th>
+                                    <th>Harga Beli</th>
+                                    <th>Harga Jual</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($product->variations as $variation)
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="id_varian[]" value="{{ $variation->id }}">
+                                            <input type="text" id="varian1" class="form-control" name="nama_varian[]"
+                                                placeholder="Varian" autocomplete="off" value="{{ $variation->name }}">
+                                        </td>
+                                        <td>
+                                            <input type="text" id="harga_beli1" class="form-control input-number"
+                                                name="harga_beli_varian[]" placeholder="Harga Beli" autocomplete="off"
+                                                value="{{ number_format($variation->harga_beli) }}">
+                                        </td>
+                                        <td>
+                                            <input type="text" id="harga_jual1" class="form-control input-number"
+                                                name="harga_jual_varian[]" placeholder="Harga Jual" autocomplete="off"
+                                                value="{{ number_format($variation->harga_jual) }}">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" id="TambahVarian" class="btn btn-warning">Tambah Varian</button>
+                            <button type="submit" id="SimpanProduk" class="btn ms-1 btn-primary">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+
+@section('script')
+    <script>
+        $(document).on('click', '#TambahVarian', function(e) {
+            e.preventDefault()
+
+            var table = $('#daftar-varian')
+            var row = table.find('tbody tr:last').clone()
+            row.find('input').val('')
+            table.find('tbody').append(row)
+
+            $('.input-number').maskMoney({
+                allowNegative: true,
+                allowZero: true,
+                precision: 0
+            })
+        })
+    </script>
+@endsection

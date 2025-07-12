@@ -117,11 +117,6 @@
             z-index: 3;
         }
 
-        .table tbody tr:hover {
-            background-color: #cce5ff;
-            transition: background-color 0.2s ease-in-out;
-        }
-
     </style>
 </head>
 
@@ -308,6 +303,12 @@
             //pelunasan instalasi
             var numFormat = new Intl.NumberFormat('en-EN', {
                 minimumFractionDigits: 2
+            })
+
+            $('.input-number').maskMoney({
+                allowNegative: true,
+                allowZero: true,
+                precision: 0
             })
 
             $('#PelunasanInstalasi').typeahead(null, {

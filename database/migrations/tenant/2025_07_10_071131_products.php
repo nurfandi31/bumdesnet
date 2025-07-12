@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('harga_beli');
             $table->integer('harga_jual');
             $table->integer('stok');
-            $table->text('deskripsi');
-            $table->string('gambar');
+            $table->text('deskripsi')->nullable();
+            $table->string('gambar')->nullable();
             $table->timestamps();
         });
     }

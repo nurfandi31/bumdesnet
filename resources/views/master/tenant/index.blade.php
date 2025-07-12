@@ -58,16 +58,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-danger ms-1" id="btn-delete-tenant">
-                        <i class="bx bx-check d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Hapus</span>
+                        <span>Hapus</span>
                     </button>
                     <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Tutup</span>
+                        <span>Tutup</span>
                     </button>
                     <button type="button" class="btn btn-primary ms-1" id="btn-save-tenant">
-                        <i class="bx bx-check d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Simpan</span>
+                        <span>Simpan</span>
                     </button>
                 </div>
             </div>

@@ -109,7 +109,7 @@
                 "urutan_menu": "4",
                 "title": "Kategori",
                 "icon": "submenu-link",
-                "link": "/categories",
+                "link": "/category",
                 "status": "A"
             },
             {
