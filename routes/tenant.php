@@ -14,6 +14,7 @@ use App\Http\Controllers\Tenant\InstallationsController;
 use App\Http\Controllers\Tenant\PackageController;
 use App\Http\Controllers\Tenant\PelaporanController;
 use App\Http\Controllers\Tenant\ProductController;
+use App\Http\Controllers\Tenant\ProductPurchaseController;
 use App\Http\Controllers\Tenant\ProfilController;
 use App\Http\Controllers\Tenant\SopController;
 use App\Http\Controllers\Tenant\SystemController;
@@ -21,7 +22,7 @@ use App\Http\Controllers\Tenant\TransactionController;
 use App\Http\Controllers\Tenant\UsageController;
 use App\Http\Controllers\Tenant\UserController;
 use App\Http\Controllers\Tenant\VillageController;
-
+use App\Models\Tenant\ProductPurchase;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -95,9 +96,12 @@ Route::middleware([
     // Customers || Pelanggan
     Route::resource('/customers', CustomerController::class);
 
-    // Products
+    // Products || Produk
     Route::resource('/category', CategoryController::class);
     Route::resource('/products', ProductController::class);
+
+    // Purchase || Pembelian
+    Route::resource('/purchases', ProductPurchaseController::class);
 
     // Installations || Instalasi
     Route::get('/installations/permohonan', [InstallationsController::class, 'permohonan']);

@@ -6,14 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\ProductPurchase;
 use Illuminate\Http\Request;
 
-class ProductPurchase extends Controller
+class ProductPurchaseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $title = 'Daftar Pembelian Produk';
+        return view('purchase.index')->with(compact('title'));
     }
 
     /**

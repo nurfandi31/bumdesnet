@@ -23,6 +23,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
+
+        label {
+            margin-bottom: .5rem !important;
+        }
         
         .responsive {
             box-shadow: none;
