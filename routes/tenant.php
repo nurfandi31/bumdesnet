@@ -16,6 +16,7 @@ use App\Http\Controllers\Tenant\PelaporanController;
 use App\Http\Controllers\Tenant\ProductController;
 use App\Http\Controllers\Tenant\ProductPurchaseController;
 use App\Http\Controllers\Tenant\ProfilController;
+use App\Http\Controllers\Tenant\PurchaseController;
 use App\Http\Controllers\Tenant\SopController;
 use App\Http\Controllers\Tenant\SystemController;
 use App\Http\Controllers\Tenant\TransactionController;
@@ -101,7 +102,8 @@ Route::middleware([
     Route::resource('/products', ProductController::class);
 
     // Purchase || Pembelian
-    Route::resource('/purchases', ProductPurchaseController::class);
+    Route::get('/purchases/search-product', [PurchaseController::class, 'searchProduct']);
+    Route::resource('/purchases', PurchaseController::class);
 
     // Installations || Instalasi
     Route::get('/installations/permohonan', [InstallationsController::class, 'permohonan']);

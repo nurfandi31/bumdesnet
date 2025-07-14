@@ -18,12 +18,13 @@ return new class extends Migration
             $table->bigInteger('rekening_debit');
             $table->bigInteger('rekening_kredit');
             $table->bigInteger('user_id');
-            $table->bigInteger('usage_id');
-            $table->bigInteger('installation_id');
+            $table->bigInteger('usage_id')->nullable();
+            $table->bigInteger('installation_id')->nullable();
+            $table->bigInteger('purchase_id')->nullable();
             $table->string('total');
-            $table->string('transaction_id');
-            $table->string('relasi');
-            $table->string('keterangan');
+            $table->string('transaction_id')->nullable();
+            $table->string('relasi')->nullable();
+            $table->string('keterangan')->nullable();
             $table->bigInteger('urutan');
             $table->timestamps();
         });

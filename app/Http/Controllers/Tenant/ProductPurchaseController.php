@@ -13,8 +13,7 @@ class ProductPurchaseController extends Controller
      */
     public function index()
     {
-        $title = 'Daftar Pembelian Produk';
-        return view('purchase.index')->with(compact('title'));
+        //
     }
 
     /**

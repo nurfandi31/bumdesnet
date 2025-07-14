@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_purchases', function (Blueprint $table) {
+        Schema::create('purchases', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('product_id');
-            $table->foreignId('product_variation_id')->nullable();
-            $table->foreignId('purchase_id');
-            $table->integer('harga_beli');
-            $table->integer('qty');
+            $table->foreignId('user_id');
+            $table->string('no_ref')->nullable();
+            $table->date('tgl_beli');
+            $table->integer('total_harga_beli');
+            $table->integer('total_qty');
             $table->integer('total');
+            $table->string('status');
+            $table->string('catatan')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_purchases');
+        //
     }
 };

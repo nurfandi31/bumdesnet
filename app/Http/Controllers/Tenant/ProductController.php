@@ -94,6 +94,10 @@ class ProductController extends Controller
         if (count($request->nama_varian) > 0) {
             $variant = [];
             foreach ($request->nama_varian as $key => $value) {
+                if ($value == '') {
+                    continue;
+                }
+
                 $variant[] = [
                     'product_id' => $product->id,
                     'name' => $value,
