@@ -38,3 +38,8 @@ foreach (config('tenancy.central_domains') as $domain) {
         });
     });
 }
+Route::get('/link', function () {
+    $target = '/home/akubumdes/public_html/bumdesnet/storage/app/public';
+    $shortcut = '/home/akubumdes/public_html/bumdesnet/public/storage';
+    symlink($target, $shortcut);
+});
