@@ -456,21 +456,14 @@ class InstallationsController extends Controller
 
         if ($jumlah_instal > 0) {
             $business_id = Session::get('business_id');
-            $rekening_debit = Account::where([
-                ['kode_akun', '1.1.01.01'],
-                ['business_id', $business_id]
-            ])->first();
-
-            $rekening_kredit = Account::where([
-                ['kode_akun', '4.1.01.01'],
-                ['business_id', $business_id]
-            ])->first();
+            $rekening_debit = 1;
+            $rekening_kredit = 47;
 
             if ($rekening_debit && $rekening_kredit) {
                 $transaksi = Transaction::create([
                     'business_id' => Session::get('business_id'),
-                    'rekening_debit' => $rekening_debit->id,
-                    'rekening_kredit' => $rekening_kredit->id,
+                    'rekening_debit' => $rekening_debit,
+                    'rekening_kredit' => $rekening_kredit,
                     'tgl_transaksi' => Tanggal::tglNasional($request->order),
                     'total' => $jumlah_instal,
                     'installation_id' => $install->id,
@@ -511,19 +504,12 @@ class InstallationsController extends Controller
             'package',
             'village'
         ])->where('id', $installation->id)->first();
-        $rekening_debit = Account::where([
-            ['kode_akun', '1.1.01.01'],
-            ['business_id', $business_id]
-        ])->first();
-        $rekening_kredit = Account::where([
-            ['kode_akun', '4.1.01.01'],
-            ['business_id', $business_id]
-        ])->first();
-
+        $rekening_debit = 1;
+        $rekening_kredit = 47;
         $trx = Transaction::where([
             ['installation_id', $installation->id],
-            ['rekening_debit', $rekening_debit->id],
-            ['rekening_kredit', $rekening_kredit->id]
+            ['rekening_debit', $rekening_debit],
+            ['rekening_kredit', $rekening_kredit]
         ])->sum('total');
 
         $title = "Detail Permohonan";
@@ -543,21 +529,12 @@ class InstallationsController extends Controller
             'package',
             'village'
         ])->where('id', $installation->id)->first();
-
-        $rekening_debit = Account::where([
-            ['kode_akun', '1.1.01.01'],
-            ['business_id', $business_id]
-        ])->first();
-
-        $rekening_kredit = Account::where([
-            ['kode_akun', '4.1.01.01'],
-            ['business_id', $business_id]
-        ])->first();
-
+        $rekening_debit = 1;
+        $rekening_kredit = 47;
         $trx = Transaction::where([
             ['installation_id', $installation->id],
-            ['rekening_debit', $rekening_debit->id],
-            ['rekening_kredit', $rekening_kredit->id]
+            ['rekening_debit', $rekening_debit],
+            ['rekening_kredit', $rekening_kredit]
         ])->sum('total');
 
         $qr = QrCode::generate($installation->id);
@@ -578,21 +555,13 @@ class InstallationsController extends Controller
             'package',
             'village'
         ])->where('id', $installation->id)->first();
-
-        $rekening_debit = Account::where([
-            ['kode_akun', '1.1.01.01'],
-            ['business_id', $business_id]
-        ])->first();
-
-        $rekening_kredit = Account::where([
-            ['kode_akun', '4.1.01.01'],
-            ['business_id', $business_id]
-        ])->first();
+        $rekening_debit = 1;
+        $rekening_kredit = 47;
 
         $trx = Transaction::where([
             ['installation_id', $installation->id],
-            ['rekening_debit', $rekening_debit->id],
-            ['rekening_kredit', $rekening_kredit->id]
+            ['rekening_debit', $rekening_debit],
+            ['rekening_kredit', $rekening_kredit]
         ])->sum('total');
         $qr = QrCode::generate($installation->id);
 
@@ -607,20 +576,12 @@ class InstallationsController extends Controller
     {
         $business_id = Session::get('business_id');
         $tampil_settings = Settings::where('business_id', $business_id)->first();
-
-        $rekening_debit = Account::where([
-            ['kode_akun', '1.1.01.01'],
-            ['business_id', $business_id]
-        ])->first();
-
-        $rekening_kredit = Account::where([
-            ['kode_akun', '4.1.01.03'],
-            ['business_id', $business_id]
-        ])->first();
+        $rekening_debit = 1;
+        $rekening_kredit = 49;
         $trx = Transaction::where([
             ['installation_id', $installation->id],
-            ['rekening_debit', $rekening_debit->id],
-            ['rekening_kredit', $rekening_kredit->id]
+            ['rekening_debit', $rekening_debit],
+            ['rekening_kredit', $rekening_kredit]
         ])->sum('total');
         $qr = QrCode::generate($installation->id);
 
@@ -639,19 +600,12 @@ class InstallationsController extends Controller
             'package',
             'village'
         ])->where('id', $installation->id)->first();
-        $rekening_debit = Account::where([
-            ['kode_akun', '1.1.01.01'],
-            ['business_id', $business_id]
-        ])->first();
-
-        $rekening_kredit = Account::where([
-            ['kode_akun', '4.1.01.01'],
-            ['business_id', $business_id]
-        ])->first();
+        $rekening_debit = 1;
+        $rekening_kredit = 47;
         $trx = Transaction::where([
             ['installation_id', $installation->id],
-            ['rekening_debit', $rekening_debit->id],
-            ['rekening_kredit', $rekening_kredit->id]
+            ['rekening_debit', $rekening_debit],
+            ['rekening_kredit', $rekening_kredit]
         ])->sum('total');
         $qr = QrCode::generate($installation->id);
 
@@ -672,20 +626,13 @@ class InstallationsController extends Controller
             'village'
         ])->where('id', $installation->id)->first();
 
-        $rekening_debit = Account::where([
-            ['kode_akun', '1.1.01.01'],
-            ['business_id', $business_id]
-        ])->first();
-
-        $rekening_kredit = Account::where([
-            ['kode_akun', '4.1.01.03'],
-            ['business_id', $business_id]
-        ])->first();
+        $rekening_debit = 1;
+        $rekening_kredit = 49;
 
         $trx = Transaction::where([
             ['installation_id', $installation->id],
-            ['rekening_debit', $rekening_debit->id],
-            ['rekening_kredit', $rekening_kredit->id]
+            ['rekening_debit', $rekening_debit],
+            ['rekening_kredit', $rekening_kredit]
         ])->sum('total');
         $qr = QrCode::generate($installation->id);
         return view('perguliran.partials.DetailCopot')->with(compact('installation', 'tampil_settings', 'trx', 'qr'));
