@@ -164,7 +164,6 @@ class PurchaseController extends Controller
                 ];
 
                 if (is_numeric($request->variation_id[$i])) {
-                    dd($request->variation_id[$i]);
                     $product = ProductVariation::find($request->variation_id[$i]);
                     $product->stok += $request->jumlah[$i];
                     $product->save();
@@ -262,6 +261,22 @@ class PurchaseController extends Controller
                     "qty" => $request->jumlah[$i],
                     "total" => intval(str_replace(',', '', $request->subtotal[$i]))
                 ];
+
+                $penambahanStok = $request->jumlah[$i];
+                if ($request->product_purchase_id[$i]) {
+                    $oldPproductPurchase = ProductPurchase::where('id', $request->product_purchase_id[$i])->first();
+                    $penambahanStok = $request->jumlah[$i] - $oldPproductPurchase->qty;
+                }
+
+                if (is_numeric($request->variation_id[$i])) {
+                    $product = ProductVariation::find($request->variation_id[$i]);
+                    $product->stok += $penambahanStok;
+                    $product->save();
+                } else {
+                    $product = Product::find($request->product_id[$i]);
+                    $product->stok += $penambahanStok;
+                    $product->save();
+                }
             }
 
             ProductPurchase::where('purchase_id', $purchase->id)->delete();
@@ -301,6 +316,26 @@ class PurchaseController extends Controller
      */
     public function destroy(TenantPurchase $purchase)
     {
-        //
+        foreach ($purchase->product_purchases as $product_purchase) {
+            if ($product_purchase->product_variation_id > 0) {
+                $product = ProductVariation::find($product_purchase->product_variation_id);
+                $product->stok -= $product_purchase->qty;
+                $product->save();
+            } else {
+                $product = Product::find($product_purchase->product_id);
+                $product->stok -= $product_purchase->qty;
+                $product->save();
+            }
+        }
+
+        ProductPurchase::where('purchase_id', $purchase->id)->delete();
+        Transaction::where('purchase_id', $purchase->id)->delete();
+        TenantPurchase::where('id', $purchase->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Pembelian berhasil dihapus',
+            'data' => $purchase
+        ]);
     }
 }

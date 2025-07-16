@@ -92,6 +92,11 @@
             </div>
         </div>
     </div>
+
+    <form action="" method="post" id="form-hapus-pembelian">
+        @csrf
+        @method('DELETE')
+    </form>
 @endsection
 
 @section('script')
@@ -202,6 +207,44 @@
             $('#total-kekurangan').html(formatter.format(data.total - totalBayar))
 
             $('#modal-detail-pembelian').modal('show')
+        })
+
+        $(document).on('click', '.delete-purchase', function(e) {
+            e.preventDefault()
+
+            var tr = $(this).closest('tr')
+            var data = table.row(tr).data()
+
+            var form = $('#form-hapus-pembelian')
+            form.attr('action', '/purchases/' + data.id)
+
+            Swal.fire({
+                title: 'Hapus Pembelian ' + data.no_ref + '?',
+                text: "Pembelian akan dihapus dengan semua transaksi yang terkait! Apakah Anda yakin?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: form.attr('method'),
+                        data: form.serialize(),
+                        success: function(response) {
+                            if (response.success) {
+                                toastMixin.fire({
+                                    title: response.msg
+                                });
+
+                                table.ajax.reload()
+                            }
+                        }
+                    })
+                }
+            })
         })
     </script>
 @endsection

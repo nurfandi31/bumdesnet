@@ -100,6 +100,8 @@
                                             {{ number_format($product_purchase->qty * $product_purchase->harga_beli) }}
                                         </td>
                                         <td class="text-end">
+                                            <input type="hidden" name="product_purchase_id[]"
+                                                value="{{ $product_purchase->id }}">
                                             <input type="hidden" name="product_id[]"
                                                 value="{{ $product_purchase->product_id }}">
                                             <input type="hidden" name="variation_id[]"
