@@ -147,6 +147,20 @@
                         "status": "A"
                     }
                 ]
+            },
+            {
+                "urutan_menu": "4",
+                "title": "Pasang Baru",
+                "icon": "submenu-link",
+                "link": "/pairings",
+                "status": "A"
+            },
+            {
+                "urutan_menu": "4",
+                "title": "Maintenance",
+                "icon": "submenu-link",
+                "link": "/maintenances",
+                "status": "A"
             }
         ]
     },

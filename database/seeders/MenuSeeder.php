@@ -63,6 +63,7 @@ class MenuSeeder extends Seeder
             }
         }
 
+        Menu::truncate();
         Menu::insert($menuInsert);
     }
 }
