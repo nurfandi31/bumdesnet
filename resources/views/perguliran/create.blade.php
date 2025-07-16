@@ -124,15 +124,14 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-2">
-                                <div class="position-relative mb-3">
+                                <div class="form-group">
                                     <label for="order">Tanggal Order</label>
                                     <input type="text" class="form-control date" name="order" id="order"
                                         placeholder="order" value="{{ old('order', date('d/m/Y')) }}">
-                                    <small class="text-danger" id="msg_order"></small>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="position-relative mb-3">
+                                <div class="form-group">
                                     <label for="desa">Nama/Desa & Dusun</label>
                                     <select class="choices form-control" name="desa" id="desa">
                                         <option value="">Pilih Nama/Desa & Dusun</option>
@@ -146,11 +145,10 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                    <small class="text-danger" id="msg_desa"></small>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="position-relative mb-3">
+                                <div class="form-group">
                                     <label for="cater">Nama Marketing</label>
                                     <select class="choices form-control" name="cater" id="cater">
                                         <option value="">Pilih Marketing</option>
@@ -160,33 +158,29 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <small class="text-danger" id="msg_cater"></small>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="position-relative mb-3">
+                                <div class="form-group">
                                     <label for="jalan">Jalan</label>
                                     <input type="text" class="form-control" id="jalan" name="jalan"
                                         aria-describedby="jalan" placeholder="Jalan">
-                                    <small class="text-danger" id="msg_jalan"></small>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="position-relative mb-3">
+                                <div class="form-group">
                                     <label for="rw">RW</label>
                                     <input type="number" class="form-control" id="rw" name="rw"
                                         aria-describedby="rw" placeholder="Rw">
-                                    <small class="text-danger" id="msg_rw"></small>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="position-relative mb-3">
+                                <div class="form-group">
                                     <label for="rt">RT</label>
                                     <input type="number" class="form-control" id="rt" name="rt"
                                         aria-describedby="rt" placeholder="Rt">
-                                    <small class="text-danger" id="msg_rt"></small>
                                 </div>
                             </div>
                         </div>
@@ -205,7 +199,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="position-relative mb-3">
+                                <div class="form-group">
                                     <label for="jenis_paket">Paket/Kelas</label>
                                     <select class="choices form-control package" name="package_id" id="jenis_paket">
                                         <option value="">Pilih Paket/Kelas</option>
@@ -215,7 +209,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <small class="text-danger" id="msg"></small>
                                 </div>
                             </div>
                         </div>
@@ -232,21 +225,19 @@
                             </div>
                             @if ($status === 1)
                                 <div class="col-md-6">
-                                    <div class="position-relative mb-3">
+                                    <div class="form-group">
                                         <label for="total">Nominal</label>
                                         <input type="text" class="form-control total" aria-describedby="total"
                                             name="total" id="total"
                                             value="{{ number_format($settings->pasang_baru, 2) }}" readonly>
-                                        <small class="text-danger" id="msg_package_id"></small>
                                     </div>
                                 </div>
                             @elseif ($status === 2)
                                 <div class="col-md-6">
-                                    <div class="position-relative mb-3">
+                                    <div class="form-group">
                                         <label for="total">Nominal</label>
                                         <input type="text" class="form-control total total1" aria-describedby="total"
                                             name="total" id="total">
-                                        <small class="text-danger" id="msg_package_id"></small>
                                     </div>
                                 </div>
                             @endif
@@ -293,21 +284,7 @@
             }
         });
 
-        jQuery.datetimepicker.setLocale('de');
         $('.date').datetimepicker({
-            i18n: {
-                de: {
-                    months: [
-                        'Januar', 'Februar', 'März', 'April',
-                        'Mai', 'Juni', 'Juli', 'August',
-                        'September', 'Oktober', 'November', 'Dezember',
-                    ],
-                    dayOfWeek: [
-                        "So.", "Mo", "Di", "Mi",
-                        "Do", "Fr", "Sa.",
-                    ]
-                }
-            },
             timepicker: false,
             format: 'd/m/Y'
         });
