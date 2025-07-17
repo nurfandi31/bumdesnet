@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('rw');
             $table->string('rt');
             $table->string('status');
-            $table->string('status_tunggakan');
+            $table->string('pairing');
             $table->string('biaya_instalasi');
             $table->string('abodemen');
             $table->date('order');

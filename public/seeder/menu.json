@@ -150,17 +150,43 @@
             },
             {
                 "urutan_menu": "4",
-                "title": "Pasang Baru",
+                "title": "Pemasangan",
                 "icon": "submenu-link",
-                "link": "/pairings",
-                "status": "A"
+                "link": "#",
+                "status": "A",
+                "child": [{
+                    "urutan_menu": "4",
+                    "title": "Tambah Pemasangan",
+                    "icon": "submenu-link",
+                    "link": "/pairings/create",
+                    "status": "A"
+                }, {
+                    "urutan_menu": "4",
+                    "title": "Daftar Pemasangan",
+                    "icon": "submenu-link",
+                    "link": "/pairings",
+                    "status": "A"
+                }]
             },
             {
                 "urutan_menu": "4",
                 "title": "Maintenance",
                 "icon": "submenu-link",
-                "link": "/maintenances",
-                "status": "A"
+                "link": "#",
+                "status": "A",
+                "child": [{
+                    "urutan_menu": "4",
+                    "title": "Tambah Maintenance",
+                    "icon": "submenu-link",
+                    "link": "/maintenances/create",
+                    "status": "A"
+                }, {
+                    "urutan_menu": "4",
+                    "title": "Daftar Maintenance",
+                    "icon": "submenu-link",
+                    "link": "/maintenances",
+                    "status": "A"
+                }]
             }
         ]
     },

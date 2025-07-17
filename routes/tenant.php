@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Tenant\PairingController;
 use App\Http\Controllers\Tenant\AccountController;
 use App\Http\Controllers\Tenant\AuthController;
 use App\Http\Controllers\Tenant\BusinessController;
@@ -104,6 +105,9 @@ Route::middleware([
     // Purchase || Pembelian
     Route::get('/purchases/search-product', [PurchaseController::class, 'searchProduct']);
     Route::resource('/purchases', PurchaseController::class);
+
+    // Pairing || Pemasangan
+    Route::resource('/pairings', PairingController::class);
 
     // Installations || Instalasi
     Route::get('/installations/permohonan', [InstallationsController::class, 'permohonan']);
