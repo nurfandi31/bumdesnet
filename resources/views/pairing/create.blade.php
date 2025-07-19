@@ -182,15 +182,14 @@
                 <tr>
                     <td>${newProduct.name}</td>
                     <td>
-                      <input type="number" name="jumlah[]" class="form-control quantity form-control-sm text-center" value="${newProduct.jumlah}" min="1" max="${newProduct.stok}">
+                        <input type="number" name="jumlah[]" class="form-control quantity form-control-sm text-center" value="${newProduct.jumlah}" min="1" max="${newProduct.stok}">
                     </td>
-                    <td>
-                      <input type="text" name="harga_jual[]" class="form-control harga-jual form-control-sm text-end input-number" value="${formatter.format(newProduct.harga_jual)}">
-                    </td>
+                    <td class="text-end harga-jual">${formatter.format(newProduct.harga_jual)}</td>
                     <td class="text-end subtotal">${formatter.format(newProduct.subtotal)}</td>
                     <td class="text-end">
                         <input type="hidden" name="product_id[]" value="${newProduct.id}">
                         <input type="hidden" name="variation_id[]" value="${newProduct.variation_id}">
+                        <input type="hidden" class="input-harga-jual" name="harga_jual[]" value="${newProduct.harga_jual}">
                         <input type="hidden" class="input-subtotal" name="subtotal[]" value="${newProduct.subtotal}">
                         <button class="btn btn-danger btn-sm btn-delete-product" type="button">
                             <i class="fas fa-trash"></i>
@@ -229,7 +228,8 @@
             const row = $('#daftar-produk tbody tr').eq(index);
 
             row.find('.quantity').val(product.jumlah);
-            row.find('.harga-jual').val(formatter.format(product.harga_jual));
+            row.find('.harga-jual').html(formatter.format(product.harga_jual));
+            row.find('.input-harga-jual').val(product.harga_jual);
             row.find('.subtotal').html(formatter.format(product.subtotal));
             row.find('.input-subtotal').val(product.subtotal);
 
@@ -281,7 +281,7 @@
         $(document).on('change', '.quantity', function(e) {
             var index = parseInt($(this).closest('tr').index());
 
-            if (daftarProduk[index].stok < daftarProduk[index].jumlah + parseInt($(this).val())) {
+            if (daftarProduk[index].stok < parseInt($(this).val())) {
                 Swal.fire('Error', 'Stok tidak mencukupi', 'error')
 
                 $(this).val(daftarProduk[index].jumlah);
