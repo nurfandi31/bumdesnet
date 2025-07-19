@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('purchase_id');
             $table->integer('harga_beli');
             $table->integer('qty');
+            $table->integer('qty_sell')->nullable();
             $table->integer('total');
             $table->timestamps();
         });
