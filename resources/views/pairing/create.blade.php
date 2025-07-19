@@ -1,48 +1,36 @@
 @extends('Layout.base')
 
 @section('content')
-    <style>
-        .form-control-icon i,
-        .form-control-icon i:before,
-        .form-control-icon i:after {
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-    </style>
-
     <div class="card">
         <div class="card-body">
-            <form action="/purchases" method="post">
+            <form action="/pairings" method="post">
                 @csrf
 
-
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="tanggal_pembelian">Tanggal Pembelian</label>
-                            <input type="text" id="tanggal_pembelian" class="form-control date" name="tanggal_pembelian"
-                                placeholder="Tanggal Pembelian" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="nomor_ref">Nomor Ref.</label>
-                            <input type="text" id="nomor_ref" class="form-control" name="nomor_ref"
-                                placeholder="Nomor Ref." autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <fieldset class="form-group">
-                            <label for="status">Status</label>
-                            <select class="form-select" id="status" name="status">
-                                <option value="dibayar">Dibayar</option>
-                                <option value="sebagian">Sebagian</option>
-                                <option value="belum_dibayar">Belum Dibayar</option>
+                    <div class="col-md-8">
+                        <div class="position-relative mb-3">
+                            <label for="instalasi">Instalasi</label>
+                            <select class="choices form-control" name="instalasi" id="instalasi">
+                                <option value="">---</option>
+                                @foreach ($installations as $installation)
+                                    <option value="{{ $installation->id }}">
+                                        {{ $installation->kode_instalasi }}. {{ $installation->customer->nama }}
+                                        [{{ $installation->customer->nik }}]
+                                    </option>
+                                @endforeach
                             </select>
-                        </fieldset>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="tanggal_pemasangan">Tanggal Pemasangan</label>
+                            <input type="text" id="tanggal_pemasangan" class="form-control date"
+                                name="tanggal_pemasangan" placeholder="Tanggal Pemasangan" autocomplete="off"
+                                value="{{ date('d/m/Y') }}">
+                        </div>
                     </div>
                 </div>
-                <hr>
+
                 <div class="row">
                     <div class="col-12">
                         <input type="text" id="cariProduk" class="form-control form-control-lg"
@@ -54,7 +42,7 @@
                                 <tr>
                                     <th>Nama Produk</th>
                                     <th width="5%" class="text-center">Jumlah</th>
-                                    <th>Biaya Satuan</th>
+                                    <th>Harga Satuan</th>
                                     <th>Subtotal</th>
                                     <th class="text-end">
                                         <i class="fas fa-trash"></i>
@@ -66,43 +54,16 @@
                                 <tr>
                                     <th>Total</th>
                                     <th class="text-center" id="total-qty">0</th>
-                                    <th class="text-end" id="total-harga-beli">0</th>
+                                    <th class="text-end" id="total-harga-jual">0</th>
                                     <th class="text-end" id="total-subtotal">0</th>
-                                    <th></th>
+                                    <th>
+                                        <input type="hidden" name="total_qty" id="total_qty">
+                                        <input type="hidden" name="total_harga_jual" id="total_harga_jual">
+                                        <input type="hidden" name="total_subtotal" id="total_subtotal">
+                                    </th>
                                 </tr>
                             </tfoot>
                         </table>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-8">
-                        <input type="hidden" name="total_qty" id="total_qty">
-                        <input type="hidden" name="total_harga_beli" id="total_harga_beli">
-                        <input type="hidden" name="total_subtotal" id="total_subtotal">
-
-                        <div class="form-group">
-                            <label for="catatan">Catatan</label>
-                            <textarea class="form-control" placeholder="Catatan" id="catatan" name="catatan" rows="10"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <fieldset class="form-group">
-                            <label for="sumber_dana">Sumber Dana</label>
-                            <select class="form-select" id="sumber_dana" name="sumber_dana">
-                                @foreach ($accounts as $account)
-                                    <option value="{{ $account->id }}">
-                                        {{ $account->kode_akun }}. {{ $account->nama_akun }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </fieldset>
-
-                        <div class="form-group">
-                            <label for="jumlah_bayar">Jumlah Bayar</label>
-                            <input type="text" id="jumlah_bayar" class="form-control text-end input-number"
-                                name="jumlah_bayar" autocomplete="off" readonly="true" value="0">
-                        </div>
                     </div>
                 </div>
 
@@ -148,7 +109,7 @@
             source: debounce(function(query, syncResults, asyncResults) {
                 if (query.length < 2) return;
 
-                $.get('/purchases/search-product', {
+                $.get('/pairings/search-product', {
                     query: query
                 }, function(result) {
                     const states = [];
@@ -175,14 +136,17 @@
                     '</div>'
                 ].join('\n'),
                 suggestion: function(data) {
-                    var harga_beli = formatter.format(data.item.harga_beli);
+                    var harga_jual = formatter.format(data.item.harga_jual);
                     return `<a href="#" class="list-group-item list-group-item-action">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">${data.item.name}</h5>
                                     <small>${data.item.category_name}</small>
                                 </div>
                                 <p class="mb-1">${data.item.deskripsi}</p>
-                                <small>Harga Beli: Rp. ${harga_beli}</small>
+                                <div class="d-flex w-100 justify-content-between">
+                                    <small>Harga Jual: Rp. ${harga_jual}</small>
+                                    <small>Stok:${data.item.stok}</small>
+                                </div>
                             </a>`;
                 }
             },
@@ -207,9 +171,10 @@
                 id: product.id,
                 variation_id: product.variation_id,
                 name: product.name,
-                harga_beli: product.harga_beli,
+                harga_jual: product.harga_jual,
                 jumlah: 1,
-                subtotal: product.harga_beli
+                subtotal: product.harga_jual,
+                stok: product.stok
             }
 
             daftarProduk.push(newProduct);
@@ -217,10 +182,10 @@
                 <tr>
                     <td>${newProduct.name}</td>
                     <td>
-                      <input type="number" name="jumlah[]" class="form-control quantity form-control-sm text-center" value="${newProduct.jumlah}" min="1">
+                      <input type="number" name="jumlah[]" class="form-control quantity form-control-sm text-center" value="${newProduct.jumlah}" min="1" max="${newProduct.stok}">
                     </td>
                     <td>
-                      <input type="text" name="harga_beli[]" class="form-control harga-beli form-control-sm text-end input-number" value="${formatter.format(newProduct.harga_beli)}">
+                      <input type="text" name="harga_jual[]" class="form-control harga-jual form-control-sm text-end input-number" value="${formatter.format(newProduct.harga_jual)}">
                     </td>
                     <td class="text-end subtotal">${formatter.format(newProduct.subtotal)}</td>
                     <td class="text-end">
@@ -245,8 +210,16 @@
 
         function addQuantityProduct(product) {
             const index = daftarProduk.findIndex(item => item.name === product.name);
+
+            if (daftarProduk[index].stok < daftarProduk[index].jumlah + 1) {
+                Swal.fire('Error', 'Stok tidak mencukupi', 'error')
+
+                $('table tbody tr').eq(index).find('.quantity').val(daftarProduk[index].jumlah);
+                return;
+            }
+
             daftarProduk[index].jumlah += 1;
-            daftarProduk[index].subtotal = daftarProduk[index].harga_beli * daftarProduk[index].jumlah;
+            daftarProduk[index].subtotal = daftarProduk[index].harga_jual * daftarProduk[index].jumlah;
 
             updateTableProduct(daftarProduk[index]);
         }
@@ -256,7 +229,7 @@
             const row = $('#daftar-produk tbody tr').eq(index);
 
             row.find('.quantity').val(product.jumlah);
-            row.find('.harga-beli').val(formatter.format(product.harga_beli));
+            row.find('.harga-jual').val(formatter.format(product.harga_jual));
             row.find('.subtotal').html(formatter.format(product.subtotal));
             row.find('.input-subtotal').val(product.subtotal);
 
@@ -265,21 +238,21 @@
 
         function calculateTotal() {
             var total_qty = 0;
-            var total_harga_beli = 0;
+            var total_harga_jual = 0;
             var total_subtotal = 0;
 
             daftarProduk.map(function(item) {
                 total_qty += item.jumlah;
-                total_harga_beli += item.harga_beli;
+                total_harga_jual += item.harga_jual;
                 total_subtotal += item.subtotal;
             });
 
             $('#total-qty').html(total_qty);
-            $('#total-harga-beli').html(formatter.format(total_harga_beli));
+            $('#total-harga-jual').html(formatter.format(total_harga_jual));
             $('#total-subtotal').html(formatter.format(total_subtotal));
 
             $('#total_qty').val(total_qty);
-            $('#total_harga_beli').val(total_harga_beli);
+            $('#total_harga_jual').val(total_harga_jual);
             $('#total_subtotal').val(total_subtotal);
 
             jumlahBayar()
@@ -308,17 +281,24 @@
         $(document).on('change', '.quantity', function(e) {
             var index = parseInt($(this).closest('tr').index());
 
+            if (daftarProduk[index].stok < daftarProduk[index].jumlah + parseInt($(this).val())) {
+                Swal.fire('Error', 'Stok tidak mencukupi', 'error')
+
+                $(this).val(daftarProduk[index].jumlah);
+                return;
+            }
+
             daftarProduk[index].jumlah = parseInt($(this).val());
-            daftarProduk[index].subtotal = daftarProduk[index].harga_beli * daftarProduk[index].jumlah;
+            daftarProduk[index].subtotal = daftarProduk[index].harga_jual * daftarProduk[index].jumlah;
 
             updateTableProduct(daftarProduk[index]);
         });
 
-        $(document).on('change', '.harga-beli', function(e) {
+        $(document).on('change', '.harga-jual', function(e) {
             var index = parseInt($(this).closest('tr').index());
 
-            daftarProduk[index].harga_beli = parseInt($(this).val().split(',').join(''));
-            daftarProduk[index].subtotal = daftarProduk[index].harga_beli * daftarProduk[index].jumlah;
+            daftarProduk[index].harga_jual = parseInt($(this).val().split(',').join(''));
+            daftarProduk[index].subtotal = daftarProduk[index].harga_jual * daftarProduk[index].jumlah;
 
             updateTableProduct(daftarProduk[index]);
         });

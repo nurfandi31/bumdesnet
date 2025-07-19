@@ -107,6 +107,7 @@ Route::middleware([
     Route::resource('/purchases', PurchaseController::class);
 
     // Pairing || Pemasangan
+    Route::get('/pairings/search-product', [PairingController::class, 'searchProduct']);
     Route::resource('/pairings', PairingController::class);
 
     // Installations || Instalasi
