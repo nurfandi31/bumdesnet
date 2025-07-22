@@ -12,6 +12,7 @@ use App\Models\Tenant\Transaction;
 use App\Utils\Tanggal;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class PairingController extends Controller
 {
@@ -20,6 +21,32 @@ class PairingController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            $installations = Installations::where('pairing', '1')->with([
+                'customer',
+                'pairing',
+                'pairing.product',
+                'pairing.productVariation'
+            ]);
+
+            return DataTables::eloquent($installations)
+                ->addIndexColumn()
+                ->addColumn(('action'), function ($row) {
+                    return '<div class="dropdown">
+                                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="' . $row->id . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Aksi
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="' . $row->id . '" style="">
+                                        <a class="dropdown-item show-pairing" href="#">Lihat</a>
+                                        <a class="dropdown-item edit-pairing" href="/pairings/' . $row->id . '/edit">Edit</a>
+                                        <a class="dropdown-item delete-pairing" href="#">Hapus</a>
+                                    </div>
+                                </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
         $title = 'Daftar Pemasangan Baru';
         return view('pairing.index')->with(compact('title'));
     }
@@ -74,7 +101,7 @@ class PairingController extends Controller
                         'harga_jual' => $variation->harga_jual,
                         'category_name' => $product->category_name,
                         'stok' => $variation->stok,
-                        'deskripsi' => $variation->deskripsi
+                        'deskripsi' => $product->deskripsi
                     ];
                 }
             } else {
@@ -137,10 +164,10 @@ class PairingController extends Controller
                 if (is_numeric($variation_id)) {
                     $harga_beli = $variation[$variation_id]['harga_beli'];
                     ProductVariation::where('id', $variation_id)->update(['stok' => $variation[$variation_id]['stok'] - $jumlah]);
-                } else {
-                    $harga_beli = $product[$product_id]['harga_beli'];
-                    Product::where('id', $product_id)->update(['stok' => $product[$product_id]['stok'] - $jumlah]);
                 }
+
+                $harga_beli = $product[$product_id]['harga_beli'];
+                Product::where('id', $product_id)->update(['stok' => $product[$product_id]['stok'] - $jumlah]);
 
                 $hpp += ($harga_jual - $harga_beli) * $jumlah;
             }
@@ -164,24 +191,27 @@ class PairingController extends Controller
                 'urutan' => '0',
             ]);
 
-            Transaction::create([
-                'business_id' => '1',
-                'tgl_transaksi' => Tanggal::tglNasional($request->tanggal_pemasangan),
-                'rekening_debit' => 70,
-                'rekening_kredit' => 51,
-                'user_id' => auth()->user()->id,
-                'usage_id' => '0',
-                'installation_id' => $request->instalasi,
-                'purchase_id' => '0',
-                'total' => intval(str_replace(',', '', $hpp)),
-                'transaction_id' => $trx_id,
-                'relasi' => '-',
-                'keterangan' => '-',
-                'urutan' => '0',
-            ]);
+            if ($hpp > 0) {
+                Transaction::create([
+                    'business_id' => '1',
+                    'tgl_transaksi' => Tanggal::tglNasional($request->tanggal_pemasangan),
+                    'rekening_debit' => 70,
+                    'rekening_kredit' => 51,
+                    'user_id' => auth()->user()->id,
+                    'usage_id' => '0',
+                    'installation_id' => $request->instalasi,
+                    'purchase_id' => '0',
+                    'total' => intval(str_replace(',', '', $hpp)),
+                    'transaction_id' => $trx_id,
+                    'relasi' => '-',
+                    'keterangan' => '-',
+                    'urutan' => '0',
+                ]);
+            }
 
             Installations::where('id', $request->instalasi)->update([
                 'pairing' => '1',
+                'tgl_pairing' => Tanggal::tglNasional($request->tanggal_pemasangan),
             ]);
 
             DB::commit();

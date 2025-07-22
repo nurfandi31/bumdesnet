@@ -10,6 +10,7 @@ use App\Http\Controllers\Tenant\CategoryController;
 use App\Http\Controllers\Tenant\CaterController;
 use App\Http\Controllers\Tenant\CustomerController;
 use App\Http\Controllers\Tenant\DashboardController;
+use App\Http\Controllers\Tenant\ExcelController;
 use App\Http\Controllers\Tenant\HakAksesController;
 use App\Http\Controllers\Tenant\InstallationsController;
 use App\Http\Controllers\Tenant\PackageController;
@@ -46,6 +47,8 @@ Route::middleware([
   InitializeTenancyByDomain::class,
   PreventAccessFromCentralDomains::class,
 ])->group(function () {
+  Route::get('custom', [ExcelController::class, 'custom']);
+
   Route::middleware(['guest:web'])->group(function () {
     // Auth
     Route::get('/auth', [AuthController::class, 'index'])->name('auth');

@@ -51,6 +51,12 @@ class Installations extends Model
     {
         return $this->hasMany(Transaction::class, 'installation_id', 'id');
     }
+
+    public function pairing()
+    {
+        return $this->hasMany(Pairing::class, 'installation_id', 'id');
+    }
+
     public function settings()
     {
         return $this->hasOne(Settings::class, 'business_id', 'business_id');

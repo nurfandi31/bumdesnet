@@ -107,8 +107,8 @@
 @section('script')
     <script>
         var formatter = new Intl.NumberFormat('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
         });
 
         var table = $('#daftar-produk').DataTable({

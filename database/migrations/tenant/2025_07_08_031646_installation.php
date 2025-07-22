@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('rt');
             $table->string('status');
             $table->string('pairing');
+            $table->date('tgl_pairing')->default(now());
             $table->string('biaya_instalasi');
             $table->string('abodemen');
             $table->date('order');

@@ -167,11 +167,11 @@ class PurchaseController extends Controller
                     $product = ProductVariation::find($request->variation_id[$i]);
                     $product->stok += $request->jumlah[$i];
                     $product->save();
-                } else {
-                    $product = Product::find($request->product_id[$i]);
-                    $product->stok += $request->jumlah[$i];
-                    $product->save();
                 }
+
+                $product = Product::find($request->product_id[$i]);
+                $product->stok += $request->jumlah[$i];
+                $product->save();
             }
 
             ProductPurchase::insert($productPurchase);
