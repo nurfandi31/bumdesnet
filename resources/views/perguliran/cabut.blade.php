@@ -20,7 +20,7 @@
         <section class="section">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-striped" id="cabut">
+                    <table class="table table-striped table-hover" id="cabut">
                         <thead>
                             <tr>
                                 <th>No.Induk</th>
@@ -71,7 +71,7 @@
                 name: 'status',
                 render: function(data, type, row, meta) {
                     if (data == 'C') {
-                        return '<span class="badge bg-warning">Cabut</span>';
+                        return '<span class="badge bg-danger">Cabut</span>';
                     }
                 }
             }

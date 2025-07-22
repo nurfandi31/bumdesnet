@@ -105,22 +105,24 @@
             <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
                 <div class="main-card mb-3 card">
                     <div class="container mt-4">
-                        <div class="card card-custom p-3 d-flex flex-row align-items-center">
-                            <div class="icon-box me-3">
+                        <div
+                            class="card card-custom p-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+                            <div class="icon-box">
                                 <img src="https://img.icons8.com/ios-filled/50/ffffff/document.png" alt="Icon Proposal" />
                             </div>
                             <div>
-                                <h5 class="mb-0 fw-bold text-dark">
+                                <h5 class="mb-1 fw-bold text-dark">
                                     Register Pelanggan Atas Nama
-                                    <span id="namaCustomer" class="h5 text-dark">{{ $namaCustomer }}</span>
+                                    <span id="namaCustomer" class="text-dark">{{ $namaCustomer }}</span>
                                 </h5>
-                                <small class="text-muted">Alamat.
-                                    <span id="alamatCustomer">{{ $alamatCustomer }}, </span>
-                                    ( <span id="nikCustomer">{{ $nikCustomer }} </span> )
+                                <small class="text-muted">
+                                    Alamat. <span id="alamatCustomer">{{ $alamatCustomer }}</span>,
+                                    ( <span id="nikCustomer">{{ $nikCustomer }}</span> )
                                 </small>
                             </div>
                         </div>
                     </div>
+
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-2">
@@ -246,7 +248,8 @@
                         <p class="mb-0">
                             Catatan : ( Jika Ada data atau inputan yang kosong bisa di isi ( 0 ) atau ( - ) )
                         </p>
-                        <button type="submit" id="SimpanPermohonan" class="btn btn-dark" style="float: right;">Daftar &
+                        <button type="submit" id="SimpanPermohonan" class="btn btn-primary"
+                            style="float: right;">Daftar &
                             Simpan</button>
                         <br>
                     </div>

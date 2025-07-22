@@ -1363,12 +1363,13 @@ html[data-bs-theme=dark] body.swal2-toast-shown .swal2-container.swal2-bottom-ri
     inset: auto 0 0 auto
 }
 
-html[data-bs-theme=dark] *,
-html[data-bs-theme=dark] *:before,
-html[data-bs-theme=dark] *:after {
+html[data-bs-theme=dark] *:not(i),
+html[data-bs-theme=dark] *:not(i):before,
+html[data-bs-theme=dark] *:not(i):after {
     box-sizing: border-box;
     color: #b4b4b4;
 }
+
 
 @media (prefers-reduced-motion: no-preference) {
     html[data-bs-theme=dark] :root {

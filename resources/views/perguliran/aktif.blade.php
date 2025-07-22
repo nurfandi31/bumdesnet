@@ -21,9 +21,9 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive responsive p-2">
-                        <table class="table table-striped" id="aktif">
+                        <table class="table table-striped table-hover" id="aktif">
                             <thead>
-                                <tr>
+                                <tr style="cursor: pointer;">
                                     <th>No.Induk</th>
                                     <th>Pelanggan</th>
                                     <th>Marketing</th>

@@ -3,19 +3,21 @@
 @section('content')
     <div class="card">
         <div class="card-body">
+
             <div class="d-flex justify-content-end">
                 <button type="button" id="TambahKategori" class="btn btn-primary">Tambah Kategori</button>
             </div>
-            <div class="table-responsive mt-3 p-1">
+            <div class="table-responsive responsive p-2">
                 <table class="table table-striped" id="daftar-kategori">
-                    <thead>
+                    <thead class="thead-light">
                         <tr>
                             <th>#</th>
                             <th>Nama</th>
                             <th>Jumlah Produk</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                    </tbody>
                 </table>
             </div>
         </div>

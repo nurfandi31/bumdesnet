@@ -1,4 +1,7 @@
 @extends('Layout.base')
+@php
+    $disabled = $installation->pairing === '1' ? '' : 'disabled';
+@endphp
 @section('content')
     <!-- Form -->
     <form action="/installations/{{ $installation->id }}" method="post" id="Form_status_I">
@@ -49,7 +52,7 @@
                     </div>
                     <div class="col-12 col-lg-8">
                         <div class="card">
-                            <div class="card-header bg-success text-white">
+                            <div class="card-header bg-info text-white">
                                 <h4 class="card-title"><b>Detail Installation Pasang</b></h4>
                             </div>
                             <div class="card-content">
@@ -84,24 +87,22 @@
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Status</span>
-                                            <span class="badge bg-success badge-pill badge-round ms-1">PASANG</span>
+                                            <span class="badge bg-info badge-pill badge-round ms-1">PASANG</span>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        <div class="card ">
-                            <div class="card-content ">
+                        <div class="card">
+                            <div class="card-content">
                                 <div class="card-body pb-2 pt-2 pe-2 ps-2">
-                                    <div class="col-12 d-flex justify-content-end align-items-center gap-2">
-                                        <a href="/installations/pasang" class="btn btn-light btn-icon-split"
-                                            style="float: right; margin-left: 10px;">
+                                    <div class="col-12 d-flex align-items-center gap-2">
+                                        <a href="/installations/pasang" class="btn btn-secondary btn-icon-split">
                                             <span class="text">Kembali</span>
                                         </a>
-
-                                        <button class="btn btn-secondary btn-icon-split" type="submit" id="Simpan_status_I"
-                                            style="float: right; margin-left: 10px;">
-                                            <span class="text" style="float: right;">Aktifkan Sekarang</span>
+                                        <button class="btn btn-primary btn-icon-split ms-auto" type="submit"
+                                            id="Simpan_status_I" <?= $disabled ?>>
+                                            <span class="text">Aktifkan Sekarang</span>
                                         </button>
                                     </div>
                                 </div>

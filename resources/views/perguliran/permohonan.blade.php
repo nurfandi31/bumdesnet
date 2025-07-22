@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive responsive p-2">
-                        <table class="table table-striped dataTable no-footer" id="permohonan">
+                        <table class="table table-striped table-hover" id="permohonan">
                             <thead>
                                 <tr>
                                     <th>No.Induk</th>

@@ -23,14 +23,20 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
+        table tbody tr:hover {
+            cursor: pointer;
+            background-color: #f1f1f1;
+        }
+
 
         label {
             margin-bottom: .5rem !important;
         }
-        
+
         .responsive {
             box-shadow: none;
         }
+
         .tt-menu {
             background-color: #f0f0f0;
             border: 1px solid #a50000;
@@ -132,10 +138,10 @@
             <header class="mb-3">
                 @include('Layout.navbar')
             </header>
-            
-                <div class="page-content">
-                    @yield('content')
-                </div>
+
+            <div class="page-content">
+                @yield('content')
+            </div>
             <br><br>
             @include('Layout.footer')
         </div>
@@ -172,85 +178,99 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.js"
         integrity="sha512-+UiyfI4KyV1uypmEqz9cOIJNwye+u+S58/hSwKEAeUMViTTqM9/L4lqu8UxJzhmzGpms8PzFJDzEqXL9niHyjA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        {{-- <script>
+    {{-- <script>
             document.addEventListener('contextmenu', event => event.preventDefault());
         </script> --}}
-        <script>
-            function setAjaxDatatable(target,url, columns) {
-                return $(target).DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: {
-                        url: url,
-                    },
-                    columns: columns,
-                    responsive: true,
-                })
-            }
+    <script>
+        function setAjaxDatatable(target, url, columns) {
+            return $(target).DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: url,
+                },
+                columns: columns,
+                responsive: true,
+            })
+        }
 
-            function setDataTable(target) {
-                return $(target).DataTable()
-            }
-        </script>
-        @if (Session::get('success'))
-        <script>
-            $(document).ready(function () {
-                var now = new Date();
-                var date = now.getDate();
-                var lastDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-                var toleransi = {{ Session::get('toleransi', 11) }};
-                var successMessage = @json(Session::get('success'));
-                var waktu = {{ time() }}; 
-        
-                var isToleransiDay = date === toleransi;
-                var isLastDay = date === lastDate;
-        
-                if (isToleransiDay || isLastDay) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Login Berhasil',
-                        text: successMessage,
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        if (isLastDay) {
-                            var win1 = window.open('', '_blank', 'width=500,height=500,top=100,left=100');
-                            if (win1) {
-                                win1.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /generate pemakaian...</h6>');
-                                setTimeout(() => win1.location.href = '/generatepemakaian', 1000);
-                            }
-                        }
-        
-                        if (isToleransiDay) {
-                            var win2 = window.open('', '_blank', 'width=500,height=500,top=150,left=150');
-                            if (win2) {
-                                win2.document.write('<h6 style="text-align:center;margin-top:100px;">Sedang memuat /dataset tunggakan...</h6>');
-                                setTimeout(() => win2.location.href = '/dataset/' + waktu, 1000);
-                            }
-                        }
-                    });
-                } else {
-                    var toastMixin = Swal.mixin({
-                        toast: true,
-                        icon: 'success',
-                        position: 'top-right',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                    });
-        
-                    toastMixin.fire({
-                        title: successMessage
-                    });
+        function setDataTable(target) {
+            return $(target).DataTable()
+        }
+
+    </script>
+    @if (Session::get('success'))
+    <script>
+        $(document).ready(function () {
+            var now = new Date();
+            var date = now.getDate();
+            var lastDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            var toleransi = {
+                {
+                    Session::get('toleransi', 11)
                 }
-            });
-        </script> @endif
-        
-        <script>
-            $(document).on('click', '#logoutButton', function(e) {
-                e.preventDefault();
+            };
+            var successMessage = @json(Session::get('success'));
+            var waktu = {
+                {
+                    time()
+                }
+            };
 
+            var isToleransiDay = date === toleransi;
+            var isLastDay = date === lastDate;
+
+            if (isToleransiDay || isLastDay) {
                 Swal.fire({
-                    html: `
+                    icon: 'success',
+                    title: 'Login Berhasil',
+                    text: successMessage,
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    if (isLastDay) {
+                        var win1 = window.open('', '_blank', 'width=500,height=500,top=100,left=100');
+                        if (win1) {
+                            win1.document.write(
+                                '<h6 style="text-align:center;margin-top:100px;">Sedang memuat /generate pemakaian...</h6>'
+                                );
+                            setTimeout(() => win1.location.href = '/generatepemakaian', 1000);
+                        }
+                    }
+
+                    if (isToleransiDay) {
+                        var win2 = window.open('', '_blank', 'width=500,height=500,top=150,left=150');
+                        if (win2) {
+                            win2.document.write(
+                                '<h6 style="text-align:center;margin-top:100px;">Sedang memuat /dataset tunggakan...</h6>'
+                                );
+                            setTimeout(() => win2.location.href = '/dataset/' + waktu, 1000);
+                        }
+                    }
+                });
+            } else {
+                var toastMixin = Swal.mixin({
+                    toast: true,
+                    icon: 'success',
+                    position: 'top-right',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+
+                toastMixin.fire({
+                    title: successMessage
+                });
+            }
+        });
+
+    </script> @endif
+
+    <script>
+        $(document).on('click', '#logoutButton', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                html: `
                         <div style="text-align: center;">
                             <h2 style="margin: 0; font-weight: bold; font-size: 26px; color: #2c3e50;">Konfirmasi Logout</h2>
                             <p style="margin-top: 8px; font-size: 16px; color: #7f8c8d;">
@@ -258,216 +278,216 @@
                             </p>
                         </div>
                     `,
-                    icon: 'question',
-                    showDenyButton: true,
-                    confirmButtonText: "Logout",
-                    denyButtonText: "Batal",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#logoutForm').submit();
-                    }
-                });
+                icon: 'question',
+                showDenyButton: true,
+                confirmButtonText: "Logout",
+                denyButtonText: "Batal",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#logoutForm').submit();
+                }
             });
-        </script>
-        
-        <script>
-            //property lainya
-            function open_window(link) {
-                return window.open(link)
-            }
+        });
+    </script>
 
-            $(document).on('click', '.btn-modal-close', function(e) {
-                e.preventDefault();
-                $('.modal').modal('hide');
-            });
-            $(document).on('click', '.btn-modal-close', function(e) {
-                e.preventDefault();
-                $('.modal').modal('hide');
-            });
+    <script>
+        //property lainya
+        function open_window(link) {
+            return window.open(link)
+        }
 
-            const formatDate = (dateString) => {
-                const date = new Date(dateString);
-                const day = String(date.getDate()).padStart(2, '0');
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const year = date.getFullYear();
+        $(document).on('click', '.btn-modal-close', function(e) {
+            e.preventDefault();
+            $('.modal').modal('hide');
+        });
+        $(document).on('click', '.btn-modal-close', function(e) {
+            e.preventDefault();
+            $('.modal').modal('hide');
+        });
 
-                return `${day}/${month}/${year}`;
-            };
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
 
-            var toastMixin = Swal.mixin({
-                toast: true,
-                icon: 'success',
-                position: 'top-right',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-            });
-        </script>
-        <script>
-            //pelunasan instalasi
-            var numFormat = new Intl.NumberFormat('en-EN', {
-                minimumFractionDigits: 2
-            })
+            return `${day}/${month}/${year}`;
+        };
 
-            $('.input-number').maskMoney({
-                allowNegative: true,
-                allowZero: true,
-                precision: 0
-            })
+        var toastMixin = Swal.mixin({
+            toast: true,
+            icon: 'success',
+            position: 'top-right',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    </script>
+    <script>
+        //pelunasan instalasi
+        var numFormat = new Intl.NumberFormat('en-EN', {
+            minimumFractionDigits: 2
+        })
 
-            $('#PelunasanInstalasi').typeahead(null, {
-                source: function(query, syncResults, asyncResults) {
-                    $.get('/installations/CariPelunasan_Instalasi', {
-                        query: query
-                    }, function(result) {
-                        var states = [];
-                        result.map(function(item) {
-                            if (item.installation.length > 0) {
-                                item.installation.map(function(instal) {
-                                    var name = item.nama +
-                                        ' - ' + instal.village
-                                        .nama +
-                                        ' - ' + instal
-                                        .kode_instalasi +
-                                        ' [' + item.nik + ']';
+        $('.input-number').maskMoney({
+            allowNegative: true,
+            allowZero: true,
+            precision: 0
+        })
 
-                                    states.push({
-                                        name,
-                                        instal,
-                                        nama_customer: item.nama,
-                                    })
+        $('#PelunasanInstalasi').typeahead(null, {
+            source: function(query, syncResults, asyncResults) {
+                $.get('/installations/CariPelunasan_Instalasi', {
+                    query: query
+                }, function(result) {
+                    var states = [];
+                    result.map(function(item) {
+                        if (item.installation.length > 0) {
+                            item.installation.map(function(instal) {
+                                var name = item.nama +
+                                    ' - ' + instal.village
+                                    .nama +
+                                    ' - ' + instal
+                                    .kode_instalasi +
+                                    ' [' + item.nik + ']';
+
+                                states.push({
+                                    name,
+                                    instal,
+                                    nama_customer: item.nama,
                                 })
-                            }
-                        });
-                        asyncResults(states);
+                            })
+                        }
                     });
-                },
+                    asyncResults(states);
+                });
+            },
 
-                displayKey: 'name',
-                autoSelect: true,
-                fitToElement: true,
-                items: 10
+            displayKey: 'name',
+            autoSelect: true,
+            fitToElement: true,
+            items: 10
 
-            }).bind('typeahead:selected', function(event, item) {
-                var installation = item.instal
-                var NamaCustomer = item.nama_customer
-                var trx = installation.transaction
-                var sum_total = 0;
-                var rekening_debit = 0;
-                var rekening_kredit = 0;
+        }).bind('typeahead:selected', function(event, item) {
+            var installation = item.instal
+            var NamaCustomer = item.nama_customer
+            var trx = installation.transaction
+            var sum_total = 0;
+            var rekening_debit = 0;
+            var rekening_kredit = 0;
 
-                trx.map(function(item) {
-                    rekening_debit = item.rekening_debit;
-                    rekening_kredit = item.rekening_kredit;
-                    sum_total += item.total;
-                })
-
-                var rek_debit = rekening_debit;
-                var rek_kredit = rekening_kredit;
-                var tagihan = (installation.biaya_instalasi);
-
-                $("#nama_customer").html(NamaCustomer);
-                $("#installation").val(installation.id);
-                $("#order").html(installation.order);
-                $("#kode_instalasi").html(installation.kode_instalasi);
-                $("#alamat").html(installation.village.nama);
-                $("#package").html(installation.package.kelas);
-                $("#abodemen").val(numFormat.format(installation.abodemen));
-                $("#biaya_sudah_dibayar").val(numFormat.format(sum_total));
-                $("#tagihan").val(numFormat.format(tagihan));
-                $("#pembayaran").val(numFormat.format(tagihan - sum_total));
-                $("#_total").val(numFormat.format(tagihan - sum_total));
-                $("#rek_debit").val(rek_debit);
-                $("#rek_kredit").val(rek_kredit);
-            });
-        </script>
-        <script>
-            //Tagihan Bulanan (Aktif)
-            var numFormat = new Intl.NumberFormat('en-EN', {
-                minimumFractionDigits: 2
+            trx.map(function(item) {
+                rekening_debit = item.rekening_debit;
+                rekening_kredit = item.rekening_kredit;
+                sum_total += item.total;
             })
-            var dataCustomer;
 
-            $('#TagihanBulanan').typeahead(null, {
-                source: function(query, syncResults, asyncResults) {
-                    if (query.length < 2) return;
+            var rek_debit = rekening_debit;
+            var rek_kredit = rekening_kredit;
+            var tagihan = (installation.biaya_instalasi);
 
-                    $.get('/installations/CariTagihan_bulanan', {
-                        query: query
-                    }, function(result) {
-                        const states = [];
+            $("#nama_customer").html(NamaCustomer);
+            $("#installation").val(installation.id);
+            $("#order").html(installation.order);
+            $("#kode_instalasi").html(installation.kode_instalasi);
+            $("#alamat").html(installation.village.nama);
+            $("#package").html(installation.package.kelas);
+            $("#abodemen").val(numFormat.format(installation.abodemen));
+            $("#biaya_sudah_dibayar").val(numFormat.format(sum_total));
+            $("#tagihan").val(numFormat.format(tagihan));
+            $("#pembayaran").val(numFormat.format(tagihan - sum_total));
+            $("#_total").val(numFormat.format(tagihan - sum_total));
+            $("#rek_debit").val(rek_debit);
+            $("#rek_kredit").val(rek_kredit);
+        });
+    </script>
+    <script>
+        //Tagihan Bulanan (Aktif)
+        var numFormat = new Intl.NumberFormat('en-EN', {
+            minimumFractionDigits: 2
+        })
+        var dataCustomer;
 
-                        result.map(function(item) {
-                            const name = item.nama + ' - ' + item.kode_instalasi + ' [' + item
-                                .nik +
-                                ']';
+        $('#TagihanBulanan').typeahead(null, {
+            source: function(query, syncResults, asyncResults) {
+                if (query.length < 2) return;
 
-                            states.push({
-                                name,
-                                value: item.kode_instalasi,
-                                item
-                            });
+                $.get('/installations/CariTagihan_bulanan', {
+                    query: query
+                }, function(result) {
+                    const states = [];
+
+                    result.map(function(item) {
+                        const name = item.nama + ' - ' + item.kode_instalasi + ' [' + item
+                            .nik +
+                            ']';
+
+                        states.push({
+                            name,
+                            value: item.kode_instalasi,
+                            item
                         });
-
-                        asyncResults(states);
-                    }).fail(function(xhr, status, error) {
-                        console.error("Terjadi kesalahan saat pemanggilan TagihanBulanan:", error);
-                        asyncResults([]);
                     });
-                },
 
-                displayKey: 'name',
-                autoSelect: true,
-                fitToElement: true,
-                items: 10
-            }).bind('typeahead:selected', function(event, selectedItem) {
-                formTagihanBulanan(selectedItem.item);
+                    asyncResults(states);
+                }).fail(function(xhr, status, error) {
+                    console.error("Terjadi kesalahan saat pemanggilan TagihanBulanan:", error);
+                    asyncResults([]);
+                });
+            },
+
+            displayKey: 'name',
+            autoSelect: true,
+            fitToElement: true,
+            items: 10
+        }).bind('typeahead:selected', function(event, selectedItem) {
+            formTagihanBulanan(selectedItem.item);
+        });
+
+        function formTagihanBulanan(installation) {
+            let timerInterval;
+            Swal.fire({
+                title: 'Menyiapkan data...',
+                html: 'Harap tunggu <b></b> ms.',
+                timer: 30000,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector('b');
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
             });
 
-            function formTagihanBulanan(installation) {
-                let timerInterval;
+            $.get('/installations/usage/' + installation.kode_instalasi, (result) => {
+                Swal.close();
+                if (result.success) {
+                    $('#accordion').html(result.view);
+                } else {
+                    $('#accordion').html(result.view);
+                }
+
+                window.dataCustomer = {
+                    item: installation,
+                    rek_debit: result.rek_debit,
+                    rek_kredit: result.rek_kredit,
+                };
+            }).fail(() => {
+                Swal.close();
                 Swal.fire({
-                    title: 'Menyiapkan data...',
-                    html: 'Harap tunggu <b></b> ms.',
-                    timer: 30000,
-                    timerProgressBar: true,
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        const timer = Swal.getPopup().querySelector('b');
-                        timerInterval = setInterval(() => {
-                            timer.textContent = `${Swal.getTimerLeft()}`;
-                        }, 100);
-                    },
-                    willClose: () => {
-                        clearInterval(timerInterval);
-                    }
+                    icon: 'error',
+                    title: 'Gagal memuat data',
+                    text: 'Terjadi kesalahan saat mengambil data dari server.',
                 });
-
-                $.get('/installations/usage/' + installation.kode_instalasi, (result) => {
-                    Swal.close();
-                    if (result.success) {
-                        $('#accordion').html(result.view);
-                    } else {
-                        $('#accordion').html(result.view);
-                    }
-
-                    window.dataCustomer = {
-                        item: installation,
-                        rek_debit: result.rek_debit,
-                        rek_kredit: result.rek_kredit,
-                    };
-                }).fail(() => {
-                    Swal.close();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal memuat data',
-                        text: 'Terjadi kesalahan saat mengambil data dari server.',
-                    });
-                });
-            }
-        </script>
+            });
+        }
+    </script>
 
     @yield('script')
 </body>

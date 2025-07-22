@@ -82,9 +82,9 @@
                                         </div>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
+                                        <button type="reset" class="btn btn-light me-1 mb-1">Reset</button>
                                         <button type="submit" id="SimpanCater" class="btn btn-primary me-1 mb-1">Simpan
                                             Marketing</button>
-                                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                                     </div>
                                 </div>
                             </form>

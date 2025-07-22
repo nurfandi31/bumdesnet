@@ -58,28 +58,28 @@
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>No. Induk</span>
                                             <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ $installation->kode_instalasi }}
-                                                </span>
+                                                class="badge bg-warning badge-pill badge-round ms-1">{{ $installation->kode_instalasi }}
+                                            </span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Tgl Order</span>
                                             <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ \Carbon\Carbon::parse($installation->order)->format('d-m-Y') }}</span>
+                                                class="badge bg-warning badge-pill badge-round ms-1">{{ \Carbon\Carbon::parse($installation->order)->format('d-m-Y') }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Tgl Pasang</span>
                                             <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ \Carbon\Carbon::parse($installation->pasang)->format('d-m-Y') }}</span>
+                                                class="badge bg-warning badge-pill badge-round ms-1">{{ \Carbon\Carbon::parse($installation->pasang)->format('d-m-Y') }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span> Paket Instalasi</span>
                                             <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ $installation->package->kelas }}</span>
+                                                class="badge bg-warning badge-pill badge-round ms-1">{{ $installation->package->kelas }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Abodemen</span>
                                             <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ number_format($installation->abodemen, 2) }}</span>
+                                                class="badge bg-warning badge-pill badge-round ms-1">{{ number_format($installation->abodemen, 2) }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Status</span>
@@ -99,19 +99,19 @@
                                     <div class="row">
                                         <div class="col-12 d-flex justify-content-between align-items-center">
                                             <div>
+                                                <a href="/installations/blokir" class="btn btn-secondary btn-icon-split">
+                                                    <span class="text-white">Kembali</span>
+                                                </a>
                                                 <button class="btn btn-success btn-icon-split"
                                                     data-id="{{ $installation->id }}" type="submit" id="Kembali_Status_A">
                                                     <span class="text-white">Kembali ke Aktif</span>
                                                 </button>
-                                                <button class="btn btn-danger btn-icon-split" type="submit"
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-primary btn-icon-split" type="submit"
                                                     id="Simpan_status_B">
                                                     <span class="text-wehite">Cabut Sekarang</span>
                                                 </button>
-                                            </div>
-                                            <div class="d-flex gap-2">
-                                                <a href="/installations/blokir" class="btn btn-light btn-icon-split">
-                                                    <span class="text-white">Kembali</span>
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -255,7 +255,7 @@
                     Swal.fire({
                         title: "Dibatalkan",
                         text: "Data Akan Tetap di Status BLOKIR",
-                        icon: "info",
+                        icon: "warning",
                         confirmButtonText: "OK"
                     });
                 }

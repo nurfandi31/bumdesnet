@@ -91,7 +91,7 @@
                             </div>
                             <br>
                             <div class="col-12 d-flex justify-content-end">
-                                <button class="btn btn-secondary btn-icon-split" type="button" id="SimpanTransaksi">
+                                <button class="btn btn-primary btn-icon-split" type="button" id="SimpanTransaksi">
                                     <span class="text" style="float: right;">Simpan Transaksi</span>
                                 </button>
                             </div>
@@ -240,7 +240,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-info text-white ">
+                    <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-primary text-white ">
                         Cetak Bukti Transaksi
                     </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -269,10 +269,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="BtnCetak" class="btn btn-info text-white">
+                    <button type="button" id="BtnCetak" class="btn btn-primary text-white">
                         Print
                     </button>
-                    <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-danger">Tutup</button>
+                    <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-secondary">Tutup</button>
                 </div>
             </div>
         </div>

@@ -87,7 +87,7 @@
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Status Pemakaian</span>
                                             <span style="background-color: #A9DFBF; color: #145A32;"
-                                                class="badge badge-pill badge-round ms-1">{{ $installation->status_tunggakan }}</span>
+                                                class="badge badge-pill badge-round ms-1">Lancar</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Status Instalasi</span>
@@ -119,6 +119,9 @@
                             <div class="card-content">
                                 <div class="card-body pb-2 pt-2 pe-2 ps-2">
                                     <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <a href="/installations/aktif" class="btn btn-secondary btn-icon-split">
+                                            <span class="text">Kembali</span>
+                                        </a>
                                         <div class="d-flex gap-2">
                                             <button type="button" id="btnBlokir" data-id="{{ $installation->id }}"
                                                 class="btn btn-warning text-white">
@@ -128,9 +131,6 @@
                                                 Cabut Pemakaian
                                             </button>
                                         </div>
-                                        <a href="/installations/aktif" class="btn btn-light btn-icon-split">
-                                            <span class="text">Kembali</span>
-                                        </a>
                                     </div>
                                 </div>
                             </div>

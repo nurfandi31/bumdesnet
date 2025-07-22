@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive responsive p-2">
-                        <table class="table table-striped" id="pasang">
+                        <table class="table table-striped table-hover" id="pasang">
                             <thead>
                                 <tr>
                                     <th>No.Induk</th>
@@ -73,7 +73,7 @@
                 name: 'status',
                 render: function(data, type, row, meta) {
                     if (data == 'I') {
-                        return '<span class="badge bg-success">Pasang</span>';
+                        return '<span class="badge bg-info">Pasang</span>';
                     }
                 }
             }

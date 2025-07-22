@@ -53,12 +53,12 @@
                     <hr class="mb-0">
                 </div>
                 <div class="modal-footer  p-2 pe-2 pb-2 pt-2 ps-2">
-                    <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Kembali</span>
                     </button>
-                    <button class="btn btn-secondary btn-icon-split" type="submit" id="SimpanPaket"
-                        class="btn btn-dark" style="float: right; margin-left: 10px;">
+                    <button class="btn btn-primary btn-icon-split" type="submit" id="SimpanPaket" class="btn btn-dark"
+                        style="float: right; margin-left: 10px;">
                         <span class="text" style="float: right;">Simpan Harga</span>
                     </button>
                 </div>

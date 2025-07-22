@@ -34,7 +34,7 @@
             perintah untuk dilakukan penutupan sementara sampai dengan dilakukan pembayaran tunggakan ditambah biaya
             aktivasi ulang.</p>
         <div class="col-12 d-flex justify-content-end">
-            <button class="btn btn-dark btn-icon-split" type="button" id="SimpanInstal" class="btn btn-dark"
+            <button class="btn btn-primary btn-icon-split" type="button" id="SimpanInstal" class="btn btn-dark"
                 style="float: right; margin-left: 20px;">
                 <span class="text" style="float: right;">Simpan Perubahan</span>
             </button>
