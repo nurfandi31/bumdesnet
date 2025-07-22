@@ -85,9 +85,9 @@
                                         </div>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
+                                        <a href="/caters" class="btn btn-secondary me-1 mb-1">Kembali</a>
                                         <button type="submit" id="SimpanCater" class="btn btn-primary me-1 mb-1">Simpan
                                             Perubahan</button>
-                                        <a href="/caters" class="btn btn-light-secondary me-1 mb-1">Kembali</a>
                                     </div>
                                 </div>
                             </form>

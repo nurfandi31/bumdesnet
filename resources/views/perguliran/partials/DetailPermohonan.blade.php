@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-12 col-lg-8">
                         <div class="card">
-                            <div class="card-header bg-success text-white">
+                            <div class="card-header bg-secondary text-white">
                                 <h4 class="card-title"><b>Detail Installation Permohonan</b></h4>
                             </div>
                             <div class="card-content">
@@ -68,31 +68,27 @@
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>No. Induk</span>
                                             <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ $installation->kode_instalasi }}
-                                                </span>
+                                                class="badge bg-secondary badge-pill badge-round ms-1">{{ $installation->kode_instalasi }}
+                                            </span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Tgl Order</span>
                                             <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ \Carbon\Carbon::parse($installation->order)->format('d-m-Y') }}</span>
+                                                class="badge bg-secondary badge-pill badge-round ms-1">{{ \Carbon\Carbon::parse($installation->order)->format('d-m-Y') }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span> Paket Instalasi</span>
                                             <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ $installation->package->kelas }}</span>
+                                                class="badge bg-secondary badge-pill badge-round ms-1">{{ $installation->package->kelas }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Abodemen</span>
                                             <span
-                                                class="badge bg-info badge-pill badge-round ms-1">{{ number_format($installation->abodemen, 2) }}</span>
+                                                class="badge bg-secondary badge-pill badge-round ms-1">{{ number_format($installation->abodemen, 2) }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>Status</span>
-                                            @if (number_format($trx) == number_format($installation->biaya_instalasi))
-                                                <span class="badge bg-success badge-pill badge-round ms-1">PAID</span>
-                                            @else
-                                                <span class="badge bg-warning badge-pill badge-round ms-1">UNPAID</span>
-                                            @endif
+                                            <span class="badge bg-secondary badge-pill badge-round ms-1">PAID</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -114,24 +110,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card ">
-                            <div class="card-content ">
+
+                        <div class="card">
+                            <div class="card-content">
                                 <div class="card-body pb-2 pt-2 pe-2 ps-2">
-                                    <div class="col-12 d-flex justify-content-end align-items-center gap-2">
-                                        <a href="/installations/permohonan" class="btn btn-light btn-icon-split"
-                                            style="float: right; margin-left: 10px;">
+                                    <div class="col-12 d-flex align-items-center gap-2">
+                                        <a href="/installations/permohonan" class="btn btn-secondary btn-icon-split">
                                             <span class="text">Kembali</span>
                                         </a>
                                         @if ($status === 1)
-                                            <button class="btn btn-secondary btn-icon-split" type="submit"
-                                                id="Simpan_status_R"
-                                                style="float: right; margin-left: 10px;"<?= $disabled ?>>
-                                                <span class="text" style="float: right;">Pemasangan Selesai</span>
+                                            <button class="btn btn-primary btn-icon-split ms-auto" type="submit"
+                                                id="Simpan_status_R" <?= $disabled ?>>
+                                                <span class="text">Aktifkan Sekarang</span>
                                             </button>
                                         @elseif ($status === 2)
-                                            <button class="btn btn-secondary btn-icon-split" type="submit"
-                                                id="Simpan_status_R" style="float: right; margin-left: 10px;">
-                                                <span class="text" style="float: right;">Pemasangan Selesai</span>
+                                            <button class="btn btn-primary btn-icon-split ms-auto" type="submit"
+                                                id="Simpan_status_R">
+                                                <span class="text">Aktifkan Sekarang</span>
                                             </button>
                                         @endif
                                     </div>
@@ -275,7 +270,7 @@
                     Swal.fire({
                         title: "Dibatalkan",
                         text: "Data tidak jadi dihapus.",
-                        icon: "info",
+                        icon: "secondary",
                         confirmButtonText: "OK"
                     });
                 }

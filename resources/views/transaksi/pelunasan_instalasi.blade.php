@@ -97,7 +97,7 @@
                                 <button class="btn btn-warning" type="button" id="BtndetailTransaksi">
                                     <span class="text">Detail</span>
                                 </button>
-                                <button class="btn btn-secondary btn-icon-split btn-struk" type="submit"
+                                <button class="btn btn-primary btn-icon-split btn-struk" type="submit"
                                     id="simpanpembayaran" style="float: right; margin-left: 10px;">
                                     <span class="text" style="float: right;">Simpan Pembayaran</span>
                                 </button>

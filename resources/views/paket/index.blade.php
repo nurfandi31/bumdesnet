@@ -22,7 +22,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="col-12 d-flex justify-content-end pb-2">
-                        <button type="button" class="btn btn-primary btn-create me-2" style="width: 160px;">
+                        <button type="button" class="btn btn-success btn-create me-2" style="width: 160px;">
                             Tambah Paket Baru
                         </button>
                     </div>

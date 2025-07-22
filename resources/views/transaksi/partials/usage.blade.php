@@ -160,7 +160,7 @@
                                                         </div>
                                                         <div class="d-flex justify-content-end mt-3">
                                                             <button
-                                                                class="btn btn-secondary btn-icon-split SimpanTagihan"
+                                                                class="btn btn-primary btn-icon-split SimpanTagihan"
                                                                 type="submit"
                                                                 data-form="#FormTagihan-{{ $usage->id }}">
                                                                 <span class="text">Simpan Pembayaran</span>

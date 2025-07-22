@@ -12,7 +12,7 @@
             </div>
 
             <div class="col-12 d-flex justify-content-end">
-                <button class="btn btn-info border-0" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                <button class="btn btn-primary border-0" data-bs-toggle="tooltip" data-bs-placement="bottom"
                     title="Edit Logo" id="EditLogo">
                     <i class="fa fa-edit text-lg"></i>&nbsp;Edit Logo
                 </button>

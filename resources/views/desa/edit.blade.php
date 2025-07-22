@@ -73,9 +73,9 @@
                                         </div>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
+                                        <a href="/villages" class="btn btn-secondary me-1 mb-1">Kembali</a>
                                         <button type="submit" id="SimpanDesa" class="btn btn-primary me-1 mb-1">Simpan
                                             Perubahan</button>
-                                        <a href="/villages" class="btn btn-light-secondary me-1 mb-1">Kembali</a>
                                     </div>
                                 </div>
                             </form>

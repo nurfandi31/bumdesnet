@@ -97,13 +97,13 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body d-flex justify-content-between align-items-center p-2">
+                                <a href="/installations/cabut" class="btn btn-secondary btn-icon-split">
+                                    <span class="text">Kembali</span>
+                                </a>
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#default">
                                     Hapus Instalasi dan Pemakaian
                                 </button>
-                                <a href="/installations/cabut" class="btn btn-light btn-icon-split">
-                                    <span class="text">Kembali</span>
-                                </a>
                             </div>
                         </div>
                     </div>
