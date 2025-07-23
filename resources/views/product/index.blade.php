@@ -10,8 +10,7 @@
                         <th>Gambar</th>
                         <th>Nama Produk</th>
                         <th>Kategori</th>
-                        <th>Harga Beli</th>
-                        <th>Harga Jual</th>
+                        <th>Harga</th>
                         <th>Stok</th>
                         <th>Aksi</th>
                     </tr>
@@ -56,12 +55,8 @@
                                     <span id="stok-produk"></span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold">Harga Beli</span>
+                                    <span class="fw-bold">Harga</span>
                                     <span id="harga-beli-produk"></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold">Harga Jual</span>
-                                    <span id="harga-jual-produk"></span>
                                 </li>
                                 <li class="list-group-item d-flex flex-column">
                                     <span class="fw-bold">Deskripsi</span>
@@ -76,8 +71,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Nama Varian</th>
-                                        <th>Harga Beli</th>
-                                        <th>Harga Jual</th>
+                                        <th>Harga</th>
                                         <th>Stok</th>
                                     </tr>
                                 </thead>
@@ -105,6 +99,22 @@
 @endsection
 
 @section('script')
+    @if (Session::get('success'))
+        <script>
+            var toastMixin = Swal.mixin({
+                toast: true,
+                icon: 'success',
+                position: 'top-right',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+
+            toastMixin.fire({
+                title: "{{ Session::get('success') }}"
+            });
+        </script>
+    @endif
     <script>
         var formatter = new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0,
@@ -141,10 +151,6 @@
                 {
                     data: 'harga_beli',
                     name: 'harga_beli'
-                },
-                {
-                    data: 'harga_jual',
-                    name: 'harga_jual'
                 },
                 {
                     data: 'stok',
