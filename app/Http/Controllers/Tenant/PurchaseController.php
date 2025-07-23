@@ -152,6 +152,7 @@ class PurchaseController extends Controller
                 "catatan" => $request->catatan,
             ]);
 
+            $timestamp = date("Y-m-d H:i:s");
             $productPurchase = [];
             for ($i = 0; $i < count($request->product_id); $i++) {
                 $productPurchase[] = [
@@ -160,7 +161,9 @@ class PurchaseController extends Controller
                     "purchase_id" => $purchase->id,
                     "harga_beli" => intval(str_replace(',', '', $request->harga_beli[$i])),
                     "qty" => $request->jumlah[$i],
-                    "total" => intval(str_replace(',', '', $request->subtotal[$i]))
+                    "total" => intval(str_replace(',', '', $request->subtotal[$i])),
+                    "created_at" => $timestamp,
+                    "updated_at" => $timestamp
                 ];
 
                 if (is_numeric($request->variation_id[$i])) {
@@ -251,6 +254,7 @@ class PurchaseController extends Controller
                 "catatan" => $request->catatan,
             ]);
 
+            $timestamp = date("Y-m-d H:i:s");
             $productPurchase = [];
             for ($i = 0; $i < count($request->product_id); $i++) {
                 $productPurchase[] = [
@@ -259,7 +263,9 @@ class PurchaseController extends Controller
                     "purchase_id" => $purchase->id,
                     "harga_beli" => intval(str_replace(',', '', $request->harga_beli[$i])),
                     "qty" => $request->jumlah[$i],
-                    "total" => intval(str_replace(',', '', $request->subtotal[$i]))
+                    "total" => intval(str_replace(',', '', $request->subtotal[$i])),
+                    "created_at" => $timestamp,
+                    "updated_at" => $timestamp
                 ];
 
                 $penambahanStok = $request->jumlah[$i];
