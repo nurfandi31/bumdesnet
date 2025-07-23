@@ -30,22 +30,6 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="harga_beli">Harga Beli</label>
-                                    <input type="text" id="harga_beli" class="form-control input-number"
-                                        name="harga_beli" placeholder="Harga Beli" autocomplete="off"
-                                        value="{{ number_format($product->harga_beli) }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="harga_jual">Harga Jual</label>
-                                    <input type="text" id="harga_jual" class="form-control input-number"
-                                        name="harga_jual" placeholder="Harga Jual" autocomplete="off"
-                                        value="{{ number_format($product->harga_jual) }}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
                                 <fieldset>
                                     <label for="gambar">Gambar</label>
                                     <div class="input-group mb-2">
@@ -54,6 +38,22 @@
                                         </div>
                                     </div>
                                 </fieldset>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="harga_beli">Harga </label>
+                                    <input type="text" id="harga_beli" class="form-control input-number"
+                                        name="harga_beli" placeholder="Harga " autocomplete="off"
+                                        value="{{ number_format($product->harga_beli) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-none">
+                                <div class="form-group">
+                                    <label for="harga_jual">Harga Jual</label>
+                                    <input type="text" id="harga_jual" class="form-control input-number"
+                                        name="harga_jual" placeholder="Harga Jual" autocomplete="off"
+                                        value="{{ number_format($product->harga_jual) }}">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -68,8 +68,8 @@
                             <thead>
                                 <tr>
                                     <th>Nama Varian</th>
-                                    <th>Harga Beli</th>
-                                    <th>Harga Jual</th>
+                                    <th>Harga</th>
+                                    {{-- <th>Harga Jual</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,14 +82,14 @@
                                         </td>
                                         <td>
                                             <input type="text" id="harga_beli1" class="form-control input-number"
-                                                name="harga_beli_varian[]" placeholder="Harga Beli" autocomplete="off"
+                                                name="harga_beli_varian[]" placeholder="Harga" autocomplete="off"
                                                 value="{{ number_format($variation->harga_beli) }}">
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <input type="text" id="harga_jual1" class="form-control input-number"
                                                 name="harga_jual_varian[]" placeholder="Harga Jual" autocomplete="off"
                                                 value="{{ number_format($variation->harga_jual) }}">
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -22,10 +22,10 @@ class ProductController extends Controller
             return DataTables::eloquent($products)
                 ->addIndexColumn()
                 ->editColumn('harga_beli', function ($row) {
-                    return "Rp. " . number_format($row->harga_beli, 2);
+                    return "Rp. " . number_format($row->harga_beli);
                 })
                 ->editColumn('harga_jual', function ($row) {
-                    return "Rp. " . number_format($row->harga_jual, 2);
+                    return "Rp. " . number_format($row->harga_jual);
                 })
                 ->addColumn('action', function ($row) {
                     return '<div class="dropdown">
@@ -67,7 +67,6 @@ class ProductController extends Controller
             "kategori" => "required",
             "nama_produk" => "required",
             "harga_beli" => "required",
-            "harga_jual" => "required",
         ]);
 
         $gambarName = '';
@@ -85,7 +84,7 @@ class ProductController extends Controller
             "category_id" => $request->kategori,
             "name" => $request->nama_produk,
             "harga_beli" => str_replace(',', '', $request->harga_beli),
-            "harga_jual" => str_replace(',', '', $request->harga_jual),
+            "harga_jual" => str_replace(',', '', $request->harga_beli),
             "deskripsi" => $request->deskripsi,
             "gambar" => $gambarName,
             'stok' => 0
@@ -102,7 +101,7 @@ class ProductController extends Controller
                     'product_id' => $product->id,
                     'name' => $value,
                     'harga_beli' => str_replace(',', '', $request->harga_beli_varian[$key]),
-                    'harga_jual' => str_replace(',', '', $request->harga_jual_varian[$key]),
+                    'harga_jual' => str_replace(',', '', $request->harga_beli_varian[$key]),
                     'stok' => 0
                 ];
             }
@@ -141,7 +140,7 @@ class ProductController extends Controller
             "kategori" => "required",
             "nama_produk" => "required",
             "harga_beli" => "required",
-            "harga_jual" => "required",
+            // "harga_jual" => "required",
         ]);
 
         $gambarName = $product->gambar;
@@ -163,35 +162,44 @@ class ProductController extends Controller
             "category_id" => $request->kategori,
             "name" => $request->nama_produk,
             "harga_beli" => str_replace(',', '', $request->harga_beli),
-            "harga_jual" => str_replace(',', '', $request->harga_jual),
+            "harga_jual" => str_replace(',', '', $request->harga_beli),
             "deskripsi" => $request->deskripsi,
             "gambar" => $gambarName
         ]);
 
         $deleteVariation = [];
-        foreach ($request->id_varian as $index => $id) {
-            if (empty($request->nama_varian[$index])) {
-                $deleteVariation[] = $request->id_varian[$index];
-                continue;
+
+        if ($request->has('id_varian') && is_array($request->id_varian)) {
+            foreach ($request->id_varian as $index => $id) {
+                $namaVarian = $request->nama_varian[$index] ?? null;
+                $hargaBeliVarian = $request->harga_beli_varian[$index] ?? null;
+
+                if (empty($namaVarian)) {
+                    if (!empty($id)) {
+                        $deleteVariation[] = $id;
+                    }
+                    continue;
+                }
+
+                if (!empty($id)) {
+                    ProductVariation::where('id', $id)->update([
+                        "name" => $namaVarian,
+                        "harga_beli" => str_replace(',', '', $hargaBeliVarian),
+                        "harga_jual" => str_replace(',', '', $hargaBeliVarian)
+                    ]);
+                } else {
+                    ProductVariation::create([
+                        "product_id" => $product->id,
+                        "name" => $namaVarian,
+                        "harga_beli" => str_replace(',', '', $hargaBeliVarian),
+                        "harga_jual" => str_replace(',', '', $hargaBeliVarian),
+                        "stok" => 0
+                    ]);
+                }
             }
 
-            if (!empty($id)) {
-                ProductVariation::where('id', $id)->update([
-                    "name" => $request->nama_varian[$index],
-                    "harga_beli" => str_replace(',', '', $request->harga_beli_varian[$index]),
-                    "harga_jual" => str_replace(',', '', $request->harga_jual_varian[$index])
-                ]);
-            } else {
-                ProductVariation::create([
-                    "product_id" => $product->id,
-                    "name" => $request->nama_varian[$index],
-                    "harga_beli" => str_replace(',', '', $request->harga_beli_varian[$index]),
-                    "harga_jual" => str_replace(',', '', $request->harga_jual_varian[$index]),
-                    "stok" => 0
-                ]);
-            }
+            ProductVariation::where('product_id', $product->id)->whereIn('id', $deleteVariation)->delete();
         }
-
         ProductVariation::where('product_id', $product->id)->whereIn('id', $deleteVariation)->delete();
         return redirect('/products')->with('success', 'Produk berhasil diupdate');
     }
