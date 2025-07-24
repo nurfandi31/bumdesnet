@@ -118,17 +118,15 @@ class TransactionController extends Controller
                 })->where([
                     ['kode_akun', 'NOT LIKE', '2.1.04%'],
                 ]);
-            })->where(function ($query) use ($tgl_kondisi) {
-                $query->whereNull('tgl_nonaktif')->orWhere('tgl_nonaktif', '>', $tgl_kondisi);
             })->orderBy('kode_akun', 'ASC')->get();
 
             $rek2 = Account::where('business_id', Session::get('business_id'))->where('lev1', '2')->orWhere('lev1', '3')->orWhere('lev1', '5')->orderBy('kode_akun', 'ASC')->get();
 
             $label2 = 'Keperluan';
         } elseif ($id == 3) {
-            $rek1 = Account::where('business_id', Session::get('business_id'))->whereNull('tgl_nonaktif')->orWhere('tgl_nonaktif', '>', $tgl_kondisi)->get();
+            $rek1 = Account::where('business_id', Session::get('business_id'))->get();
 
-            $rek2 = Account::where('business_id', Session::get('business_id'))->whereNull('tgl_nonaktif')->orWhere('tgl_nonaktif', '>', $tgl_kondisi)->get();
+            $rek2 = Account::where('business_id', Session::get('business_id'))->get();
 
             $label2 = 'Disimpan Ke';
         }
