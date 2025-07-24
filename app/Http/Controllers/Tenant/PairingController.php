@@ -24,9 +24,9 @@ class PairingController extends Controller
         if (request()->ajax()) {
             $installations = Installations::where('pairing', '1')->with([
                 'customer',
-                'pairing',
-                'pairing.product',
-                'pairing.productVariation'
+                'pairings',
+                'pairings.product',
+                'pairings.productVariation'
             ]);
 
             return DataTables::eloquent($installations)
@@ -142,7 +142,6 @@ class PairingController extends Controller
             $product = Product::whereIn('id', $request->product_id)->get()->pluck([], 'id')->toArray();
             $variation = ProductVariation::whereIn('id', $request->variation_id)->get()->pluck([], 'id')->toArray();
 
-            $hpp = 0;
             $insertPairing = [];
             for ($i = 0; $i < count($request->product_id); $i++) {
                 $product_id = $request->product_id[$i];
@@ -162,14 +161,10 @@ class PairingController extends Controller
                 ];
 
                 if (is_numeric($variation_id)) {
-                    $harga_beli = $variation[$variation_id]['harga_beli'];
                     ProductVariation::where('id', $variation_id)->update(['stok' => $variation[$variation_id]['stok'] - $jumlah]);
                 }
 
-                $harga_beli = $product[$product_id]['harga_beli'];
                 Product::where('id', $product_id)->update(['stok' => $product[$product_id]['stok'] - $jumlah]);
-
-                $hpp += ($harga_jual - $harga_beli) * $jumlah;
             }
 
             Pairing::insert($insertPairing);
@@ -184,30 +179,12 @@ class PairingController extends Controller
                 'usage_id' => '0',
                 'installation_id' => $request->instalasi,
                 'purchase_id' => '0',
-                'total' => intval(str_replace(',', '', $request->total_subtotal - $hpp)),
+                'total' => intval(str_replace(',', '', $request->total_subtotal)),
                 'transaction_id' => $trx_id,
                 'relasi' => '-',
                 'keterangan' => '-',
                 'urutan' => '0',
             ]);
-
-            if ($hpp > 0) {
-                Transaction::create([
-                    'business_id' => '1',
-                    'tgl_transaksi' => Tanggal::tglNasional($request->tanggal_pemasangan),
-                    'rekening_debit' => 70,
-                    'rekening_kredit' => 51,
-                    'user_id' => auth()->user()->id,
-                    'usage_id' => '0',
-                    'installation_id' => $request->instalasi,
-                    'purchase_id' => '0',
-                    'total' => intval(str_replace(',', '', $hpp)),
-                    'transaction_id' => $trx_id,
-                    'relasi' => '-',
-                    'keterangan' => '-',
-                    'urutan' => '0',
-                ]);
-            }
 
             Installations::where('id', $request->instalasi)->update([
                 'pairing' => '1',
@@ -235,24 +212,142 @@ class PairingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Pairing $pairing)
+    public function edit($pairing)
     {
-        //
+        $pairing = Installations::where('id', $pairing)->with([
+            'customer',
+            'pairings.product',
+            'pairings.productVariation'
+        ])->first();
+
+        $title = 'Edit Pemasangan Baru';
+        return view('pairing.edit')->with(compact('title', 'pairing'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pairing $pairing)
+    public function update(Request $request, $pairing)
     {
-        //
+        $pairing = Installations::where('id', $pairing)->with([
+            'customer',
+            'pairings.product',
+            'pairings.productVariation'
+        ])->first();
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($pairing->pairings as $pair) {
+                if ($pair->productVariation) {
+                    $productVariation = ProductVariation::find($pair->productVariation->id);
+                    if ($productVariation) {
+                        $productVariation->stok += $pair->jumlah;
+                        $productVariation->save();
+                    }
+                }
+
+                $product = Product::find($pair->product_id);
+                if ($product) {
+                    $product->stok += $pair->jumlah;
+                    $product->save();
+                }
+            }
+            Pairing::where('installation_id', $pairing->id)->delete();
+
+            $product = Product::whereIn('id', $request->product_id)->get()->pluck([], 'id')->toArray();
+            $variation = ProductVariation::whereIn('id', $request->variation_id)->get()->pluck([], 'id')->toArray();
+
+            $insertPairing = [];
+            for ($i = 0; $i < count($request->product_id); $i++) {
+                $product_id = $request->product_id[$i];
+                $variation_id = $request->variation_id[$i];
+                $jumlah = $request->jumlah[$i];
+                $harga_jual = intval(str_replace(',', '', $request->harga_jual[$i]));
+                $subtotal = intval(str_replace(',', '', $request->subtotal[$i]));
+
+                $insertPairing[] = [
+                    'installation_id' => $request->instalasi,
+                    "product_id" => $product_id,
+                    "product_variation_id" => is_numeric($variation_id) ? $variation_id : 0,
+                    "tgl_pemasangan" => Tanggal::tglNasional($request->tanggal_pemasangan),
+                    "harga" => $harga_jual,
+                    "jumlah" => $jumlah,
+                    "total" => $subtotal,
+                ];
+
+                if (is_numeric($variation_id)) {
+                    ProductVariation::where('id', $variation_id)->update(['stok' => $variation[$variation_id]['stok'] - $jumlah]);
+                }
+
+                $product[$product_id]['stok'] -= $jumlah;
+                Product::where('id', $product_id)->update(['stok' => $product[$product_id]['stok']]);
+            }
+
+            Pairing::insert($insertPairing);
+            Transaction::where([
+                ['installation_id', $pairing->id],
+                ['rekening_debit', 70],
+                ['rekening_kredit', 12]
+            ])->update([
+                'tgl_transaksi' => Tanggal::tglNasional($request->tanggal_pemasangan),
+                'total' => intval(str_replace(',', '', $request->total_subtotal)),
+            ]);
+
+            Installations::where('id', $request->instalasi)->update([
+                'tgl_pairing' => Tanggal::tglNasional($request->tanggal_pemasangan),
+            ]);
+
+            DB::commit();
+
+            return redirect('/pairings')->with('success', 'Pemasangan berhasil diperbarui!');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pairing $pairing)
+    public function destroy($pairing)
     {
-        //
+        $pairing = Installations::where('id', $pairing)->with([
+            'customer',
+            'pairings.product',
+            'pairings.productVariation'
+        ])->first();
+
+        foreach ($pairing->pairings as $pair) {
+            if ($pair->productVariation) {
+                $productVariation = ProductVariation::find($pair->productVariation->id);
+                if ($productVariation) {
+                    $productVariation->stok += $pair->jumlah;
+                    $productVariation->save();
+                }
+            }
+
+            $product = Product::find($pair->product_id);
+            if ($product) {
+                $product->stok += $pair->jumlah;
+                $product->save();
+            }
+        }
+        Pairing::where('installation_id', $pairing->id)->delete();
+        Transaction::where([
+            ['installation_id', $pairing->id],
+            ['rekening_debit', 70],
+            ['rekening_kredit', 12]
+        ])->delete();
+        Installations::where('id', $pairing->id)->update([
+            'pairing' => '0',
+            'tgl_pairing' => null,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Pemasangan berhasil dihapus!'
+        ]);
     }
 }

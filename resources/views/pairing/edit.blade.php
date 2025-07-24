@@ -3,22 +3,17 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="/pairings" method="post" id="formPairing">
+            <form action="/pairings/{{ $pairing->id }}" method="post" id="formPairing">
                 @csrf
+                @method('PUT')
 
                 <div class="row">
                     <div class="col-md-8">
                         <div class="position-relative mb-3">
-                            <label for="instalasi">Instalasi</label>
-                            <select class="choices form-control" name="instalasi" id="instalasi">
-                                <option value="">---</option>
-                                @foreach ($installations as $installation)
-                                    <option value="{{ $installation->id }}">
-                                        {{ $installation->kode_instalasi }}. {{ $installation->customer->nama }}
-                                        [{{ $installation->customer->nik }}]
-                                    </option>
-                                @endforeach
-                            </select>
+                            <label for="edit-instalasi">Instalasi</label>
+                            <input type="hidden" id="instalasi" name="instalasi" value="{{ $pairing->id }}">
+                            <input type="text" id="edit-instalasi" class="form-control" name="edit-instalasi" readonly
+                                value="{{ $pairing->kode_instalasi }}. {{ $pairing->customer->nama }} [{{ $pairing->customer->nik }}]">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -42,24 +37,87 @@
                                 <tr>
                                     <th>Nama Produk</th>
                                     <th width="5%" class="text-center">Jumlah</th>
-                                    <th>Harga Satuan</th>
-                                    <th>Subtotal</th>
+                                    <th class="text-end">Harga Satuan</th>
+                                    <th class="text-end">Subtotal</th>
                                     <th class="text-end">
                                         <i class="fas fa-trash"></i>
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                @php
+                                    $total_qty = 0;
+                                    $total_harga_jual = 0;
+                                    $total_subtotal = 0;
+                                    $products = [];
+                                @endphp
+                                @foreach ($pairing->pairings as $pair)
+                                    @php
+                                        $products[] = [
+                                            'id' => $pair->product_id,
+                                            'variation_id' => $pair->product_variation_id,
+                                            'name' =>
+                                                $pair->product->name .
+                                                ($pair->productVariation ? ' - ' . $pair->productVariation->name : ''),
+                                            'harga_jual' => $pair->harga,
+                                            'jumlah' => $pair->jumlah,
+                                            'subtotal' => $pair->total,
+                                            'stok' => $pair->productVariation
+                                                ? $pair->productVariation->stok
+                                                : $pair->product->stok,
+                                        ];
+
+                                        $total_qty += $pair->jumlah;
+                                        $total_harga_jual += $pair->harga;
+                                        $total_subtotal += $pair->total;
+                                    @endphp
+                                    <tr>
+                                        <td>
+                                            {{ $pair->product->name }}
+                                            {{ $pair->productVariation ? ' - ' . $pair->productVariation->name : '' }}
+                                        </td>
+                                        <td>
+                                            <input type="number" name="jumlah[]"
+                                                class="form-control quantity form-control-sm text-center"
+                                                value="{{ $pair->jumlah }}" min="1" max="{{ $pair->product->stok }}">
+                                        </td>
+                                        <td class="text-end harga-jual">{{ number_format($pair->harga, 0, ',', '.') }}
+                                        </td>
+                                        <td class="text-end subtotal">{{ number_format($pair->total, 0, ',', '.') }}
+                                        </td>
+                                        <td class="text-end">
+                                            <input type="hidden" name="product_id[]" value="{{ $pair->product_id }}">
+                                            <input type="hidden" name="variation_id[]"
+                                                value="{{ $pair->product_variation_id }}">
+                                            <input type="hidden" class="input-harga-jual" name="harga_jual[]"
+                                                value="{{ $pair->harga }}">
+                                            <input type="hidden" class="input-subtotal" name="subtotal[]"
+                                                value="{{ $pair->total }}">
+                                            <button class="btn btn-danger btn-sm btn-delete-product" type="button">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                             <tfoot>
                                 <tr>
                                     <th>Total</th>
-                                    <th class="text-center" id="total-qty">0</th>
-                                    <th class="text-end" id="total-harga-jual">0</th>
-                                    <th class="text-end" id="total-subtotal">0</th>
+                                    <th class="text-center" id="total-qty">
+                                        {{ $total_qty }}
+                                    </th>
+                                    <th class="text-end" id="total-harga-jual">
+                                        {{ number_format($total_harga_jual, 0, ',', '.') }}
+                                    </th>
+                                    <th class="text-end" id="total-subtotal">
+                                        {{ number_format($total_subtotal, 0, ',', '.') }}
+                                    </th>
                                     <th>
-                                        <input type="hidden" name="total_qty" id="total_qty">
-                                        <input type="hidden" name="total_harga_jual" id="total_harga_jual">
-                                        <input type="hidden" name="total_subtotal" id="total_subtotal">
+                                        <input type="hidden" name="total_qty" id="total_qty" value="{{ $total_qty }}">
+                                        <input type="hidden" name="total_harga_jual" id="total_harga_jual"
+                                            value="{{ $total_harga_jual }}">
+                                        <input type="hidden" name="total_subtotal" id="total_subtotal"
+                                            value="{{ $total_subtotal }}">
                                     </th>
                                 </tr>
                             </tfoot>
@@ -77,7 +135,7 @@
 
 @section('script')
     <script>
-        var daftarProduk = [];
+        var daftarProduk = @json($products);
         var formatter = new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
@@ -171,7 +229,7 @@
             var newProduct = {
                 id: product.id,
                 variation_id: product.variation_id,
-                name: product.name,
+                name: product.name + (product.variation ? ' (' + product.variation.name + ')' : ''),
                 harga_jual: product.harga_jual,
                 jumlah: 1,
                 subtotal: product.harga_jual,

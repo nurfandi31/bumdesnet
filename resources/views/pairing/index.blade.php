@@ -118,6 +118,12 @@
             </div>
         </div>
     </div>
+
+    <form action="" method="post" id="form-delete-pairing">
+        @method('DELETE')
+        @csrf
+
+    </form>
 @endsection
 
 @section('script')
@@ -214,7 +220,7 @@
             $('#linkKoordinat').attr('href', 'https://www.google.com/maps/search/?api=1&query=' + data.koordinate);
 
             $('#daftar-barang tbody').empty();
-            $.each(data.pairing, function(index, item) {
+            $.each(data.pairings, function(index, item) {
                 $('#daftar-barang tbody').append(`
                     <tr>
                         <td>${item.product.name} ${item.product_variation ? '(' + item.product_variation.name + ')' : ''}</td>
@@ -225,6 +231,43 @@
             })
 
             $('#modal-daftar-pasang-baru').modal('show');
+        })
+
+        $(document).on('click', '.delete-pairing', function(e) {
+            e.preventDefault()
+            var tr = $(this).closest('tr')
+            var data = table.row(tr).data()
+
+            Swal.fire({
+                title: 'Hapus Pemasangan?',
+                text: "Pemasangan akan dihapus! Apakah Anda yakin?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#form-delete-pairing')
+                    form.attr('action', '/pairings/' + data.id)
+
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: form.attr('method'),
+                        data: form.serialize(),
+                        success: function(response) {
+                            if (response.success) {
+                                toastMixin.fire({
+                                    title: response.msg
+                                });
+
+                                table.ajax.reload();
+                            }
+                        },
+                    })
+                }
+            })
         })
     </script>
 @endsection

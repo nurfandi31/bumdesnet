@@ -52,7 +52,7 @@ class Installations extends Model
         return $this->hasMany(Transaction::class, 'installation_id', 'id');
     }
 
-    public function pairing()
+    public function pairings()
     {
         return $this->hasMany(Pairing::class, 'installation_id', 'id');
     }
