@@ -13,6 +13,7 @@ use App\Http\Controllers\Tenant\DashboardController;
 use App\Http\Controllers\Tenant\ExcelController;
 use App\Http\Controllers\Tenant\HakAksesController;
 use App\Http\Controllers\Tenant\InstallationsController;
+use App\Http\Controllers\Tenant\MaintenanceController;
 use App\Http\Controllers\Tenant\PackageController;
 use App\Http\Controllers\Tenant\PelaporanController;
 use App\Http\Controllers\Tenant\ProductController;
@@ -112,6 +113,10 @@ Route::middleware([
     // Pairing || Pemasangan
     Route::get('/pairings/search-product', [PairingController::class, 'searchProduct']);
     Route::resource('/pairings', PairingController::class);
+
+    // Maintenance || Pemeliharaan
+    Route::get('/maintenances/search-product', [MaintenanceController::class, 'searchProduct']);
+    Route::resource('/maintenances', MaintenanceController::class);
 
     // Installations || Instalasi
     Route::get('/installations/permohonan', [InstallationsController::class, 'permohonan']);
