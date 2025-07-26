@@ -102,10 +102,6 @@
                                                 <a href="/installations/blokir" class="btn btn-secondary btn-icon-split">
                                                     <span class="text-white">Kembali</span>
                                                 </a>
-                                                <button class="btn btn-success btn-icon-split"
-                                                    data-id="{{ $installation->id }}" type="submit" id="Kembali_Status_A">
-                                                    <span class="text-white">Kembali ke Aktif</span>
-                                                </button>
                                             </div>
                                             <div class="d-flex gap-2">
                                                 <button class="btn btn-primary btn-icon-split" type="submit"
@@ -195,69 +191,6 @@
                             $('#msg_' + key).html(message);
                         });
                     }
-                }
-            });
-        });
-        // mengembalikan status B ke A
-        $(document).on('click', '#Kembali_Status_A', function(e) {
-            e.preventDefault();
-
-            var btn = $(this);
-            var originalText = btn.html();
-            btn.html(
-                '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...'
-            );
-            btn.prop('disabled', true);
-            var cek_id = $(this).attr('data-id');
-            var actionUrl = '/installations/KembaliStatus_A/' + cek_id;
-
-            Swal.fire({
-                title: "Apakah Anda yakin?",
-                text: "Data akan diproses dan tidak bisa dikembalikan!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, Process",
-                cancelButtonText: "No, Cancel",
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var form = $('#FormHapus')
-                    $.ajax({
-                        type: form.attr('method'),
-                        url: actionUrl,
-                        data: form.serialize(),
-                        success: function(response) {
-                            Swal.fire({
-                                title: "Berhasil!",
-                                text: response.msg,
-                                icon: "success",
-                                confirmButtonText: "OK"
-                            }).then((res) => {
-                                if (res.isConfirmed) {
-                                    window.location.reload()
-                                } else {
-                                    window.location.href = '/installations/' + result
-                                        .kembaliA.id;
-                                }
-                            });
-                        },
-                        error: function(response) {
-                            const errorMsg = "Terjadi kesalahan.";
-                            Swal.fire({
-                                title: "Error",
-                                text: errorMsg,
-                                icon: "error",
-                                confirmButtonText: "OK"
-                            });
-                        }
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: "Dibatalkan",
-                        text: "Data Akan Tetap di Status BLOKIR",
-                        icon: "warning",
-                        confirmButtonText: "OK"
-                    });
                 }
             });
         });

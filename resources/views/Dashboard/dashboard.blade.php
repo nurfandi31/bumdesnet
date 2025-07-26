@@ -296,21 +296,10 @@
                 labels: ['Pendapatan', 'Beban', 'Surplus'],
                 datasets: [{
                     label: 'Saldo Bulan Ini',
-                    data: [{
-                            {
-                                $SaldoPendapatanBulanini
-                            }
-                        },
-                        {
-                            {
-                                $SaldoBebanBulanini
-                            }
-                        },
-                        {
-                            {
-                                $SaldoSurplusBulanini
-                            }
-                        }
+                    data: [
+                        {{ $SaldoPendapatanBulanini }},
+                        {{ $SaldoBebanBulanini }},
+                        {{ $SaldoSurplusBulanini }}
                     ],
                     backgroundColor: [
                         'green',

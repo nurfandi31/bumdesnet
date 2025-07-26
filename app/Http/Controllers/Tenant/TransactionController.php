@@ -1292,6 +1292,9 @@ class TransactionController extends Controller
         Usage::where('business_id', Session::get('business_id'))->where('id', $request->id_usage)->update([
             'status' => 'PAID',
         ]);
+        Installations::where('business_id', Session::get('business_id'))->where('id', $request->id_instal)->update([
+            'status' => 'A',
+        ]);
 
         return response()->json([
             'success' => true,

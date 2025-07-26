@@ -205,18 +205,9 @@
             var now = new Date();
             var date = now.getDate();
             var lastDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-            var toleransi = {
-                {
-                    Session::get('toleransi', 11)
-                }
-            };
+            var toleransi = {{ session('toleransi', 26) }};
             var successMessage = @json(Session::get('success'));
-            var waktu = {
-                {
-                    time()
-                }
-            };
-
+            var waktu = {{ time() }};
             var isToleransiDay = date === toleransi;
             var isLastDay = date === lastDate;
 

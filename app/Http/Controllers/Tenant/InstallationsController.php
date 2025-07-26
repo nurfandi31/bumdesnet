@@ -1028,21 +1028,6 @@ class InstallationsController extends Controller
             'kembaliA' => $instal
         ]);
     }
-    public function KembaliStatus_A($id)
-    {
-        $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $id)->update([
-            'business_id' => Session::get('business_id'),
-            'status' => 'A',
-            'status_tunggakan' => 'lancar',
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'msg' => '"Data berhasil diaktifkan dan statusnya dikembalikan menjadi Aktif."',
-            'kembaliA' => $instal
-        ]);
-    }
-
     /**
      * menghapus data instalasi status R.
      */

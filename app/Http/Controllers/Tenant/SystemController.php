@@ -27,7 +27,7 @@ class SystemController extends Controller
         $installations = Installations::where('business_id', $businessId)
             ->with(['usage' => fn ($q) => $q->where('status', 'UNPAID')])
             ->get();
-
+        dd($installations, $sekarang, $tanggalToleransi, $setting, $businessId);
         $lancar = [];
         $menunggak1 = [];
 
@@ -42,7 +42,6 @@ class SystemController extends Controller
 
         if ($menunggak1) {
             Installations::whereIn('id', $menunggak1)->update([
-                'status_tunggakan' => 'menunggak1',
                 'status' => 'B',
                 'blokir' => date('Y-m-d')
             ]);
@@ -50,7 +49,6 @@ class SystemController extends Controller
 
         if ($lancar) {
             Installations::whereIn('id', $lancar)->update([
-                'status_tunggakan' => 'lancar',
                 'status' => 'A'
             ]);
         }
@@ -68,7 +66,6 @@ class SystemController extends Controller
 
             if ($telatBayarIds) {
                 Installations::whereIn('id', $telatBayarIds)->update([
-                    'status_tunggakan' => 'menunggak1',
                     'status' => 'B',
                     'blokir' => date('Y-m-d')
                 ]);
