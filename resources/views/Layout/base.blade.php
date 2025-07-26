@@ -23,12 +23,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
-        table tbody tr:hover {
-            cursor: pointer;
-            background-color: #f1f1f1;
-        }
-
-
         label {
             margin-bottom: .5rem !important;
         }

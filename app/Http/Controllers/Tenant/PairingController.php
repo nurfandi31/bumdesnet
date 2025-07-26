@@ -143,6 +143,7 @@ class PairingController extends Controller
             $variation = ProductVariation::whereIn('id', $request->variation_id)->get()->pluck([], 'id')->toArray();
 
             $insertPairing = [];
+            $timestamp = date("Y-m-d H:i:s");
             for ($i = 0; $i < count($request->product_id); $i++) {
                 $product_id = $request->product_id[$i];
                 $variation_id = $request->variation_id[$i];
@@ -158,6 +159,8 @@ class PairingController extends Controller
                     "harga" => $harga_jual,
                     "jumlah" => $jumlah,
                     "total" => $subtotal,
+                    "created_at" => $timestamp,
+                    "updated_at" => $timestamp
                 ];
 
                 if (is_numeric($variation_id)) {
@@ -182,7 +185,7 @@ class PairingController extends Controller
                 'total' => intval(str_replace(',', '', $request->total_subtotal)),
                 'transaction_id' => $trx_id,
                 'relasi' => '-',
-                'keterangan' => '-',
+                'keterangan' => "Pasang Baru - " . $request->instalasi,
                 'urutan' => '0',
             ]);
 
@@ -259,6 +262,7 @@ class PairingController extends Controller
             $variation = ProductVariation::whereIn('id', $request->variation_id)->get()->pluck([], 'id')->toArray();
 
             $insertPairing = [];
+            $timestamp = date("Y-m-d H:i:s");
             for ($i = 0; $i < count($request->product_id); $i++) {
                 $product_id = $request->product_id[$i];
                 $variation_id = $request->variation_id[$i];
@@ -274,6 +278,8 @@ class PairingController extends Controller
                     "harga" => $harga_jual,
                     "jumlah" => $jumlah,
                     "total" => $subtotal,
+                    "created_at" => $timestamp,
+                    "updated_at" => $timestamp
                 ];
 
                 if (is_numeric($variation_id)) {

@@ -205,8 +205,6 @@
             e.preventDefault();
             var data = table.row($(this).closest('tr')).data();
 
-            console.log(data)
-
             $('#namaCustomer').text(data.customer.nama);
             $('#nikCustomer').text(data.customer.nik);
 

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('maintenances', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreignId('transaction_id');
             $table->foreignId('pairing_id');
             $table->foreignId('installation_id');
             $table->foreignId('product_id')->nullable();
