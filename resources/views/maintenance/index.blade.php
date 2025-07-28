@@ -7,7 +7,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Kode Instalasi</th>
+                        <th>Kode Maintenance</th>
                         <th>Customer</th>
                         <th>Tanggal Maintenance</th>
                         <th>Aksi</th>
@@ -92,12 +92,15 @@
                     searchable: false
                 },
                 {
-                    data: 'installations.kode_instalasi',
-                    name: 'installations.kode_instalasi'
+                    data: 'transaction_id',
+                    name: 'transaction_id'
                 },
                 {
                     data: 'installations.customer.nama',
-                    name: 'installations.customer.nama'
+                    name: 'installations.customer.nama',
+                    render: function(data, type, row, meta) {
+                        return (row.installations) ? row.installations.customer.nama : '-';
+                    }
                 },
                 {
                     data: 'tgl_transaksi',
@@ -122,12 +125,12 @@
             console.log(data)
 
             $('#kode_maintenance').html(data.transaction_id);
-            $('#kode_instalasi').html(data.installations.kode_instalasi);
+            $('#kode_instalasi').html((data.installations) ? data.installations.kode_instalasi : '-');
 
             var tableDaftarBarang = $('#daftar-barang-maintenance')
             tableDaftarBarang.find('tbody').empty();
             data.maintenance.forEach((item, index) => {
-                var namaProdukLama = '';
+                var namaProdukLama = '-';
                 if (item.pairing) {
                     namaProdukLama = item.pairing.product.name
                     if (item.pairing.product_variation) {

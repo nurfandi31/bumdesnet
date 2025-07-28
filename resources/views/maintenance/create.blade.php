@@ -78,7 +78,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="col_daftar_barang">
                             <div class="position-relative mb-3">
                                 <label for="daftar_barang">Daftar Barang</label>
                                 <select class="choices form-control" name="daftar_barang" id="daftar_barang">
@@ -175,15 +175,17 @@
                     });
                 });
 
-                console.log(selectDaftarBarang);
                 choiceData['daftar_barang'].setChoices(selectDaftarBarang, 'value', 'label', true);
                 choiceData['daftar_barang'].setChoiceByValue('');
 
                 $('#cariProduk').attr('disabled', true);
-                $('#modal-maintenance').modal('show');
+                $("#col_daftar_barang").show()
             } else {
-                Swal.fire('Error', 'Pilih instalasi terlebih dahulu', 'error');
+                $('#cariProduk').attr('disabled', false);
+                $("#col_daftar_barang").hide()
             }
+
+            $('#modal-maintenance').modal('show');
         })
 
         $(document).on('change', '#daftar_barang', function() {
@@ -212,19 +214,22 @@
 
         $(document).on('click', '#tambahkanProduk', function() {
             var id = $('#daftar_barang').val();
-            var pairing = dataPairings.find(pairing => pairing.id == id);
+            if (id) {
+                var pairing = dataPairings.find(pairing => pairing.id == id);
 
-            var namaBarang = pairing.product.name + (pairing.product_variation ? ' - ' + pairing
-                .product_variation.name : '');
+                var namaBarang = pairing.product.name + (pairing.product_variation ? ' - ' + pairing
+                    .product_variation.name : '');
+
+                dataProduk.barang_lama = namaBarang;
+                dataProduk.pairing_id = id;
+
+                dataPairings = dataPairings.filter(pairing => pairing.id != id);
+            }
 
             dataProduk.catatan = $('#catatan').val();
-            dataProduk.barang_lama = namaBarang;
-            dataProduk.pairing_id = id;
-
             addProductRow(dataProduk);
             dataProduk = null;
 
-            dataPairings = dataPairings.filter(pairing => pairing.id != id);
             choiceData['daftar_barang'].clearChoices();
             choiceData['daftar_barang'].clearInput();
 
@@ -346,7 +351,7 @@
             var tbody = table.find('tbody');
 
             var newRow = `<tr>
-                    <td>${product.barang_lama}</td>
+                    <td>${product.barang_lama || '-'}</td>
                     <td>${product.name}</td>
                     <td class="text-end">${formatter.format(product.harga_jual)}</td>
                     <td class="text-center">${product.jumlah}</td>
@@ -354,8 +359,8 @@
                     <td class="text-end">
                         <input type="hidden" name="product_id[]" value="${product.id}">
                         <input type="hidden" name="product_variation_id[]" value="${product.variation_id}">
-                        <input type="hidden" name="pairing_id[]" value="${product.pairing_id}">
-                        <input type="hidden" name="barang_lama[]" value="${product.barang_lama}">
+                        <input type="hidden" name="pairing_id[]" value="${product.pairing_id || '0'}">
+                        <input type="hidden" name="barang_lama[]" value="${product.barang_lama || ''}">
                         <input type="hidden" name="jumlah[]" value="${product.jumlah}">
                         <input type="hidden" name="harga_jual[]" value="${product.harga_jual}">
                         <input type="hidden" name="subtotal[]" value="${product.subtotal}">

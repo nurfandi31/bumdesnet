@@ -81,9 +81,13 @@ class MaintenanceController extends Controller
                 $query->where('products.name', 'like', '%' . $queryRequest . '%')
                     ->orWhere('categories.name', 'like', '%' . $queryRequest . '%');
             })
-            ->where('stok', '>', 0)
-            ->where('category_id', $category)
-            ->select('products.*', 'categories.name as category_name')
+            ->where('stok', '>', 0);
+
+        if ($category) {
+            $products = $products->where('categories.id', $category);
+        }
+
+        $products = $products->select('products.*', 'categories.name as category_name')
             ->with([
                 'variations' => function ($query) {
                     $query->where('stok', '>', 0);
@@ -138,7 +142,6 @@ class MaintenanceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "instalasi" => "required",
             "tanggal_maintenance" => "required",
         ]);
 
@@ -179,7 +182,7 @@ class MaintenanceController extends Controller
 
                 $daftarMaintenance[] = [
                     "transaction_id" => $transaction->id,
-                    "pairing_id" => $pairing_id,
+                    "pairing_id" => ($pairing_id > 0) ? $pairing_id : null,
                     "installation_id" => $request->instalasi,
                     "product_id" => $product_id,
                     "product_variation_id" => $product_variation_id,

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('maintenances', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('transaction_id');
-            $table->foreignId('pairing_id');
-            $table->foreignId('installation_id');
+            $table->foreignId('pairing_id')->nullable();
+            $table->foreignId('installation_id')->nullable();
             $table->foreignId('product_id')->nullable();
             $table->foreignId('product_variation_id')->nullable();
             $table->date('tgl_maintenance');
