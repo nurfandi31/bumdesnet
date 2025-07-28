@@ -240,8 +240,36 @@ class MaintenanceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Maintenance $maintenance)
+    public function destroy($maintenance)
     {
-        //
+        $transaction = Transaction::where('id', $maintenance)->with([
+            'maintenance.product',
+            'maintenance.productVariation'
+        ])->first();
+
+        foreach ($transaction->maintenance as $mc) {
+            if ($mc->productVariation) {
+                $productVariation = ProductVariation::find($mc->productVariation->id);
+                if ($productVariation) {
+                    $productVariation->stok += $mc->jumlah;
+                    $productVariation->save();
+                }
+            }
+
+            $product = Product::find($mc->product_id);
+            if ($product) {
+                $product->stok += $mc->jumlah;
+                $product->save();
+            }
+        }
+
+        Maintenance::where('transaction_id', $transaction->id)->delete();
+        Transaction::where('id', $transaction->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Maintenance berhasil dihapus',
+            'maintenance' => $transaction
+        ]);
     }
 }

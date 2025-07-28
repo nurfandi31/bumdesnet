@@ -157,6 +157,10 @@
                     data: 'tgl_pairing',
                     name: 'tgl_pairing',
                     render: function(data, type, row, meta) {
+                        if (row.tgl_pairing == null) {
+                            return '-';
+                        }
+
                         return row.tgl_pairing.split("-").reverse().join("/");
                     }
                 },

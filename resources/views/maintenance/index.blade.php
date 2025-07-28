@@ -71,6 +71,12 @@
             </div>
         </div>
     </div>
+
+    <form action="" method="post" id="form-delete-maintenance">
+        @method('DELETE')
+        @csrf
+
+    </form>
 @endsection
 
 @section('script')
@@ -146,6 +152,46 @@
             })
 
             $('#modal-daftar-maintenance').modal('show');
+        })
+
+        $(document).on('click', '.delete-maintenance', function(e) {
+            e.preventDefault();
+            var data = table.row($(this).closest('tr')).data();
+
+            var form = $('#form-delete-maintenance');
+            form.attr('action', '/maintenances/' + data.id);
+
+            Swal.fire({
+                title: 'Hapus Maintenance?',
+                text: "Maintenance akan dihapus! Apakah Anda yakin?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: form.attr('method'),
+                        data: form.serialize(),
+                        success: function(response) {
+                            if (response.success) {
+                                toastMixin.fire({
+                                    title: response.msg
+                                });
+                                table.ajax.reload();
+                            }
+                        },
+                        error: function(response) {
+                            if (response.responseJSON.message) {
+                                Swal.fire('Gagal', response.responseJSON.message, 'error');
+                            }
+                        }
+                    })
+                }
+            });
         })
     </script>
 @endsection
