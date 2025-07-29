@@ -193,7 +193,7 @@
                                     <input type="text" class="form-control" placeholder="Masukkan Link Koordinat"
                                         aria-describedby="koordinate" name="koordinate" id="koordinate">
                                     <button class="btn btn-outline-secondary" type="button" id="modal-maps">
-                                        Google Maps
+                                        Maps
                                     </button>
                                 </div>
                             </div>
