@@ -136,6 +136,12 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- <iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps?q=-6.2088,106.8456&hl=id&z=15&output=embed">
+                    </iframe> --}}
+
                 </div>
             </section>
         </div>

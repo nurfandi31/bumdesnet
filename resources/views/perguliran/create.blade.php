@@ -188,16 +188,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-8">
-                                <label for="koordinate">Koordinate</label>
+                                <label for="koordinate">Koordinat</label>
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Masukkan Link Koordinate"
+                                    <input type="text" class="form-control" placeholder="Masukkan Link Koordinat"
                                         aria-describedby="koordinate" name="koordinate" id="koordinate">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text" id="basic-addon2">
-                                            <a href="https://maps.google.com/" target="_blank"
-                                                style="color: rgb(0, 0, 0); text-decoration: none;">Google Maps</a>
-                                        </span>
-                                    </div>
+                                    <button class="btn btn-outline-secondary" type="button" id="modal-maps">
+                                        Google Maps
+                                    </button>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -244,6 +241,7 @@
                                 </div>
                             @endif
                         </div>
+
                         <hr>
                         <p class="mb-0">
                             Catatan : ( Jika Ada data atau inputan yang kosong bisa di isi ( 0 ) atau ( - ) )
@@ -257,9 +255,104 @@
             </div>
         </div>
     </form>
+
+    <div class="modal fade" id="maps" tabindex="-1" aria-labelledby="mapsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mapsLabel">Maps</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="map-container" class="rounded" style="width: 100%; height: 600px"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" id="SimpanKoordinat" class="btn btn-primary">Tutup dan Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
+    <script src="https://unpkg.com/maplibre-gl@^5.6.1/dist/maplibre-gl.js"></script>
+
+    <script>
+        var koordinat;
+
+        const map = new maplibregl.Map({
+            container: 'map-container',
+            style: 'https://api.maptiler.com/maps/jp-mierune-streets/style.json?key=XF0pct5XUprOKub4ntVU',
+            center: [106.8272, -6.1751],
+            zoom: 13
+        });
+
+        let marker;
+
+        function updateMarker(lngLat) {
+            if (!marker) {
+                marker = new maplibregl.Marker({
+                        draggable: true
+                    })
+                    .setLngLat(lngLat)
+                    .addTo(map);
+
+                marker.on('dragend', () => {
+                    const lngLat = marker.getLngLat();
+
+                    koordinat = lngLat.lat.toFixed(6) + ', ' + lngLat.lng.toFixed(6);
+                });
+            } else {
+                marker.setLngLat(lngLat);
+            }
+
+            koordinat = lngLat.lat.toFixed(6) + ', ' + lngLat.lng.toFixed(6);
+        }
+
+        map.on('click', function(e) {
+            updateMarker(e.lngLat);
+        });
+
+        map.on('load', () => {
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    const userLoc = {
+                        lng: pos.coords.longitude,
+                        lat: pos.coords.latitude
+                    };
+                    map.setCenter([userLoc.lng, userLoc.lat]);
+                    map.setZoom(15);
+                    updateMarker(userLoc);
+                }, () => {
+                    const fallbackLoc = {
+                        lng: 106.8272,
+                        lat: -6.1751
+                    };
+                    updateMarker(fallbackLoc);
+                });
+            } else {
+                const fallbackLoc = {
+                    lng: 106.8272,
+                    lat: -6.1751
+                };
+                updateMarker(fallbackLoc);
+            }
+        });
+
+        $(document).on('click', '#modal-maps', function(e) {
+            e.preventDefault();
+            $('#maps').modal('show');
+        })
+
+        $(document).on('click', '#SimpanKoordinat', function(e) {
+            e.preventDefault();
+
+            $('#koordinate').val(koordinat);
+            $('#maps').modal('hide');
+        })
+    </script>
+
     <script>
         $("#abodemen").maskMoney({
             allowNegative: true
