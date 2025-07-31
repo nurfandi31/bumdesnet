@@ -29,11 +29,11 @@ return new class extends Migration
             $table->date('tgl_pairing')->default(now());
             $table->string('biaya_instalasi');
             $table->string('abodemen');
-            $table->date('order');
-            $table->date('pasang');
-            $table->date('aktif');
-            $table->date('blokir');
-            $table->date('cabut');
+            $table->date('order')->nullable();
+            $table->date('pasang')->nullable();
+            $table->date('aktif')->nullable();
+            $table->date('blokir')->nullable();
+            $table->date('cabut')->nullable();
             $table->timestamps();
         });
     }
