@@ -9,13 +9,24 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="position-relative mb-3">
                                     <label for="kategori">Kategori</label>
                                     <select class="choices form-control" name="kategori" id="kategori">
                                         <option value="">---</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="position-relative mb-3">
+                                    <label for="satuan">Satuan</label>
+                                    <select class="choices form-control" name="satuan" id="satuan">
+                                        <option value="">---</option>
+                                        @foreach ($units as $unit)
+                                            <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

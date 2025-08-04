@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\Category;
 use App\Models\Tenant\Product;
 use App\Models\Tenant\ProductVariation;
+use App\Models\Tenant\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -53,9 +54,10 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $units = Unit::all();
 
         $title = 'Tambah Produk';
-        return view('product.create')->with(compact('title', 'categories'));
+        return view('product.create')->with(compact('title', 'categories', 'units'));
     }
 
     /**
@@ -65,6 +67,7 @@ class ProductController extends Controller
     {
         $request->validate([
             "kategori" => "required",
+            "satuan" => "required",
             "nama_produk" => "required",
             "harga_beli" => "required",
         ]);
@@ -81,6 +84,7 @@ class ProductController extends Controller
         }
 
         $product = Product::create([
+            "unit_id" => $request->satuan,
             "category_id" => $request->kategori,
             "name" => $request->nama_produk,
             "harga_beli" => str_replace(',', '', $request->harga_beli),
@@ -126,9 +130,10 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all();
+        $units = Unit::all();
 
         $title = 'Edit Produk ' . $product->name;
-        return view('product.edit')->with(compact('title', 'product', 'categories'));
+        return view('product.edit')->with(compact('title', 'product', 'categories', 'units'));
     }
 
     /**
@@ -137,6 +142,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
+            "satuan" => "required",
             "kategori" => "required",
             "nama_produk" => "required",
             "harga_beli" => "required",
@@ -159,6 +165,7 @@ class ProductController extends Controller
         }
 
         Product::where('id', $product->id)->update([
+            "unit_id" => $request->satuan,
             "category_id" => $request->kategori,
             "name" => $request->nama_produk,
             "harga_beli" => str_replace(',', '', $request->harga_beli),

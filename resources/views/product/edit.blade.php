@@ -10,7 +10,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="position-relative mb-3">
                                     <label for="kategori">Kategori</label>
                                     <select class="choices form-control" name="kategori" id="kategori">
@@ -23,83 +23,97 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="nama_produk">Nama Produk</label>
-                                    <input type="text" id="nama_produk" class="form-control" name="nama_produk"
-                                        placeholder="Nama Produk" autocomplete="off" value="{{ $product->name }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <fieldset>
-                                    <label for="gambar">Gambar</label>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group">
-                                            <input type="file" class="form-control" id="gambar" name="gambar">
-                                        </div>
+                                <div class="col-md-3">
+                                    <div class="position-relative mb-3">
+                                        <label for="satuan">Satuan</label>
+                                        <select class="choices form-control" name="satuan" id="satuan">
+                                            <option value="">---</option>
+                                            @foreach ($units as $unit)
+                                                <option {{ $unit->id == $product->unit_id ? 'selected' : '' }}
+                                                    value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                </fieldset>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="harga_beli">Harga </label>
-                                    <input type="text" id="harga_beli" class="form-control input-number"
-                                        name="harga_beli" placeholder="Harga " autocomplete="off"
-                                        value="{{ number_format($product->harga_beli) }}">
                                 </div>
-                            </div>
-                            <div class="col-md-6 d-none">
-                                <div class="form-group">
-                                    <label for="harga_jual">Harga Jual</label>
-                                    <input type="text" id="harga_jual" class="form-control input-number"
-                                        name="harga_jual" placeholder="Harga Jual" autocomplete="off"
-                                        value="{{ number_format($product->harga_jual) }}">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nama_produk">Nama Produk</label>
+                                        <input type="text" id="nama_produk" class="form-control" name="nama_produk"
+                                            placeholder="Nama Produk" autocomplete="off" value="{{ $product->name }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <label for="gambar">Gambar</label>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group">
+                                                <input type="file" class="form-control" id="gambar" name="gambar">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="harga_beli">Harga </label>
+                                        <input type="text" id="harga_beli" class="form-control input-number"
+                                            name="harga_beli" placeholder="Harga " autocomplete="off"
+                                            value="{{ number_format($product->harga_beli) }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 d-none">
+                                    <div class="form-group">
+                                        <label for="harga_jual">Harga Jual</label>
+                                        <input type="text" id="harga_jual" class="form-control input-number"
+                                            name="harga_jual" placeholder="Harga Jual" autocomplete="off"
+                                            value="{{ number_format($product->harga_jual) }}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 d-flex flex-column">
-                        <div class="form-group flex-grow-1 d-flex flex-column h-100">
-                            <label for="deskripsi">Deskripsi</label>
-                            <textarea name="deskripsi" id="deskripsi" class="form-control flex-grow-1">{{ $product->deskripsi }}</textarea>
+                        <div class="col-md-4 d-flex flex-column">
+                            <div class="form-group flex-grow-1 d-flex flex-column h-100">
+                                <label for="deskripsi">Deskripsi</label>
+                                <textarea name="deskripsi" id="deskripsi" class="form-control flex-grow-1">{{ $product->deskripsi }}</textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <table class="table" id="daftar-varian">
-                            <thead>
-                                <tr>
-                                    <th>Nama Varian</th>
-                                    <th>Harga</th>
-                                    {{-- <th>Harga Jual</th> --}}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($product->variations as $variation)
+                        <div class="col-md-12">
+                            <table class="table" id="daftar-varian">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <input type="hidden" name="id_varian[]" value="{{ $variation->id }}">
-                                            <input type="text" id="varian1" class="form-control" name="nama_varian[]"
-                                                placeholder="Varian" autocomplete="off" value="{{ $variation->name }}">
-                                        </td>
-                                        <td>
-                                            <input type="text" id="harga_beli1" class="form-control input-number"
-                                                name="harga_beli_varian[]" placeholder="Harga" autocomplete="off"
-                                                value="{{ number_format($variation->harga_beli) }}">
-                                        </td>
-                                        {{-- <td>
+                                        <th>Nama Varian</th>
+                                        <th>Harga</th>
+                                        {{-- <th>Harga Jual</th> --}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($product->variations as $variation)
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" name="id_varian[]" value="{{ $variation->id }}">
+                                                <input type="text" id="varian1" class="form-control"
+                                                    name="nama_varian[]" placeholder="Varian" autocomplete="off"
+                                                    value="{{ $variation->name }}">
+                                            </td>
+                                            <td>
+                                                <input type="text" id="harga_beli1" class="form-control input-number"
+                                                    name="harga_beli_varian[]" placeholder="Harga" autocomplete="off"
+                                                    value="{{ number_format($variation->harga_beli) }}">
+                                            </td>
+                                            {{-- <td>
                                             <input type="text" id="harga_jual1" class="form-control input-number"
                                                 name="harga_jual_varian[]" placeholder="Harga Jual" autocomplete="off"
                                                 value="{{ number_format($variation->harga_jual) }}">
                                         </td> --}}
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" id="TambahVarian" class="btn btn-warning">Tambah Varian</button>
-                            <button type="submit" id="SimpanProduk" class="btn ms-1 btn-primary">Simpan</button>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" id="TambahVarian" class="btn btn-warning">Tambah Varian</button>
+                                <button type="submit" id="SimpanProduk" class="btn ms-1 btn-primary">Simpan</button>
+                            </div>
                         </div>
                     </div>
-                </div>
             </form>
         </div>
     </div>
