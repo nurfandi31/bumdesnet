@@ -22,7 +22,7 @@ return new class extends Migration
             $table->bigInteger('jenis');
             $table->bigInteger('kategori');
             $table->string('status');
-            $table->date('tgl_validasi');
+            $table->date('tgl_validasi')->nullable();
             $table->timestamps();
         });
     }

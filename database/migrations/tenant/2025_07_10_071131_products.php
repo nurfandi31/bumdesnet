@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreignId('unit_id');
             $table->foreignId('category_id');
             $table->string('name');
             $table->integer('harga_beli');
