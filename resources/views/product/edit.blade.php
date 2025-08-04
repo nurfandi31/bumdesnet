@@ -30,7 +30,9 @@
                                             <option value="">---</option>
                                             @foreach ($units as $unit)
                                                 <option {{ $unit->id == $product->unit_id ? 'selected' : '' }}
-                                                    value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                    value="{{ $unit->id }}">
+                                                    {{ $unit->name }} ({{ $unit->short_name }})
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>

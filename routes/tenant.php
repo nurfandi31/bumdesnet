@@ -23,6 +23,7 @@ use App\Http\Controllers\Tenant\PurchaseController;
 use App\Http\Controllers\Tenant\SopController;
 use App\Http\Controllers\Tenant\SystemController;
 use App\Http\Controllers\Tenant\TransactionController;
+use App\Http\Controllers\Tenant\UnitController;
 use App\Http\Controllers\Tenant\UsageController;
 use App\Http\Controllers\Tenant\UserController;
 use App\Http\Controllers\Tenant\VillageController;
@@ -103,6 +104,7 @@ Route::middleware([
     Route::resource('/customers', CustomerController::class);
 
     // Products || Produk
+    Route::resource('/units', UnitController::class);
     Route::resource('/category', CategoryController::class);
     Route::resource('/products', ProductController::class);
 

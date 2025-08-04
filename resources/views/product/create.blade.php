@@ -26,7 +26,9 @@
                                     <select class="choices form-control" name="satuan" id="satuan">
                                         <option value="">---</option>
                                         @foreach ($units as $unit)
-                                            <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                            <option value="{{ $unit->id }}">
+                                                {{ $unit->name }} ({{ $unit->short_name }})
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
