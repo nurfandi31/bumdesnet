@@ -25,9 +25,9 @@ class SystemController extends Controller
         $tanggalToleransi = $sekarang->copy()->day($toleransiTanggal);
 
         $installations = Installations::where('business_id', $businessId)
-            ->with(['usage' => fn ($q) => $q->where('status', 'UNPAID')])
+            ->with(['usage' => fn($q) => $q->where('status', 'UNPAID')])
             ->get();
-        dd($installations, $sekarang, $tanggalToleransi, $setting, $businessId);
+
         $lancar = [];
         $menunggak1 = [];
 
