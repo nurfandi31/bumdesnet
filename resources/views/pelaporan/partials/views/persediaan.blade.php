@@ -34,7 +34,9 @@
                 <td>{{ $product->name }}</td>
                 <td align="center">{{ $product->stok }}</td>
                 <td align="center">{{ $product->unit->name }}</td>
-                <td align="right">{{ number_format($product->harga_jual) }}</td>
+                <td align="right">
+                    Rp. {{ number_format($product->harga_jual) }}
+                </td>
             </tr>
         @endforeach
     </tbody>
