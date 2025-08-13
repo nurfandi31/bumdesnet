@@ -3,6 +3,9 @@
 @section('content')
     <div class="card">
         <div class="card-body">
+            <div class="d-flex justify-content-end mb-3">
+                <button type="button" id="cetak-produk" class="btn btn-primary">Cetak</button>
+            </div>
             <table class="table table-striped" id="daftar-produk" style="width: 100%">
                 <thead>
                     <tr>
@@ -230,6 +233,12 @@
                     })
                 }
             })
+        })
+
+        $(document).on('click', '#cetak-produk', function(e) {
+            window.open(
+                '/pelaporan/preview?tahun={{ date('Y') }}&bulan={{ date('m') }}&laporan=persediaan&sub_laporan=&type=pdf',
+                '_blank')
         })
     </script>
 @endsection

@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\Product;
 
 class PelaporanController extends Controller
 {
@@ -1648,6 +1649,32 @@ class PelaporanController extends Controller
 
         $data['title'] = 'Calk';
         $view = view('pelaporan.partials.views.tutup_buku.calk', $data)->render();
+        $pdf = PDF::loadHTML($view)->setOptions([
+            'header-html' => view('pelaporan.layouts.header', $data)->render(),
+            'header-line' => true,
+            'margin-top'     => 20,
+            'margin-bottom'  => 15,
+            'margin-left'    => 25,
+            'margin-right'   => 20,
+            'enable-local-file-access' => true,
+            'header-spacing' => 2,
+        ]);
+        return $pdf->inline();
+    }
+
+    private function persediaan(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+
+        $data['products'] = Product::where('stok', '>', '0')->with('category', 'variations', 'unit')->get();
+        $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+
+        $data['title'] = 'Daftar Persediaan';
+        $view = view('pelaporan.partials.views.persediaan', $data)->render();
         $pdf = PDF::loadHTML($view)->setOptions([
             'header-html' => view('pelaporan.layouts.header', $data)->render(),
             'header-line' => true,
