@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-end mb-3">
-                <button type="button" id="cetak-produk" class="btn btn-primary">Cetak</button>
+                <button type="button" id="cetak-produk" class="btn btn-primary">Lihat Stok</button>
             </div>
             <table class="table table-striped" id="daftar-produk" style="width: 100%">
                 <thead>
