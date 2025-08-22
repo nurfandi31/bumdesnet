@@ -124,7 +124,7 @@ class PelaporanController extends Controller
         if ($file == 'daftar_pelanggan') {
             $caters = User::where([
                 ['business_id', Session::get('business_id')],
-                ['jabatan', '5']
+                ['jabatan', '1']
             ])->get();
 
             $sub_laporan = [
@@ -145,7 +145,7 @@ class PelaporanController extends Controller
         if ($file == 'piutang_pelanggan') {
             $caters = User::where([
                 ['business_id', Session::get('business_id')],
-                ['jabatan', '5']
+                ['jabatan', '1']
             ])->get();
 
             $sub_laporan = [
@@ -165,7 +165,7 @@ class PelaporanController extends Controller
         if ($file == 'tagihan_pelanggan') {
             $caters = User::where([
                 ['business_id', Session::get('business_id')],
-                ['jabatan', '5']
+                ['jabatan', '1']
             ])->get();
 
             $sub_laporan = [
@@ -877,7 +877,7 @@ class PelaporanController extends Controller
         $data['cater_id'] = $data['sub_laporan'];
         $caters = User::where([
             ['business_id', Session::get('business_id')],
-            ['jabatan', '5']
+            ['jabatan', '1']
         ])->with([
             'installations' => function ($query) use ($data) {
                 $query->where('pasang', '<=', $data['tgl_kondisi'])->orderBy('desa');
@@ -930,7 +930,7 @@ class PelaporanController extends Controller
         $data['cater_id'] = $data['sub_laporan'];
         $caters = User::where([
             ['business_id', Session::get('business_id')],
-            ['jabatan', '5']
+            ['jabatan', '1']
         ])->with([
             'installations' => function ($query) use ($data) {
                 $query->where('aktif', '<=', $data['tgl_kondisi'])->orderBy('desa');
@@ -996,7 +996,7 @@ class PelaporanController extends Controller
         $data['cater_id'] = $data['sub_laporan'];
         $caters = User::where([
             ['business_id', Session::get('business_id')],
-            ['jabatan', '5']
+            ['jabatan', '1']
         ])->with([
             'installations' => function ($query) use ($data) {
                 $query->where('aktif', '<=', $data['tgl_kondisi'])->orderBy('desa');
