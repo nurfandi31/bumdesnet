@@ -48,7 +48,7 @@ class PelaporanController extends Controller
         ];
 
         if ($file == 'buku_besar') {
-            $accounts = Account::where('business_id', Session::get('business_id'))->get();
+            $accounts = Account::where('kode_akun', '!=', '3.2.02.01')->where('business_id', Session::get('business_id'))->get();
             foreach ($accounts as $acc) {
                 $sub_laporan[] = [
                     'value' => $acc->kode_akun,
