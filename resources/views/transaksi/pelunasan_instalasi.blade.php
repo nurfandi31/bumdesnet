@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="position-relative mb-3">
-                                        <label for="pembayaran">Pembayaran</label>
+                                        <label for="pembayaran" class="text-bold">Pembayaran</label>
                                         <input type="text" class="form-control total" name="pembayaran" id="pembayaran"
                                             {!! $setting->swit_tombol_trx == '1' ? 'readonly' : '' !!} value="0.00">
                                         <small class="text-danger" id="msg_pembayaran"></small>
