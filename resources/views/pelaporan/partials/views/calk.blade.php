@@ -185,10 +185,13 @@
             @php
                 $jumlah_liabilitas_equitas = 0;
             @endphp
+            
             @foreach ($akun1 as $lev1)
                 @php
                     $saldo_akun = 0;
                 @endphp
+                
+                {{-- Level 1: rgb(110, 110, 110) --}}
                 <tr class="bold" style="background: rgb(110, 110, 110); color: #fff;">
                     <td style="height: 28px;" colspan="3" align="center">
                         {{ $lev1->kode_akun }}. {{ $lev1->nama_akun }}
@@ -196,6 +199,7 @@
                 </tr>
 
                 @foreach ($lev1->akun2 as $lev2)
+                    {{-- Level 2: rgb(167, 167, 167) --}}
                     <tr class="bold" style="background: rgb(167, 167, 167);">
                         <td>{{ $lev2->kode_akun }}</td>
                         <td colspan="2">{{ $lev2->nama_akun }}</td>
@@ -204,9 +208,12 @@
                     @foreach ($lev2->akun3 as $lev3)
                         @php
                             $sum_saldo = 0;
+                            
+                            // Hitung total saldo untuk level 3 ini
                             foreach ($lev3->accounts as $account) {
                                 $saldo_debit = 0;
                                 $saldo_kredit = 0;
+                                
                                 foreach ($account->amount as $amount) {
                                     $saldo_debit += $amount->debit;
                                     $saldo_kredit += $amount->kredit;
@@ -220,29 +227,59 @@
                                 if ($account->kode_akun == '3.2.02.01') {
                                     $saldo = $surplus;
                                 }
-
+                                
                                 $sum_saldo += $saldo;
                             }
-
+                            
+                            // Tambahkan ke total level 1
                             $saldo_akun += $sum_saldo;
                             if ($lev1->lev1 > 1) {
                                 $jumlah_liabilitas_equitas += $sum_saldo;
                             }
-                            $bg = 'rgb(230, 230, 230)';
-                            if ($loop->iteration % 2 == 0) {
-                                $bg = 'rgba(255, 255, 255)';
-                            }
                         @endphp
-                        <tr style="background-color: {{ $bg }}">
+                        
+                        {{-- Level 3: rgb(210, 210, 210) --}}
+                        <tr class="bold" style="background: rgb(210, 210, 210);">
                             <td>{{ $lev3->kode_akun }}</td>
                             <td>{{ $lev3->nama_akun }}</td>
                             <td align="right">
                                 {{ $sum_saldo < 0 ? '(' . number_format(abs($sum_saldo), 2) . ')' : number_format($sum_saldo, 2) }}
                             </td>
                         </tr>
+
+                        @foreach ($lev3->accounts as $account)
+                            @php
+                                $saldo_debit = 0;
+                                $saldo_kredit = 0;
+                                
+                                foreach ($account->amount as $amount) {
+                                    $saldo_debit += $amount->debit;
+                                    $saldo_kredit += $amount->kredit;
+                                }
+
+                                $saldo = $saldo_kredit - $saldo_debit;
+                                if ($lev1->lev1 == '1') {
+                                    $saldo = $saldo_debit - $saldo_kredit;
+                                }
+
+                                if ($account->kode_akun == '3.2.02.01') {
+                                    $saldo = $surplus;
+                                }
+                            @endphp
+                            
+                            {{-- Level Account: rgb(255, 255, 255) --}}
+                            <tr style="background: rgb(255, 255, 255);">
+                                <td>{{ $account->kode_akun }}</td>
+                                <td>{{ $account->nama_akun }}</td>
+                                <td align="right">
+                                    {{ $saldo < 0 ? '(' . number_format(abs($saldo), 2) . ')' : number_format($saldo, 2) }}
+                                </td>
+                            </tr>
+                        @endforeach
                     @endforeach
                 @endforeach
 
+                {{-- Jumlah Level 1: rgb(167, 167, 167) --}}
                 <tr class="bold" style="background: rgb(167, 167, 167);">
                     <td style="height: 28px;" colspan="2">Jumlah {{ $lev1->nama_akun }}</td>
                     <td align="right">
@@ -375,17 +412,6 @@
             </li>
         </ol>
     </li>
-    {{-- 
-    @if ($keterangan)
-        <li style="margin-top: 12px;">
-            <div style="text-transform: uppercase;">
-                Lain Lain
-            </div>
-            <div style="text-align: justify">
-                {!! $keterangan->catatan !!}.
-            </div>
-        </li>
-    @endif --}}
 
     <li style="margin-top: 12px;">
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
