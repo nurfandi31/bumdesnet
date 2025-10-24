@@ -174,14 +174,14 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="rw">RW</label>
-                                    <input type="number" class="form-control" id="rw" name="rw"
+                                    <input type="number" min="0" class="form-control" id="rw" name="rw"
                                         aria-describedby="rw" placeholder="Rw">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="rt">RT</label>
-                                    <input type="number" class="form-control" id="rt" name="rt"
+                                    <input type="number" min="0" class="form-control" id="rt" name="rt"
                                         aria-describedby="rt" placeholder="Rt">
                                 </div>
                             </div>
@@ -225,7 +225,7 @@
                             @if ($status === 1)
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="total">Nominal</label>
+                                        <label for="total">Nominal Instalasi</label>
                                         <input type="text" class="form-control total" aria-describedby="total"
                                             name="total" id="total"
                                             value="{{ number_format($settings->pasang_baru, 2) }}" readonly>
@@ -234,7 +234,7 @@
                             @elseif ($status === 2)
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="total">Nominal</label>
+                                        <label for="total">Nominal Instalasi</label>
                                         <input type="text" class="form-control total total1" aria-describedby="total"
                                             name="total" id="total">
                                     </div>

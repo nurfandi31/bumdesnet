@@ -1205,7 +1205,7 @@ class TransactionController extends Controller
 
         $kode_kas = $accounts['1.1.01.01'] ?: null;
         $kode_piutang = $accounts['1.1.03.01'] ?: null;
-        $kode_abodemen = $accounts['4.1.01.02'] ?: null;
+        $kode_abodemen = $accounts['4.1.03.01'] ?: null;
         $kode_pemakaian = $accounts['4.1.01.01'] ?: null;
 
         $transaksi_piutang = Transaction::where('business_id', Session::get('business_id'))
@@ -1262,7 +1262,7 @@ class TransactionController extends Controller
                 'usage_id' => $request->id_usage,
                 'user_id' => auth()->user()->id,
                 'relasi' => $usage->customers->nama,
-                'keterangan' => 'Pendapatan lain ' . $usage->customers->nama . ' (' . $usage->kode_instalasi . ')',
+                'keterangan' => 'PPN atas nama ' . $usage->customers->nama . ' (' . $usage->kode_instalasi . ')',
                 'created_at' => date('Y-m-d H:i:s')
             ];
 
