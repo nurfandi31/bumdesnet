@@ -27,7 +27,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="nomor_ref">Nomor Ref.</label>
-                            <input type="text" id="nomor_ref" class="form-control" name="nomor_ref"
+                            <input type="text" id="nomor_ref" class="form-control nomor_ref" name="nomor_ref"
                                 placeholder="Nomor Ref." autocomplete="off">
                         </div>
                     </div>
@@ -82,8 +82,8 @@
                         <input type="hidden" name="total_subtotal" id="total_subtotal">
 
                         <div class="form-group">
-                            <label for="catatan">Catatan</label>
-                            <textarea class="form-control" placeholder="Catatan" id="catatan" name="catatan" rows="10"></textarea>
+                            <label for="catatan">Catatan Transaksi</label>
+                            <textarea class="form-control catatan" placeholder="Catatan" id="catatan" name="catatan" rows="10"></textarea>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -116,6 +116,15 @@
 
 @section('script')
     <script>
+        $(document).on('input', '.nomor_ref', function() {
+            const nomor = $(this).val().trim();
+            if (nomor !== '') {
+                $('.catatan').val('Pembelian nota ' + nomor);
+            } else {
+                $('.catatan').val('');
+            }
+        });
+
         var daftarProduk = [];
         var formatter = new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0,
@@ -147,12 +156,10 @@
         }, {
             source: debounce(function(query, syncResults, asyncResults) {
                 if (query.length < 2) return;
-
                 $.get('/purchases/search-product', {
                     query: query
                 }, function(result) {
                     const states = [];
-
                     result.map(function(item) {
                         states.push({
                             name: item.name,
@@ -160,7 +167,6 @@
                             item
                         });
                     });
-
                     asyncResults(states);
                 }).fail(function(xhr, status, error) {
                     console.log(error);
@@ -169,21 +175,17 @@
             }, 500),
             displayKey: 'name',
             templates: {
-                empty: [
-                    '<div class="list-group-item text-center">',
-                    'Produk tidak ditemukan',
-                    '</div>'
-                ].join('\n'),
+                empty: ['<div class="list-group-item text-center">', 'Produk tidak ditemukan', '</div>'].join('\n'),
                 suggestion: function(data) {
                     var harga_beli = formatter.format(data.item.harga_beli);
                     return `<a href="#" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">${data.item.name}</h5>
-                                    <small>${data.item.category_name}</small>
-                                </div>
-                                <p class="mb-1">${data.item.deskripsi}</p>
-                                <small>Harga Beli: Rp. ${harga_beli}</small>
-                            </a>`;
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">${data.item.name}</h5>
+                <small>${data.item.category_name}</small>
+            </div>
+            <p class="mb-1">${data.item.deskripsi}</p>
+            <small>Harga Beli: Rp. ${harga_beli}</small>
+        </a>`;
                 }
             },
             items: 10
@@ -214,25 +216,28 @@
 
             daftarProduk.push(newProduct);
             tbody.append(`
-                <tr>
-                    <td>${newProduct.name}</td>
-                    <td>
-                      <input type="number" name="jumlah[]" class="form-control quantity form-control-sm text-center" value="${newProduct.jumlah}" min="1">
-                    </td>
-                    <td>
-                      <input type="text" name="harga_beli[]" class="form-control harga-beli form-control-sm text-end input-number" value="${formatter.format(newProduct.harga_beli)}">
-                    </td>
-                    <td class="text-end subtotal">${formatter.format(newProduct.subtotal)}</td>
-                    <td class="text-end">
-                        <input type="hidden" name="product_id[]" value="${newProduct.id}">
-                        <input type="hidden" name="variation_id[]" value="${newProduct.variation_id}">
-                        <input type="hidden" class="input-subtotal" name="subtotal[]" value="${newProduct.subtotal}">
-                        <button class="btn btn-danger btn-sm btn-delete-product" type="button">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `);
+        <tr>
+            <td>${newProduct.name}</td>
+            <td>
+                <input type="number" name="jumlah[]" class="form-control quantity form-control-sm text-center"
+                    value="${newProduct.jumlah}" min="1">
+            </td>
+            <td>
+                <input type="text" name="harga_beli[]"
+                    class="form-control harga-beli form-control-sm text-end input-number"
+                    value="${formatter.format(newProduct.harga_beli)}">
+            </td>
+            <td class="text-end subtotal">${formatter.format(newProduct.subtotal)}</td>
+            <td class="text-end">
+                <input type="hidden" name="product_id[]" value="${newProduct.id}">
+                <input type="hidden" name="variation_id[]" value="${newProduct.variation_id}">
+                <input type="hidden" class="input-subtotal" name="subtotal[]" value="${newProduct.subtotal}">
+                <button class="btn btn-danger btn-sm btn-delete-product" type="button">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+        `);
 
             $('.input-number').maskMoney({
                 allowNegative: true,
