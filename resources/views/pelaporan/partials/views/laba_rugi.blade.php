@@ -123,7 +123,7 @@
             <td align="right">{{ number_format($total_sd_bulan_ini, 2) }}</td>
         </tr>
         <tr style="background: rgb(150, 150, 150); text-transform: uppercase;">
-            <td colspan="4" height="16">5.2.00.00. Beban Pemasaran
+            <td colspan="4" height="16">5.2.00.00. Beban Non Usaha
             </td>
         </tr>
 
@@ -156,7 +156,7 @@
         @endforeach
 
         <tr style="background: rgb(150, 150, 150);">
-            <td align="left">Jumlah 5.2.00.00. Beban Pemasaran</td>
+            <td align="left">Jumlah 5.2.00.00. Beban Non Usaha</td>
             <td align="right">{{ number_format($total_sd_bulan_lalu, 2) }}</td>
             <td align="right">{{ number_format($total_bulan_ini, 2) }}</td>
             <td align="right">{{ number_format($total_sd_bulan_ini, 2) }}</td>
