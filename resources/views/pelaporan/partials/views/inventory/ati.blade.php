@@ -18,51 +18,47 @@
         <td colspan="3" height="3"></td>
     </tr>
 </table>
-
-<table border="0"width="100%">
+<table border="0" width="100%" style="table-layout: fixed;">
+    <colgroup>
+        <col width="3%">  <!-- No -->
+        <col width="7%">  <!-- Tgl Beli -->
+        <col width="10%"> <!-- Nama Barang -->
+        <col width="3%">  <!-- Id -->
+        <col width="5%">  <!-- Kondisi -->
+        <col width="4%">  <!-- Unit -->
+        <col width="8%">  <!-- Harga Satuan -->
+        <col width="8%">  <!-- Harga Perolehan -->
+        <col width="4%">  <!-- Umur Eko. -->
+        <col width="8%">  <!-- Amortisasi -->
+        <col width="4%">  <!-- Tahun Ini - Umur -->
+        <col width="8%">  <!-- Tahun Ini - Biaya -->
+        <col width="4%">  <!-- s.d. Tahun Ini - Umur -->
+        <col width="8%">  <!-- s.d. Tahun Ini - Biaya -->
+        <col width="8%">  <!-- Nilai Buku -->
+    </colgroup>
     <thead>
         <tr style="background: rgb(232, 232, 232);">
-            <th class="t l b" rowspan="2" width="3%">No</th>
-            <th class="t l b" rowspan="2" width="7%">
-                Tgl Beli
-            </th>
-            <th class="t l b" rowspan="2" width="10%">
-                Nama Barang
-            </th>
-            <th class="t l b" rowspan="2" width="3%">Id</th>
-            <th class="t l b" rowspan="2" width="5%">Kondisi
-            </th>
-            <th class="t l b" rowspan="2" width="4%">Unit</th>
-            <th class="t l b" rowspan="2" width="8%">
-                Harga Satuan
-            </th>
-            <th class="t l b" rowspan="2" width="8%">
-                Harga Perolehan
-            </th>
-            <th class="t l b" rowspan="2" width="4%">
-                Umur Eko.
-            </th>
-            <th class="t l b" rowspan="2" width="8%">
-                Amortisasi
-            </th>
-            <th class="t l b" colspan="2" width="12%">
-                Tahun Ini
-            </th>
-            <th class="t l b" colspan="2" width="12%">
-                s.d. Tahun Ini</th>
-            <th class="t l b r" rowspan="2" width="8%">
-                Nilai Buku
-            </th>
+            <th class="t l b" rowspan="2">No</th>
+            <th class="t l b" rowspan="2">Tgl Beli</th>
+            <th class="t l b" rowspan="2">Nama Barang</th>
+            <th class="t l b" rowspan="2">Id</th>
+            <th class="t l b" rowspan="2">Kondisi</th>
+            <th class="t l b" rowspan="2">Unit</th>
+            <th class="t l b" rowspan="2">Harga Satuan</th>
+            <th class="t l b" rowspan="2">Harga Perolehan</th>
+            <th class="t l b" rowspan="2">Umur Eko.</th>
+            <th class="t l b" rowspan="2">Amortisasi</th>
+            <th class="t l b" colspan="2">Tahun Ini</th>
+            <th class="t l b" colspan="2">s.d. Tahun Ini</th>
+            <th class="t l b r" rowspan="2">Nilai Buku</th>
         </tr>
-
         <tr style="background: rgb(232, 232, 232);">
-            <th class="t l b" width="4%">Umur</th>
-            <th class="t l b" width="8%">Biaya</th>
-            <th class="t l b" width="4%">Umur</th>
-            <th class="t l b" style="border: 1px solid black;" width="8%">Biaya</th>
+            <th class="t l b">Umur</th>
+            <th class="t l b">Biaya</th>
+            <th class="t l b">Umur</th>
+            <th class="t l b" style="border: 1px solid black;">Biaya</th>
         </tr>
     </thead>
-
     <tbody>
         @php
             $t_unit = 0;
