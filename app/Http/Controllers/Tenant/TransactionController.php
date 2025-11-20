@@ -32,6 +32,8 @@ use PDF;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 
 class TransactionController extends Controller
 {
@@ -1205,7 +1207,7 @@ class TransactionController extends Controller
 
         $kode_kas = $accounts['1.1.01.01'] ?: null;
         $kode_piutang = $accounts['1.1.03.01'] ?: null;
-        $kode_abodemen = $accounts['4.1.03.01'] ?: null;
+        $kode_abodemen = $accounts['4.1.01.02'] ?: null;
         $kode_pemakaian = $accounts['4.1.01.01'] ?: null;
 
         $transaksi_piutang = Transaction::where('business_id', Session::get('business_id'))
@@ -1262,7 +1264,7 @@ class TransactionController extends Controller
                 'usage_id' => $request->id_usage,
                 'user_id' => auth()->user()->id,
                 'relasi' => $usage->customers->nama,
-                'keterangan' => 'PPN atas nama ' . $usage->customers->nama . ' (' . $usage->kode_instalasi . ')',
+                'keterangan' => 'Pendapatan lain ' . $usage->customers->nama . ' (' . $usage->kode_instalasi . ')',
                 'created_at' => date('Y-m-d H:i:s')
             ];
 
@@ -1536,7 +1538,7 @@ class TransactionController extends Controller
         $data['keuangan'] = $keuangan;
 
         $view = view('transaksi.jurnal_umum.dokumen.cetak', $data)->render();
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+        $pdf = Pdf::loadHTML($view)->setPaper('A4', 'landscape');
         return $pdf->stream();
     }
 
