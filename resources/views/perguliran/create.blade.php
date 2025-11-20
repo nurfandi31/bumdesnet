@@ -359,7 +359,8 @@
         });
 
         $(".total").maskMoney({
-            allowNegative: true
+            allowNegative: true,
+            allowZero: true,
         });
 
         $(document).on('change', '#total', function() {

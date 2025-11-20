@@ -414,7 +414,7 @@ class InstallationsController extends Controller
 
         $data['total'] = str_replace(',', '', $data['total']);
         $data['total'] = str_replace('.00', '', $data['total']);
-        $data['total'] = floatval($data['total']);
+        $data['total'] = floatval($data['total']) ?? 0;
 
         $pasangbaru        = $data['pasang_baru'];
         $abodemen          = $data['abodemen'];
