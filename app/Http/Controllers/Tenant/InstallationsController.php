@@ -384,7 +384,6 @@ class InstallationsController extends Controller
         $rules = [
             'kode_instalasi' => 'required',
             'customer_id' => 'required',
-            'cater' => 'required',
             'order' => 'required',
             'desa' => 'required',
             'jalan' => 'required',
@@ -434,7 +433,7 @@ class InstallationsController extends Controller
             'business_id' => Session::get('business_id'),
             'kode_instalasi' => $request->kode_instalasi,
             'customer_id' => $request->customer_id,
-            'cater_id' => $request->cater,
+            'cater_id' => $request->cater ?? null,
             'order' => Tanggal::tglNasional($request->order),
             'desa' => $request->desa,
             'alamat' => $request->jalan,
