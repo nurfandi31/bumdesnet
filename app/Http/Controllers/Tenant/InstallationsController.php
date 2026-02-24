@@ -878,6 +878,7 @@ class InstallationsController extends Controller
         $data = $request->only([
             "id",
             "tgl_akhir",
+            "kode_instalasi",
         ]);
 
         $rules = [
@@ -888,23 +889,23 @@ class InstallationsController extends Controller
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
-        // $lastUsage = usage::where('id_instalasi', $installation->id)->first();
-        // $package   = Package::where('id', $installation->package_id)->first();
-        // $jumlah_hari_bulan_ini = date('t');
-        // $date = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir);
-        // $tgl_akhir = $date->format('d');
-        // $harga = $package->harga;
+        $lastUsage = usage::where('id_instalasi', $installation->id)->first();
+        $package   = Package::where('id', $installation->package_id)->first();
+        $jumlah_hari_bulan_ini = date('t');
+        $date = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir);
+        $tgl_akhir = $date->format('d');
+        $harga = $package->harga;
 
-        // $jumlah_rasio = round($tgl_akhir / $jumlah_hari_bulan_ini, 2);
-        // $nominal = $harga * $jumlah_rasio;
+        $jumlah_rasio = round($tgl_akhir / $jumlah_hari_bulan_ini, 2);
+        $nominal = $harga * $jumlah_rasio;
 
-        // $Usages = usage::where('business_id', Session::get('business_id'))->where('id', $lastUsage->id)->update([
-        //     'business_id'    => Session::get('business_id'),
-        //     'akhir'          => $tgl_akhir,
-        //     'jumlah'         => $jumlah_rasio,
-        //     'nominal'        => $nominal,
-        //     'tgl_akhir'      => Tanggal::tglNasional($request->tgl_akhir),
-        // ]);
+        $Usages = usage::where('business_id', Session::get('business_id'))->where('id', $lastUsage->id)->update([
+            'business_id'    => Session::get('business_id'),
+            'akhir'          => $tgl_akhir,
+            'jumlah'         => $jumlah_rasio,
+            'nominal'        => $nominal,
+            'tgl_akhir'      => Tanggal::tglNasional($request->tgl_akhir),
+        ]);
 
         $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $installation->id)->update([
             'business_id' => Session::get('business_id'),
@@ -937,6 +938,24 @@ class InstallationsController extends Controller
         if ($validate->fails()) {
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
+
+        $lastUsage = usage::where('id_instalasi', $installation->id)->first();
+        $package   = Package::where('id', $installation->package_id)->first();
+        $jumlah_hari_bulan_ini = date('t');
+        $date = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir);
+        $tgl_akhir = $date->format('d');
+        $harga = $package->harga;
+
+        $jumlah_rasio = round($tgl_akhir / $jumlah_hari_bulan_ini, 2);
+        $nominal = $harga * $jumlah_rasio;
+
+        $Usages = usage::where('business_id', Session::get('business_id'))->where('id', $lastUsage->id)->update([
+            'business_id'    => Session::get('business_id'),
+            'akhir'          => $tgl_akhir,
+            'jumlah'         => $jumlah_rasio,
+            'nominal'        => $nominal,
+            'tgl_akhir'      => Tanggal::tglNasional($request->tgl_akhir),
+        ]);
 
         $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $installation->id)->update([
             'business_id' => Session::get('business_id'),
