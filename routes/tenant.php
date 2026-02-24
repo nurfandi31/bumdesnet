@@ -101,9 +101,8 @@ Route::middleware([
     Route::resource('/business', BusinessController::class);
 
     // Customers || Pelanggan
-    Route::put('/customers/berhenti_langganan/{kode_instalasi}', [CustomerController::class, 'berhenti_langganan']);
     Route::resource('/customers', CustomerController::class);
-    // Route::put('/customers/berhenti_langganan/{customer}',[CustomerController::class, 'berhenti_langganan']);
+
     // Products || Produk
     Route::resource('/units', UnitController::class);
     Route::resource('/category', CategoryController::class);

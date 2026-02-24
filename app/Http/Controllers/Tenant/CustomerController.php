@@ -34,7 +34,7 @@ class CustomerController extends Controller
                     'nama',
                     'hp',
                     'alamat',
-                ])->where('business_id', Session::get('business_id'))->where('status', 'Aktif')
+                ])->where('business_id', Session::get('business_id'))
             )
                 ->addColumn('aksi', function ($row) {
                     return $row->id;
@@ -113,61 +113,6 @@ class CustomerController extends Controller
             'msg' => 'Pelanggan berhasil Ditambahkan!',
             'installation' => $create
         ]);
-    }
-
-    public function berhenti_langganan($kode_instalasi)
-    {
-        DB::beginTransaction();
-
-        try {
-
-            $instalasi = Installations::where('business_id', Session::get('business_id'))
-                ->where('kode_instalasi', $kode_instalasi)
-                ->firstOrFail();
-
-            $customer = Customer::where('business_id', Session::get('business_id'))
-                ->where('id', $instalasi->customer_id)
-                ->firstOrFail();
-
-            $adaUsage = $instalasi->usage()->exists();
-
-            if ($adaUsage) {
-
-                $masihUnpaid = $instalasi->usage()
-                    ->where('status', 'UNPAID')
-                    ->exists();
-
-                if ($masihUnpaid) {
-                    return response()->json([
-                        'success' => false,
-                        'msg' => 'Tidak bisa berhenti! Masih ada tagihan yang belum dibayar.'
-                    ]);
-                }
-            }
-
-            $instalasi->update([
-                'status' => 'H'
-            ]);
-
-            $customer->update([
-                'status' => 'Hapus'
-            ]);
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'msg' => 'Pelanggan berhasil dihentikan langganannya.'
-            ]);
-        } catch (\Exception $e) {
-
-            DB::rollBack();
-
-            return response()->json([
-                'success' => false,
-                'msg' => $e->getMessage() // sementara biar kelihatan error aslinya
-            ]);
-        }
     }
 
     /**

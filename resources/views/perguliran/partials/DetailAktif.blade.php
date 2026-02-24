@@ -115,24 +115,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="card">
-                            <div class="card-content">
-                                <div class="card-body pb-2 pt-2 pe-2 ps-2">
-                                    <div class="d-flex gap-2">
-                                            <a href="#" data-id="{{ $installation->kode_instalasi }}" class="btn btn-success text-white berhenti_berlanggan btn-icon-split flex-fill">
-                                                Berhenti Berlanggan
-                                                </a>
-                                            <button type="button" id="btnBlokir" data-id="{{ $installation->id }}"
-                                                class="btn btn-warning text-white btn-icon-split flex-fill">
-                                                Blokir Pemakaian
-                                            </button>
-                                            <button type="button" id="btnCabut" class="btn btn-danger text-white btn-icon-split flex-fill">
-                                                Cabut Pemakaian
-                                            </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body pb-2 pt-2 pe-2 ps-2">
@@ -154,19 +136,6 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="col-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body pb-2 pt-2 pe-2 ps-2">
-                                    <div class="col-12 d-flex justify-content-between align-items-center">
-                                        <a href="/installations/aktif" class="btn btn-secondary btn-icon-split">
-                                            <span class="text">Kembali</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
                     {{-- <iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen
                         referrerpolicy="no-referrer-when-downgrade"
                         src="https://www.google.com/maps?q=-6.2088,106.8456&hl=id&z=15&output=embed">
@@ -341,70 +310,6 @@
                         Swal.fire("Oops!", "Terjadi kesalahan saat memproses.", "error");
                     }
                 });
-            });
-        });
-    </script>
-    <script>
-        //berhenti berlangganan
-        $(document).on('click', '.berhenti_berlanggan', function(e) {
-            e.preventDefault();
-
-            var kode_instalasi =  $(this).data('id'); 
-            var actionUrl = '/customers/berhenti_langganan/' + kode_instalasi;
-
-            Swal.fire({
-                title: "Berhenti berlanggan!",
-                text: "Data akan dinonaktifkan dari aplikasi dan tidak bisa digunakan untuk transaksi!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Berhenti Berlanggan",
-                cancelButtonText: "Batal",
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var form = $('#FormBerhentiBerlanggan');
-                    $.ajax({
-                        type: form.attr('method'),
-                        url: actionUrl,
-                        data: form.serialize(),
-                        success: function(result) {
-                            if (result.success) {
-                                Swal.fire({
-                                    title: "Berhasil!",
-                                    text: result.msg,
-                                    icon: "success",
-                                    confirmButtonText: "OK"
-                                }).then((res) => {
-                                    if (res.isConfirmed) {
-                                        window.location.href = '/installations/aktif';
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: "Gagal",
-                                    text: result.msg,
-                                    icon: "info",
-                                    confirmButtonText: "OK"
-                                });
-                            }
-                        },
-                        error: function(response) {
-                            Swal.fire({
-                                title: "Error",
-                                text: "Terjadi kesalahan pada server. Silakan coba lagi.",
-                                icon: "error",
-                                confirmButtonText: "OK"
-                            });
-                        }
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: "Dibatalkan",
-                        text: "Data tidak jadi dihapus.",
-                        icon: "info",
-                        confirmButtonText: "OK"
-                    });
-                }
             });
         });
     </script>
