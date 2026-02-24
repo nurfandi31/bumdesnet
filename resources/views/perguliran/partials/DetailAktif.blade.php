@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        {{-- <div class="card">
                             <div class="card-content">
                                 <div class="card-body pb-2 pt-2 pe-2 ps-2">
                                     <div class="d-flex gap-2">
@@ -132,9 +132,29 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> --}}
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body pb-2 pt-2 pe-2 ps-2">
+                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <a href="/installations/aktif" class="btn btn-secondary btn-icon-split">
+                                            <span class="text">Kembali</span>
+                                        </a>
+                                        <div>
+                                            <button type="button" id="btnBlokir" data-id="{{ $installation->id }}"
+                                                class="btn btn-warning text-white btn-icon-split flex-fill">
+                                                Blokir Pemakaian
+                                            </button>
+                                            <button type="button" id="btnCabut" class="btn btn-danger text-white btn-icon-split flex-fill">
+                                                Cabut Pemakaian
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    {{-- <div class="col-12">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body pb-2 pt-2 pe-2 ps-2">
@@ -146,7 +166,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- <iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen
                         referrerpolicy="no-referrer-when-downgrade"
                         src="https://www.google.com/maps?q=-6.2088,106.8456&hl=id&z=15&output=embed">
