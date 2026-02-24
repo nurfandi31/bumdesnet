@@ -9,12 +9,15 @@ use App\Models\Tenant\Family;
 use App\Models\Tenant\Village;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Models\Tenant\Usage;
 use App\Utils\Tanggal;
 use App\Utils\Keuangan;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
@@ -31,7 +34,7 @@ class CustomerController extends Controller
                     'nama',
                     'hp',
                     'alamat',
-                ])->where('business_id', Session::get('business_id'))
+                ])->where('business_id', Session::get('business_id'))->where('status', 'Aktif')
             )
                 ->addColumn('aksi', function ($row) {
                     return $row->id;
@@ -112,12 +115,66 @@ class CustomerController extends Controller
         ]);
     }
 
+    public function berhenti_langganan($id)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $customer = Customer::findOrFail($id);
+
+            $instalasi = Installations::where('business_id', Session::get('business_id'))
+                ->where('customer_id', $customer->id)
+                ->firstOrFail();
+
+            // Cek apakah ada usage
+            $adaUsage = $instalasi->usage()->exists();
+            if ($adaUsage) {
+
+                $masihUnpaid = $instalasi->usage()
+                    ->where('status', 'UNPAID')
+                    ->exists();
+
+                if ($masihUnpaid) {
+                    return response()->json([
+                        'success' => false,
+                        'msg' => 'Tidak bisa berhenti! Masih ada tagihan yang belum dibayar.'
+                    ]);
+                }
+            }
+
+            // Kalau tidak ada usage ATAU semua paid → lanjut
+            $instalasi->update([
+                'status' => 'H'
+            ]);
+
+            $customer->update([
+                'status' => 'Hapus'
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Pelanggan berhasil dihentikan langganannya.'
+            ]);
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'msg' => 'Terjadi kesalahan sistem'
+            ]);
+        }
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(Customer $customer)
     {
-        // Menghapus customer berdasarkan id yang diterima
+        // Cek apakah pelanggan memiliki status di tabel installations
     }
     /**
      * Show the form for editing the specified resource.

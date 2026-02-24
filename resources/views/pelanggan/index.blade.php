@@ -44,6 +44,11 @@
         @method('DELETE')
         @csrf
     </form>
+    
+    <form action="" method="post" id="FormBerhentiBerlanggan">
+        @method('PUT')
+        @csrf
+    </form>
 @endsection
 
 @section('script')
@@ -83,6 +88,9 @@
                 render: function(data, type, row, meta) {
                     return `
                 <div class="d-flex justify-content-center flex-wrap gap-1">
+                    <a href="#" data-id="${data}" class="btn btn-info btn-sm berhenti_berlanggan">
+                        <i class="fas fa-sync-alt"></i>
+                    </a>
                     <a href="/customers/${data}/edit" class="btn btn-warning btn-sm">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
@@ -121,6 +129,71 @@
                     var form = $('#FormHapusPelanggan');
                     $.ajax({
                         type: form.attr('method'), // Gunakan metode HTTP DELETE
+                        url: actionUrl,
+                        data: form.serialize(),
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire({
+                                    title: "Berhasil!",
+                                    text: result.msg,
+                                    icon: "success",
+                                    confirmButtonText: "OK"
+                                }).then((res) => {
+                                    if (res.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "Gagal",
+                                    text: result.msg,
+                                    icon: "info",
+                                    confirmButtonText: "OK"
+                                });
+                            }
+                        },
+                        error: function(response) {
+                            Swal.fire({
+                                title: "Error",
+                                text: "Terjadi kesalahan pada server. Silakan coba lagi.",
+                                icon: "error",
+                                confirmButtonText: "OK"
+                            });
+                        }
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: "Dibatalkan",
+                        text: "Data tidak jadi dihapus.",
+                        icon: "info",
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
+        });
+    </script>
+    
+    <script>
+        //berhenti berlangganan
+        $(document).on('click', '.berhenti_berlanggan', function(e) {
+            e.preventDefault();
+
+            var berhenti_id = $(this).attr('data-id'); 
+            var actionUrl = '/customers/berhenti_langganan/' + berhenti_id;
+
+            Swal.fire({
+                title: "Berhenti berlanggan!",
+                text: "Data akan dinonaktifkan dari aplikasi dan tidak bisa digunakan untuk transaksi!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Berhenti Berlanggan",
+                cancelButtonText: "Batal",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#FormBerhentiBerlanggan');
+                    $.ajax({
+                        type: form.attr('method'),
                         url: actionUrl,
                         data: form.serialize(),
                         success: function(result) {
