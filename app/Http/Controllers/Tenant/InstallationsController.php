@@ -384,7 +384,6 @@ class InstallationsController extends Controller
         $rules = [
             'kode_instalasi' => 'required',
             'customer_id' => 'required',
-            'cater' => 'required',
             'order' => 'required',
             'desa' => 'required',
             'jalan' => 'required',
@@ -414,7 +413,7 @@ class InstallationsController extends Controller
 
         $data['total'] = str_replace(',', '', $data['total']);
         $data['total'] = str_replace('.00', '', $data['total']);
-        $data['total'] = floatval($data['total']);
+        $data['total'] = floatval($data['total']) ?? 0;
 
         $pasangbaru        = $data['pasang_baru'];
         $abodemen          = $data['abodemen'];
@@ -423,18 +422,15 @@ class InstallationsController extends Controller
 
         $biaya_instal = $pasangbaru - $biaya_instalasi;
 
-        $status = '0';
+        $status = 'R';
         $jumlah = $biaya_instal;
-        if ($jumlah <= 0) {
-            $status = 'R';
-        }
 
         // INSTALLATION = simpan database 
         $install = Installations::create([
             'business_id' => Session::get('business_id'),
             'kode_instalasi' => $request->kode_instalasi,
             'customer_id' => $request->customer_id,
-            'cater_id' => $request->cater,
+            'cater_id' => $request->cater ?? null,
             'order' => Tanggal::tglNasional($request->order),
             'desa' => $request->desa,
             'alamat' => $request->jalan,
