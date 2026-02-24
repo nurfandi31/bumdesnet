@@ -115,20 +115,22 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function berhenti_langganan($id)
+    public function berhenti_langganan($kode_instalasi)
     {
         DB::beginTransaction();
 
         try {
 
-            $customer = Customer::findOrFail($id);
-
             $instalasi = Installations::where('business_id', Session::get('business_id'))
-                ->where('customer_id', $customer->id)
+                ->where('kode_instalasi', $kode_instalasi)
                 ->firstOrFail();
 
-            // Cek apakah ada usage
+            $customer = Customer::where('business_id', Session::get('business_id'))
+                ->where('id', $instalasi->customer_id)
+                ->firstOrFail();
+
             $adaUsage = $instalasi->usage()->exists();
+
             if ($adaUsage) {
 
                 $masihUnpaid = $instalasi->usage()
@@ -143,7 +145,6 @@ class CustomerController extends Controller
                 }
             }
 
-            // Kalau tidak ada usage ATAU semua paid → lanjut
             $instalasi->update([
                 'status' => 'H'
             ]);
@@ -164,7 +165,7 @@ class CustomerController extends Controller
 
             return response()->json([
                 'success' => false,
-                'msg' => 'Terjadi kesalahan sistem'
+                'msg' => $e->getMessage() // sementara biar kelihatan error aslinya
             ]);
         }
     }
