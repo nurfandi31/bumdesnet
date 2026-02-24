@@ -942,19 +942,19 @@ class InstallationsController extends Controller
         $lastUsage = usage::where('id_instalasi', $installation->id)->first();
         $package   = Package::where('id', $installation->package_id)->first();
         $jumlah_hari_bulan_ini = date('t');
-        $date = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir);
-        $tgl_akhir = $date->format('d');
+        $date = Carbon::createFromFormat('d/m/Y', $request->cabut);
+        $cabut = $date->format('d');
         $harga = $package->harga;
 
-        $jumlah_rasio = round($tgl_akhir / $jumlah_hari_bulan_ini, 2);
+        $jumlah_rasio = round($cabut / $jumlah_hari_bulan_ini, 2);
         $nominal = $harga * $jumlah_rasio;
 
         $Usages = usage::where('business_id', Session::get('business_id'))->where('id', $lastUsage->id)->update([
             'business_id'    => Session::get('business_id'),
-            'akhir'          => $tgl_akhir,
+            'akhir'          => $cabut,
             'jumlah'         => $jumlah_rasio,
             'nominal'        => $nominal,
-            'tgl_akhir'      => Tanggal::tglNasional($request->tgl_akhir),
+            'tgl_akhir'      => Tanggal::tglNasional($request->cabut),
         ]);
 
         $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $installation->id)->update([
