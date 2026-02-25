@@ -228,27 +228,44 @@
                 form.find('input[name="_method"]').remove();
                 form.append('<input type="hidden" name="_method" value="PUT">');
                 form.append('<input type="hidden" name="tgl_akhir" value="' + res.value + '">');
-
                 $.ajax({
                     url: actionUrl,
                     method: 'POST',
                     data: form.serialize(),
                     success: function(result) {
                         if (result.success) {
-                            Swal.fire("Sukses!", result.msg ?? "Status berhasil diubah.",
-                                    "success")
-                                .then(() => {
-                                    window.location.href = '/installations/' + result.aktif
-                                        .id;
-                                });
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sukses!',
+                                text: result.msg ?? 'Status berhasil diubah.'
+                            }).then(() => {
+                                window.location.href = '/installations/' + result.aktif.id;
+                            });
                         } else {
-                            Swal.fire('Gagal!', result.msg ||
-                                'Terjadi kesalahan saat menyimpan data.', 'error');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: result.msg ?? 'Terjadi kesalahan saat menyimpan data.'
+                            });
                         }
                     },
-                    error: () => {
-                        Swal.fire('Gagal!', 'Terjadi kesalahan saat menghubungi server.',
-                            'error');
+                    error: function(xhr) {
+
+                        let message = 'Terjadi kesalahan saat menghubungi server.';
+
+                        if (xhr.responseJSON) {
+                            if (xhr.responseJSON.msg) {
+                                message = xhr.responseJSON.msg;
+                            } else {
+                                message = Object.values(xhr.responseJSON).join('\n');
+                            }
+                        }
+
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Gagal!',
+                            text: message
+                        });
                     }
                 });
             });

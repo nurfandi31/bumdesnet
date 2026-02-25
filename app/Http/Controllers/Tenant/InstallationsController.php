@@ -882,41 +882,63 @@ class InstallationsController extends Controller
         ]);
 
         $rules = [
-            'tgl_akhir' => 'required',
+            'tgl_akhir' => 'required|date_format:d/m/Y',
         ];
+
         $validate = Validator::make($data, $rules);
+
         if ($validate->fails()) {
-            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+            return response()->json($validate->errors(), 422);
         }
 
-        $lastUsage = usage::where('id_instalasi', $installation->id)->first();
-        $package   = Package::where('id', $installation->package_id)->first();
-        $jumlah_hari_bulan_ini = date('t');
-        $date = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir);
-        $tgl_akhir = $date->format('d');
-        $harga = $package->harga;
+        $package = Package::find($installation->package_id);
 
-        $jumlah_rasio = round($tgl_akhir / $jumlah_hari_bulan_ini, 2);
+        if (!$package) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Package tidak ditemukan.'
+            ], 404);
+        }
+
+        $lastUsage = Usage::where('id_instalasi', $installation->id)->latest()->first();
+
+        if (!$lastUsage) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Tidak bisa dicabut! Tidak ada pemakaian bulan ini.'
+            ], 422);
+        }
+
+        $date = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir);
+        $tgl_akhir_hari = $date->format('d');
+        $jumlah_hari_bulan_ini = $date->daysInMonth;
+
+        $harga = $package->harga;
+        $jumlah_rasio = round($tgl_akhir_hari / $jumlah_hari_bulan_ini, 2);
         $nominal = $harga * $jumlah_rasio;
 
-        $Usages = usage::where('business_id', Session::get('business_id'))->where('id', $lastUsage->id)->update([
-            'business_id'    => Session::get('business_id'),
-            'akhir'          => $tgl_akhir,
-            'jumlah'         => $jumlah_rasio,
-            'nominal'        => $nominal,
-            'tgl_akhir'      => Tanggal::tglNasional($request->tgl_akhir),
-        ]);
+        Usage::where('business_id', Session::get('business_id'))
+            ->where('id', $lastUsage->id)
+            ->update([
+                'business_id' => Session::get('business_id'),
+                'akhir'       => $tgl_akhir_hari,
+                'jumlah'      => $jumlah_rasio,
+                'nominal'     => $nominal,
+                'tgl_akhir'   => Tanggal::tglNasional($request->tgl_akhir),
+            ]);
 
-        $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $installation->id)->update([
-            'business_id' => Session::get('business_id'),
-            'cabut' => Tanggal::tglNasional($request->tgl_akhir),
-            'status' => 'C',
-        ]);
+        Installations::where('business_id', Session::get('business_id'))
+            ->where('id', $installation->id)
+            ->update([
+                'business_id' => Session::get('business_id'),
+                'cabut'       => Tanggal::tglNasional($request->tgl_akhir),
+                'status'      => 'C',
+            ]);
 
         return response()->json([
             'success' => true,
-            'msg' => 'Pencabutan Custommer Berhasil',
-            'aktif' => $installation
+            'msg'     => 'Pencabutan Customer Berhasil',
+            'aktif'   => $installation
         ]);
     }
 
@@ -931,42 +953,70 @@ class InstallationsController extends Controller
         ]);
 
         $rules = [
-            'cabut' => 'required',
+            'cabut' => 'required|date_format:d/m/Y',
         ];
 
         $validate = Validator::make($data, $rules);
+
         if ($validate->fails()) {
-            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+            return response()->json([
+                'success' => false,
+                'msg' => $validate->errors()->first()
+            ], 422);
         }
 
-        $lastUsage = usage::where('id_instalasi', $installation->id)->first();
-        $package   = Package::where('id', $installation->package_id)->first();
-        $jumlah_hari_bulan_ini = date('t');
-        $date = Carbon::createFromFormat('d/m/Y', $request->cabut);
-        $cabut = $date->format('d');
-        $harga = $package->harga;
+        $package = Package::find($installation->package_id);
 
-        $jumlah_rasio = round($cabut / $jumlah_hari_bulan_ini, 2);
+        if (!$package) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Package tidak ditemukan.'
+            ], 404);
+        }
+
+        $lastUsage = Usage::where('id_instalasi', $installation->id)
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->latest()
+            ->first();
+
+        if (!$lastUsage) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Tidak bisa diblokir! Tidak ada pemakaian bulan ini.'
+            ], 422);
+        }
+
+        $date = Carbon::createFromFormat('d/m/Y', $request->cabut);
+        $hari_blokir = $date->format('d');
+        $jumlah_hari_bulan_ini = $date->daysInMonth;
+
+        $harga = $package->harga;
+        $jumlah_rasio = round($hari_blokir / $jumlah_hari_bulan_ini, 2);
         $nominal = $harga * $jumlah_rasio;
 
-        $Usages = usage::where('business_id', Session::get('business_id'))->where('id', $lastUsage->id)->update([
-            'business_id'    => Session::get('business_id'),
-            'akhir'          => $cabut,
-            'jumlah'         => $jumlah_rasio,
-            'nominal'        => $nominal,
-            'tgl_akhir'      => Tanggal::tglNasional($request->cabut),
-        ]);
+        Usage::where('business_id', Session::get('business_id'))
+            ->where('id', $lastUsage->id)
+            ->update([
+                'business_id' => Session::get('business_id'),
+                'akhir'       => $hari_blokir,
+                'jumlah'      => $jumlah_rasio,
+                'nominal'     => $nominal,
+                'tgl_akhir'   => Tanggal::tglNasional($request->cabut),
+            ]);
 
-        $instal = Installations::where('business_id', Session::get('business_id'))->where('id', $installation->id)->update([
-            'business_id' => Session::get('business_id'),
-            'cabut' => Tanggal::tglNasional($request->cabut),
-            'status' => 'C',
-        ]);
+        Installations::where('business_id', Session::get('business_id'))
+            ->where('id', $installation->id)
+            ->update([
+                'business_id' => Session::get('business_id'),
+                'blokir'      => Tanggal::tglNasional($request->cabut),
+                'status'      => 'B',
+            ]);
 
         return response()->json([
             'success' => true,
-            'msg' => 'Pencabutan Custommer Berhasil',
-            'cabut' => $installation
+            'msg'     => 'Blokir Customer Berhasil',
+            'blokir'  => $installation
         ]);
     }
 

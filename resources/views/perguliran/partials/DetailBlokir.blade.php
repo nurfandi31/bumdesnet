@@ -161,36 +161,51 @@
             btn.prop('disabled', true);
             var form = $('#Form_status_B');
             var actionUrl = form.attr('action');
-
             $.ajax({
                 type: 'POST',
                 url: actionUrl,
                 data: form.serialize(),
+
                 success: function(result) {
+
                     if (result.success) {
                         Swal.fire({
-                            title: result.msg,
-                            icon: "success",
-                            draggable: true
-                        }).then((res) => {
-                            if (res.isConfirmed) {
-                                window.location.href = '/installations/' + result.cabut.id;
-                            }
+                            icon: 'success',
+                            title: 'Sukses',
+                            text: result.msg,
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.href = '/installations/' + result.blokir.id;
+                        });
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: result.msg ?? 'Terjadi kesalahan.'
                         });
                     }
                 },
-                error: function(result) {
-                    const response = result.responseJSON;
-                    Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error');
-                    if (response && typeof response === 'object') {
-                        $.each(response, function(key, message) {
-                            $('#' + key)
-                                .closest('.input-group.input-group-static')
-                                .addClass('is-invalid');
 
-                            $('#msg_' + key).html(message);
-                        });
+                error: function(xhr) {
+
+                    let message = 'Terjadi kesalahan pada server.';
+
+                    if (xhr.responseJSON) {
+
+                        if (xhr.responseJSON.msg) {
+                            message = xhr.responseJSON.msg;
+                        } else {
+                            message = Object.values(xhr.responseJSON).join('\n');
+                        }
+
                     }
+
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Gagal',
+                        text: message
+                    });
                 }
             });
         });
