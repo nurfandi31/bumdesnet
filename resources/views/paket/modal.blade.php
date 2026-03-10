@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-6">
                             <div class="position-relative mb-2">
-                                <label for="harga" class="form-label harga">Harga</label>
+                                <label for="harga" class="form-label harga">Harga (Tanpa PPN)</label>
                                 <input autocomplete="off" type="text" name="harga" id="harga"
                                     class="form-control form-control-sm">
                                 <small class="text-danger" id="msg_harga"></small>
