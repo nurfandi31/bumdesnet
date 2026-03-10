@@ -92,9 +92,6 @@
                     <a href="/villages/${data}/edit" class="btn btn-warning btn-sm btn-edit">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
-                    <a href="#" data-id="${data}" class="btn btn-danger btn-sm Hapus_desa">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
                 </div>
             `;
                 }
