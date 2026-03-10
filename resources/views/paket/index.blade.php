@@ -32,7 +32,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>KELAS</th>
-                                    <th>HARGA</th>
+                                    <th>HARGA (Tanpa PPN)</th>
                                     <th>ABODEMEN</th>
                                     <th>DENDA</th>
                                     <th style="text-align: center;">AKSI</th>
